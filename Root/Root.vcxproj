@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{eba80ae3-7d0e-4b40-91b4-59e20840d76e}</ProjectGuid>
+    <RootNamespace>Root</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)/src;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(ProjectDir)/libs</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)/src;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(ProjectDir)/libs</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\assimp\aabb.h" />
+    <ClInclude Include="src\assimp\ai_assert.h" />
+    <ClInclude Include="src\assimp\anim.h" />
+    <ClInclude Include="src\assimp\BaseImporter.h" />
+    <ClInclude Include="src\assimp\Bitmap.h" />
+    <ClInclude Include="src\assimp\BlobIOSystem.h" />
+    <ClInclude Include="src\assimp\ByteSwapper.h" />
+    <ClInclude Include="src\assimp\camera.h" />
+    <ClInclude Include="src\assimp\cexport.h" />
+    <ClInclude Include="src\assimp\cfileio.h" />
+    <ClInclude Include="src\assimp\cimport.h" />
+    <ClInclude Include="src\assimp\color4.h" />
+    <ClInclude Include="src\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="src\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="src\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="src\assimp\config.h" />
+    <ClInclude Include="src\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="src\assimp\DefaultIOStream.h" />
+    <ClInclude Include="src\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="src\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="src\assimp\Defines.h" />
+    <ClInclude Include="src\assimp\defs.h" />
+    <ClInclude Include="src\assimp\Exceptional.h" />
+    <ClInclude Include="src\assimp\Exporter.hpp" />
+    <ClInclude Include="src\assimp\fast_atof.h" />
+    <ClInclude Include="src\assimp\GenericProperty.h" />
+    <ClInclude Include="src\assimp\Hash.h" />
+    <ClInclude Include="src\assimp\Importer.hpp" />
+    <ClInclude Include="src\assimp\importerdesc.h" />
+    <ClInclude Include="src\assimp\IOStream.hpp" />
+    <ClInclude Include="src\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="src\assimp\IOSystem.hpp" />
+    <ClInclude Include="src\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="src\assimp\light.h" />
+    <ClInclude Include="src\assimp\LineSplitter.h" />
+    <ClInclude Include="src\assimp\LogAux.h" />
+    <ClInclude Include="src\assimp\Logger.hpp" />
+    <ClInclude Include="src\assimp\LogStream.hpp" />
+    <ClInclude Include="src\assimp\Macros.h" />
+    <ClInclude Include="src\assimp\material.h" />
+    <ClInclude Include="src\assimp\MathFunctions.h" />
+    <ClInclude Include="src\assimp\matrix3x3.h" />
+    <ClInclude Include="src\assimp\matrix4x4.h" />
+    <ClInclude Include="src\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="src\assimp\mesh.h" />
+    <ClInclude Include="src\assimp\metadata.h" />
+    <ClInclude Include="src\assimp\NullLogger.hpp" />
+    <ClInclude Include="src\assimp\ParsingUtils.h" />
+    <ClInclude Include="src\assimp\pbrmaterial.h" />
+    <ClInclude Include="src\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="src\assimp\postprocess.h" />
+    <ClInclude Include="src\assimp\Profiler.h" />
+    <ClInclude Include="src\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="src\assimp\qnan.h" />
+    <ClInclude Include="src\assimp\quaternion.h" />
+    <ClInclude Include="src\assimp\RemoveComments.h" />
+    <ClInclude Include="src\assimp\scene.h" />
+    <ClInclude Include="src\assimp\SceneCombiner.h" />
+    <ClInclude Include="src\assimp\SGSpatialSort.h" />
+    <ClInclude Include="src\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="src\assimp\SmoothingGroups.h" />
+    <ClInclude Include="src\assimp\SpatialSort.h" />
+    <ClInclude Include="src\assimp\StandardShapes.h" />
+    <ClInclude Include="src\assimp\StreamReader.h" />
+    <ClInclude Include="src\assimp\StreamWriter.h" />
+    <ClInclude Include="src\assimp\StringComparison.h" />
+    <ClInclude Include="src\assimp\StringUtils.h" />
+    <ClInclude Include="src\assimp\Subdivision.h" />
+    <ClInclude Include="src\assimp\texture.h" />
+    <ClInclude Include="src\assimp\TinyFormatter.h" />
+    <ClInclude Include="src\assimp\types.h" />
+    <ClInclude Include="src\assimp\vector2.h" />
+    <ClInclude Include="src\assimp\vector3.h" />
+    <ClInclude Include="src\assimp\version.h" />
+    <ClInclude Include="src\assimp\Vertex.h" />
+    <ClInclude Include="src\assimp\XMLTools.h" />
+    <ClInclude Include="src\assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="src\box2d\b2_api.h" />
+    <ClInclude Include="src\box2d\b2_block_allocator.h" />
+    <ClInclude Include="src\box2d\b2_body.h" />
+    <ClInclude Include="src\box2d\b2_broad_phase.h" />
+    <ClInclude Include="src\box2d\b2_chain_shape.h" />
+    <ClInclude Include="src\box2d\b2_circle_shape.h" />
+    <ClInclude Include="src\box2d\b2_collision.h" />
+    <ClInclude Include="src\box2d\b2_common.h" />
+    <ClInclude Include="src\box2d\b2_contact.h" />
+    <ClInclude Include="src\box2d\b2_contact_manager.h" />
+    <ClInclude Include="src\box2d\b2_distance.h" />
+    <ClInclude Include="src\box2d\b2_distance_joint.h" />
+    <ClInclude Include="src\box2d\b2_draw.h" />
+    <ClInclude Include="src\box2d\b2_dynamic_tree.h" />
+    <ClInclude Include="src\box2d\b2_edge_shape.h" />
+    <ClInclude Include="src\box2d\b2_fixture.h" />
+    <ClInclude Include="src\box2d\b2_friction_joint.h" />
+    <ClInclude Include="src\box2d\b2_gear_joint.h" />
+    <ClInclude Include="src\box2d\b2_growable_stack.h" />
+    <ClInclude Include="src\box2d\b2_joint.h" />
+    <ClInclude Include="src\box2d\b2_math.h" />
+    <ClInclude Include="src\box2d\b2_motor_joint.h" />
+    <ClInclude Include="src\box2d\b2_mouse_joint.h" />
+    <ClInclude Include="src\box2d\b2_polygon_shape.h" />
+    <ClInclude Include="src\box2d\b2_prismatic_joint.h" />
+    <ClInclude Include="src\box2d\b2_pulley_joint.h" />
+    <ClInclude Include="src\box2d\b2_revolute_joint.h" />
+    <ClInclude Include="src\box2d\b2_rope.h" />
+    <ClInclude Include="src\box2d\b2_settings.h" />
+    <ClInclude Include="src\box2d\b2_shape.h" />
+    <ClInclude Include="src\box2d\b2_stack_allocator.h" />
+    <ClInclude Include="src\box2d\b2_timer.h" />
+    <ClInclude Include="src\box2d\b2_time_of_impact.h" />
+    <ClInclude Include="src\box2d\b2_time_step.h" />
+    <ClInclude Include="src\box2d\b2_types.h" />
+    <ClInclude Include="src\box2d\b2_weld_joint.h" />
+    <ClInclude Include="src\box2d\b2_wheel_joint.h" />
+    <ClInclude Include="src\box2d\b2_world.h" />
+    <ClInclude Include="src\box2d\b2_world_callbacks.h" />
+    <ClInclude Include="src\box2d\box2d.h" />
+    <ClInclude Include="src\freetype\config\ftconfig.h" />
+    <ClInclude Include="src\freetype\config\ftheader.h" />
+    <ClInclude Include="src\freetype\config\ftmodule.h" />
+    <ClInclude Include="src\freetype\config\ftoption.h" />
+    <ClInclude Include="src\freetype\config\ftstdlib.h" />
+    <ClInclude Include="src\freetype\config\integer-types.h" />
+    <ClInclude Include="src\freetype\config\mac-support.h" />
+    <ClInclude Include="src\freetype\config\public-macros.h" />
+    <ClInclude Include="src\freetype\freetype.h" />
+    <ClInclude Include="src\freetype\ftadvanc.h" />
+    <ClInclude Include="src\freetype\ftbbox.h" />
+    <ClInclude Include="src\freetype\ftbdf.h" />
+    <ClInclude Include="src\freetype\ftbitmap.h" />
+    <ClInclude Include="src\freetype\ftbzip2.h" />
+    <ClInclude Include="src\freetype\ftcache.h" />
+    <ClInclude Include="src\freetype\ftchapters.h" />
+    <ClInclude Include="src\freetype\ftcid.h" />
+    <ClInclude Include="src\freetype\ftcolor.h" />
+    <ClInclude Include="src\freetype\ftdriver.h" />
+    <ClInclude Include="src\freetype\fterrdef.h" />
+    <ClInclude Include="src\freetype\fterrors.h" />
+    <ClInclude Include="src\freetype\ftfntfmt.h" />
+    <ClInclude Include="src\freetype\ftgasp.h" />
+    <ClInclude Include="src\freetype\ftglyph.h" />
+    <ClInclude Include="src\freetype\ftgxval.h" />
+    <ClInclude Include="src\freetype\ftgzip.h" />
+    <ClInclude Include="src\freetype\ftimage.h" />
+    <ClInclude Include="src\freetype\ftincrem.h" />
+    <ClInclude Include="src\freetype\ftlcdfil.h" />
+    <ClInclude Include="src\freetype\ftlist.h" />
+    <ClInclude Include="src\freetype\ftlogging.h" />
+    <ClInclude Include="src\freetype\ftlzw.h" />
+    <ClInclude Include="src\freetype\ftmac.h" />
+    <ClInclude Include="src\freetype\ftmm.h" />
+    <ClInclude Include="src\freetype\ftmodapi.h" />
+    <ClInclude Include="src\freetype\ftmoderr.h" />
+    <ClInclude Include="src\freetype\ftotval.h" />
+    <ClInclude Include="src\freetype\ftoutln.h" />
+    <ClInclude Include="src\freetype\ftparams.h" />
+    <ClInclude Include="src\freetype\ftpfr.h" />
+    <ClInclude Include="src\freetype\ftrender.h" />
+    <ClInclude Include="src\freetype\ftsizes.h" />
+    <ClInclude Include="src\freetype\ftsnames.h" />
+    <ClInclude Include="src\freetype\ftstroke.h" />
+    <ClInclude Include="src\freetype\ftsynth.h" />
+    <ClInclude Include="src\freetype\ftsystem.h" />
+    <ClInclude Include="src\freetype\fttrigon.h" />
+    <ClInclude Include="src\freetype\fttypes.h" />
+    <ClInclude Include="src\freetype\ftwinfnt.h" />
+    <ClInclude Include="src\freetype\internal\autohint.h" />
+    <ClInclude Include="src\freetype\internal\cffotypes.h" />
+    <ClInclude Include="src\freetype\internal\cfftypes.h" />
+    <ClInclude Include="src\freetype\internal\compiler-macros.h" />
+    <ClInclude Include="src\freetype\internal\ftcalc.h" />
+    <ClInclude Include="src\freetype\internal\ftdebug.h" />
+    <ClInclude Include="src\freetype\internal\ftdrv.h" />
+    <ClInclude Include="src\freetype\internal\ftgloadr.h" />
+    <ClInclude Include="src\freetype\internal\fthash.h" />
+    <ClInclude Include="src\freetype\internal\ftmemory.h" />
+    <ClInclude Include="src\freetype\internal\ftobjs.h" />
+    <ClInclude Include="src\freetype\internal\ftpsprop.h" />
+    <ClInclude Include="src\freetype\internal\ftrfork.h" />
+    <ClInclude Include="src\freetype\internal\ftserv.h" />
+    <ClInclude Include="src\freetype\internal\ftstream.h" />
+    <ClInclude Include="src\freetype\internal\fttrace.h" />
+    <ClInclude Include="src\freetype\internal\ftvalid.h" />
+    <ClInclude Include="src\freetype\internal\psaux.h" />
+    <ClInclude Include="src\freetype\internal\pshints.h" />
+    <ClInclude Include="src\freetype\internal\services\svbdf.h" />
+    <ClInclude Include="src\freetype\internal\services\svcfftl.h" />
+    <ClInclude Include="src\freetype\internal\services\svcid.h" />
+    <ClInclude Include="src\freetype\internal\services\svfntfmt.h" />
+    <ClInclude Include="src\freetype\internal\services\svgldict.h" />
+    <ClInclude Include="src\freetype\internal\services\svgxval.h" />
+    <ClInclude Include="src\freetype\internal\services\svkern.h" />
+    <ClInclude Include="src\freetype\internal\services\svmetric.h" />
+    <ClInclude Include="src\freetype\internal\services\svmm.h" />
+    <ClInclude Include="src\freetype\internal\services\svotval.h" />
+    <ClInclude Include="src\freetype\internal\services\svpfr.h" />
+    <ClInclude Include="src\freetype\internal\services\svpostnm.h" />
+    <ClInclude Include="src\freetype\internal\services\svprop.h" />
+    <ClInclude Include="src\freetype\internal\services\svpscmap.h" />
+    <ClInclude Include="src\freetype\internal\services\svpsinfo.h" />
+    <ClInclude Include="src\freetype\internal\services\svsfnt.h" />
+    <ClInclude Include="src\freetype\internal\services\svttcmap.h" />
+    <ClInclude Include="src\freetype\internal\services\svtteng.h" />
+    <ClInclude Include="src\freetype\internal\services\svttglyf.h" />
+    <ClInclude Include="src\freetype\internal\services\svwinfnt.h" />
+    <ClInclude Include="src\freetype\internal\sfnt.h" />
+    <ClInclude Include="src\freetype\internal\svginterface.h" />
+    <ClInclude Include="src\freetype\internal\t1types.h" />
+    <ClInclude Include="src\freetype\internal\tttypes.h" />
+    <ClInclude Include="src\freetype\internal\wofftypes.h" />
+    <ClInclude Include="src\freetype\otsvg.h" />
+    <ClInclude Include="src\freetype\t1tables.h" />
+    <ClInclude Include="src\freetype\ttnameid.h" />
+    <ClInclude Include="src\freetype\tttables.h" />
+    <ClInclude Include="src\freetype\tttags.h" />
+    <ClInclude Include="src\ft2build.h" />
+    <ClInclude Include="src\glad\glad.h" />
+    <ClInclude Include="src\GLFW\glfw3.h" />
+    <ClInclude Include="src\GLFW\glfw3native.h" />
+    <ClInclude Include="src\glm\common.hpp" />
+    <ClInclude Include="src\glm\detail\compute_common.hpp" />
+    <ClInclude Include="src\glm\detail\compute_vector_relational.hpp" />
+    <ClInclude Include="src\glm\detail\qualifier.hpp" />
+    <ClInclude Include="src\glm\detail\setup.hpp" />
+    <ClInclude Include="src\glm\detail\type_float.hpp" />
+    <ClInclude Include="src\glm\detail\type_half.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat2x2.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat2x3.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat2x4.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat3x2.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat3x3.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat3x4.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat4x2.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat4x3.hpp" />
+    <ClInclude Include="src\glm\detail\type_mat4x4.hpp" />
+    <ClInclude Include="src\glm\detail\type_quat.hpp" />
+    <ClInclude Include="src\glm\detail\type_vec1.hpp" />
+    <ClInclude Include="src\glm\detail\type_vec2.hpp" />
+    <ClInclude Include="src\glm\detail\type_vec3.hpp" />
+    <ClInclude Include="src\glm\detail\type_vec4.hpp" />
+    <ClInclude Include="src\glm\detail\_features.hpp" />
+    <ClInclude Include="src\glm\detail\_fixes.hpp" />
+    <ClInclude Include="src\glm\detail\_noise.hpp" />
+    <ClInclude Include="src\glm\detail\_swizzle.hpp" />
+    <ClInclude Include="src\glm\detail\_swizzle_func.hpp" />
+    <ClInclude Include="src\glm\detail\_vectorize.hpp" />
+    <ClInclude Include="src\glm\exponential.hpp" />
+    <ClInclude Include="src\glm\ext.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_clip_space.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_common.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double2x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double3x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_double4x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float2x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float3x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_float4x4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int2x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int3x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_int4x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_projection.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_relational.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_transform.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint2x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint3x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x2.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x3.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x4.hpp" />
+    <ClInclude Include="src\glm\ext\matrix_uint4x4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_common.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_double.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_double_precision.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_exponential.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_float.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_float_precision.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_geometric.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_relational.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_transform.hpp" />
+    <ClInclude Include="src\glm\ext\quaternion_trigonometric.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_common.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_constants.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_integer.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_int_sized.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_packing.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_relational.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_uint_sized.hpp" />
+    <ClInclude Include="src\glm\ext\scalar_ulp.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool1.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool1_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool2.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool3.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool4.hpp" />
+    <ClInclude Include="src\glm\ext\vector_bool4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_common.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double1.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double1_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double2.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double3.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double4.hpp" />
+    <ClInclude Include="src\glm\ext\vector_double4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float1.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float1_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float2.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float2_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float3.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float3_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float4.hpp" />
+    <ClInclude Include="src\glm\ext\vector_float4_precision.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int1.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int1_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int2.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int3.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int4.hpp" />
+    <ClInclude Include="src\glm\ext\vector_int4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_integer.hpp" />
+    <ClInclude Include="src\glm\ext\vector_packing.hpp" />
+    <ClInclude Include="src\glm\ext\vector_relational.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint1.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint1_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint2.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint2_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint3.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint3_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint4.hpp" />
+    <ClInclude Include="src\glm\ext\vector_uint4_sized.hpp" />
+    <ClInclude Include="src\glm\ext\vector_ulp.hpp" />
+    <ClInclude Include="src\glm\fwd.hpp" />
+    <ClInclude Include="src\glm\geometric.hpp" />
+    <ClInclude Include="src\glm\glm.hpp" />
+    <ClInclude Include="src\glm\gtc\bitfield.hpp" />
+    <ClInclude Include="src\glm\gtc\color_space.hpp" />
+    <ClInclude Include="src\glm\gtc\constants.hpp" />
+    <ClInclude Include="src\glm\gtc\epsilon.hpp" />
+    <ClInclude Include="src\glm\gtc\integer.hpp" />
+    <ClInclude Include="src\glm\gtc\matrix_access.hpp" />
+    <ClInclude Include="src\glm\gtc\matrix_integer.hpp" />
+    <ClInclude Include="src\glm\gtc\matrix_inverse.hpp" />
+    <ClInclude Include="src\glm\gtc\matrix_transform.hpp" />
+    <ClInclude Include="src\glm\gtc\noise.hpp" />
+    <ClInclude Include="src\glm\gtc\packing.hpp" />
+    <ClInclude Include="src\glm\gtc\quaternion.hpp" />
+    <ClInclude Include="src\glm\gtc\random.hpp" />
+    <ClInclude Include="src\glm\gtc\reciprocal.hpp" />
+    <ClInclude Include="src\glm\gtc\round.hpp" />
+    <ClInclude Include="src\glm\gtc\type_aligned.hpp" />
+    <ClInclude Include="src\glm\gtc\type_precision.hpp" />
+    <ClInclude Include="src\glm\gtc\type_ptr.hpp" />
+    <ClInclude Include="src\glm\gtc\ulp.hpp" />
+    <ClInclude Include="src\glm\gtc\vec1.hpp" />
+    <ClInclude Include="src\glm\gtx\associated_min_max.hpp" />
+    <ClInclude Include="src\glm\gtx\bit.hpp" />
+    <ClInclude Include="src\glm\gtx\closest_point.hpp" />
+    <ClInclude Include="src\glm\gtx\color_encoding.hpp" />
+    <ClInclude Include="src\glm\gtx\color_space.hpp" />
+    <ClInclude Include="src\glm\gtx\color_space_YCoCg.hpp" />
+    <ClInclude Include="src\glm\gtx\common.hpp" />
+    <ClInclude Include="src\glm\gtx\compatibility.hpp" />
+    <ClInclude Include="src\glm\gtx\component_wise.hpp" />
+    <ClInclude Include="src\glm\gtx\dual_quaternion.hpp" />
+    <ClInclude Include="src\glm\gtx\easing.hpp" />
+    <ClInclude Include="src\glm\gtx\euler_angles.hpp" />
+    <ClInclude Include="src\glm\gtx\extend.hpp" />
+    <ClInclude Include="src\glm\gtx\extended_min_max.hpp" />
+    <ClInclude Include="src\glm\gtx\exterior_product.hpp" />
+    <ClInclude Include="src\glm\gtx\fast_exponential.hpp" />
+    <ClInclude Include="src\glm\gtx\fast_square_root.hpp" />
+    <ClInclude Include="src\glm\gtx\fast_trigonometry.hpp" />
+    <ClInclude Include="src\glm\gtx\functions.hpp" />
+    <ClInclude Include="src\glm\gtx\gradient_paint.hpp" />
+    <ClInclude Include="src\glm\gtx\handed_coordinate_space.hpp" />
+    <ClInclude Include="src\glm\gtx\hash.hpp" />
+    <ClInclude Include="src\glm\gtx\integer.hpp" />
+    <ClInclude Include="src\glm\gtx\intersect.hpp" />
+    <ClInclude Include="src\glm\gtx\io.hpp" />
+    <ClInclude Include="src\glm\gtx\log_base.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_cross_product.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_decompose.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_factorisation.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_interpolation.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_major_storage.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_operation.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_query.hpp" />
+    <ClInclude Include="src\glm\gtx\matrix_transform_2d.hpp" />
+    <ClInclude Include="src\glm\gtx\mixed_product.hpp" />
+    <ClInclude Include="src\glm\gtx\norm.hpp" />
+    <ClInclude Include="src\glm\gtx\normal.hpp" />
+    <ClInclude Include="src\glm\gtx\normalize_dot.hpp" />
+    <ClInclude Include="src\glm\gtx\number_precision.hpp" />
+    <ClInclude Include="src\glm\gtx\optimum_pow.hpp" />
+    <ClInclude Include="src\glm\gtx\orthonormalize.hpp" />
+    <ClInclude Include="src\glm\gtx\perpendicular.hpp" />
+    <ClInclude Include="src\glm\gtx\polar_coordinates.hpp" />
+    <ClInclude Include="src\glm\gtx\projection.hpp" />
+    <ClInclude Include="src\glm\gtx\quaternion.hpp" />
+    <ClInclude Include="src\glm\gtx\range.hpp" />
+    <ClInclude Include="src\glm\gtx\raw_data.hpp" />
+    <ClInclude Include="src\glm\gtx\rotate_normalized_axis.hpp" />
+    <ClInclude Include="src\glm\gtx\rotate_vector.hpp" />
+    <ClInclude Include="src\glm\gtx\scalar_multiplication.hpp" />
+    <ClInclude Include="src\glm\gtx\scalar_relational.hpp" />
+    <ClInclude Include="src\glm\gtx\spline.hpp" />
+    <ClInclude Include="src\glm\gtx\std_based_type.hpp" />
+    <ClInclude Include="src\glm\gtx\string_cast.hpp" />
+    <ClInclude Include="src\glm\gtx\texture.hpp" />
+    <ClInclude Include="src\glm\gtx\transform.hpp" />
+    <ClInclude Include="src\glm\gtx\transform2.hpp" />
+    <ClInclude Include="src\glm\gtx\type_aligned.hpp" />
+    <ClInclude Include="src\glm\gtx\type_trait.hpp" />
+    <ClInclude Include="src\glm\gtx\vector_angle.hpp" />
+    <ClInclude Include="src\glm\gtx\vector_query.hpp" />
+    <ClInclude Include="src\glm\gtx\vec_swizzle.hpp" />
+    <ClInclude Include="src\glm\gtx\wrap.hpp" />
+    <ClInclude Include="src\glm\integer.hpp" />
+    <ClInclude Include="src\glm\mat2x2.hpp" />
+    <ClInclude Include="src\glm\mat2x3.hpp" />
+    <ClInclude Include="src\glm\mat2x4.hpp" />
+    <ClInclude Include="src\glm\mat3x2.hpp" />
+    <ClInclude Include="src\glm\mat3x3.hpp" />
+    <ClInclude Include="src\glm\mat3x4.hpp" />
+    <ClInclude Include="src\glm\mat4x2.hpp" />
+    <ClInclude Include="src\glm\mat4x3.hpp" />
+    <ClInclude Include="src\glm\mat4x4.hpp" />
+    <ClInclude Include="src\glm\matrix.hpp" />
+    <ClInclude Include="src\glm\packing.hpp" />
+    <ClInclude Include="src\glm\simd\common.h" />
+    <ClInclude Include="src\glm\simd\exponential.h" />
+    <ClInclude Include="src\glm\simd\geometric.h" />
+    <ClInclude Include="src\glm\simd\integer.h" />
+    <ClInclude Include="src\glm\simd\matrix.h" />
+    <ClInclude Include="src\glm\simd\neon.h" />
+    <ClInclude Include="src\glm\simd\packing.h" />
+    <ClInclude Include="src\glm\simd\platform.h" />
+    <ClInclude Include="src\glm\simd\trigonometric.h" />
+    <ClInclude Include="src\glm\simd\vector_relational.h" />
+    <ClInclude Include="src\glm\trigonometric.hpp" />
+    <ClInclude Include="src\glm\vec2.hpp" />
+    <ClInclude Include="src\glm\vec3.hpp" />
+    <ClInclude Include="src\glm\vec4.hpp" />
+    <ClInclude Include="src\glm\vector_relational.hpp" />
+    <ClInclude Include="src\imgui\imconfig.h" />
+    <ClInclude Include="src\imgui\imgui.h" />
+    <ClInclude Include="src\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\imgui\imgui_internal.h" />
+    <ClInclude Include="src\imgui\imgui_stdlib.h" />
+    <ClInclude Include="src\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\KHR\khrplatform.h" />
+    <ClInclude Include="src\Root\CollisionListener.h" />
+    <ClInclude Include="src\Root\Components.h" />
+    <ClInclude Include="src\Root\components\Animator.h" />
+    <ClInclude Include="src\Root\components\Collider.h" />
+    <ClInclude Include="src\Root\components\Component.h" />
+    <ClInclude Include="src\Root\components\ParticleSystem.h" />
+    <ClInclude Include="src\Root\components\Rigidbody.h" />
+    <ClInclude Include="src\Root\components\Script.h" />
+    <ClInclude Include="src\Root\engine\ComponentEngine.h" />
+    <ClInclude Include="src\Root\engine\InputEngine.h" />
+    <ClInclude Include="src\Root\engine\PhysicsEngine.h" />
+    <ClInclude Include="src\Root\engine\RendererEngine.h" />
+    <ClInclude Include="src\Root\engine\RootEngine.h" />
+    <ClInclude Include="src\Root\engine\TransformEngine.h" />
+    <ClInclude Include="src\Root\Gradient.h" />
+    <ClInclude Include="src\Root\Input.h" />
+    <ClInclude Include="src\Root\Logger.h" />
+    <ClInclude Include="src\Root\Math.h" />
+    <ClInclude Include="src\Root\Physics.h" />
+    <ClInclude Include="src\Root\Random.h" />
+    <ClInclude Include="src\Root\rendering\Camera.h" />
+    <ClInclude Include="src\Root\rendering\Renderer.h" />
+    <ClInclude Include="src\Root\rendering\ScreenSpaceEffect.h" />
+    <ClInclude Include="src\Root\rendering\SpriteRenderer.h" />
+    <ClInclude Include="src\Root\Root.h" />
+    <ClInclude Include="src\Root\shaders\AbstractShader.h" />
+    <ClInclude Include="src\Root\shaders\ComputeShader.h" />
+    <ClInclude Include="src\Root\shaders\Shader.h" />
+    <ClInclude Include="src\Root\Time.h" />
+    <ClInclude Include="src\Root\Transform.h" />
+    <ClInclude Include="src\simplegui\Image.h" />
+    <ClInclude Include="src\simplegui\Item.h" />
+    <ClInclude Include="src\simplegui\Rectangle.h" />
+    <ClInclude Include="src\simplegui\SimpleGUI.h" />
+    <ClInclude Include="src\simpleprofiler\Profiler.h" />
+    <ClInclude Include="src\simpletext\SimpleText.h" />
+    <ClInclude Include="src\stbi_utility\TextureData.h" />
+    <ClInclude Include="src\stb_image\stbi_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\assimp\color4.inl" />
+    <None Include="src\assimp\material.inl" />
+    <None Include="src\assimp\matrix3x3.inl" />
+    <None Include="src\assimp\matrix4x4.inl" />
+    <None Include="src\assimp\quaternion.inl" />
+    <None Include="src\assimp\SmoothingGroups.inl" />
+    <None Include="src\assimp\vector2.inl" />
+    <None Include="src\assimp\vector3.inl" />
+    <None Include="src\glm\detail\func_common.inl" />
+    <None Include="src\glm\detail\func_common_simd.inl" />
+    <None Include="src\glm\detail\func_exponential.inl" />
+    <None Include="src\glm\detail\func_exponential_simd.inl" />
+    <None Include="src\glm\detail\func_geometric.inl" />
+    <None Include="src\glm\detail\func_geometric_simd.inl" />
+    <None Include="src\glm\detail\func_integer.inl" />
+    <None Include="src\glm\detail\func_integer_simd.inl" />
+    <None Include="src\glm\detail\func_matrix.inl" />
+    <None Include="src\glm\detail\func_matrix_simd.inl" />
+    <None Include="src\glm\detail\func_packing.inl" />
+    <None Include="src\glm\detail\func_packing_simd.inl" />
+    <None Include="src\glm\detail\func_trigonometric.inl" />
+    <None Include="src\glm\detail\func_trigonometric_simd.inl" />
+    <None Include="src\glm\detail\func_vector_relational.inl" />
+    <None Include="src\glm\detail\func_vector_relational_simd.inl" />
+    <None Include="src\glm\detail\type_half.inl" />
+    <None Include="src\glm\detail\type_mat2x2.inl" />
+    <None Include="src\glm\detail\type_mat2x3.inl" />
+    <None Include="src\glm\detail\type_mat2x4.inl" />
+    <None Include="src\glm\detail\type_mat3x2.inl" />
+    <None Include="src\glm\detail\type_mat3x3.inl" />
+    <None Include="src\glm\detail\type_mat3x4.inl" />
+    <None Include="src\glm\detail\type_mat4x2.inl" />
+    <None Include="src\glm\detail\type_mat4x3.inl" />
+    <None Include="src\glm\detail\type_mat4x4.inl" />
+    <None Include="src\glm\detail\type_mat4x4_simd.inl" />
+    <None Include="src\glm\detail\type_quat.inl" />
+    <None Include="src\glm\detail\type_quat_simd.inl" />
+    <None Include="src\glm\detail\type_vec1.inl" />
+    <None Include="src\glm\detail\type_vec2.inl" />
+    <None Include="src\glm\detail\type_vec3.inl" />
+    <None Include="src\glm\detail\type_vec4.inl" />
+    <None Include="src\glm\detail\type_vec4_simd.inl" />
+    <None Include="src\glm\ext\matrix_clip_space.inl" />
+    <None Include="src\glm\ext\matrix_common.inl" />
+    <None Include="src\glm\ext\matrix_projection.inl" />
+    <None Include="src\glm\ext\matrix_relational.inl" />
+    <None Include="src\glm\ext\matrix_transform.inl" />
+    <None Include="src\glm\ext\quaternion_common.inl" />
+    <None Include="src\glm\ext\quaternion_common_simd.inl" />
+    <None Include="src\glm\ext\quaternion_exponential.inl" />
+    <None Include="src\glm\ext\quaternion_geometric.inl" />
+    <None Include="src\glm\ext\quaternion_relational.inl" />
+    <None Include="src\glm\ext\quaternion_transform.inl" />
+    <None Include="src\glm\ext\quaternion_trigonometric.inl" />
+    <None Include="src\glm\ext\scalar_common.inl" />
+    <None Include="src\glm\ext\scalar_constants.inl" />
+    <None Include="src\glm\ext\scalar_integer.inl" />
+    <None Include="src\glm\ext\scalar_packing.inl" />
+    <None Include="src\glm\ext\scalar_relational.inl" />
+    <None Include="src\glm\ext\scalar_ulp.inl" />
+    <None Include="src\glm\ext\vector_common.inl" />
+    <None Include="src\glm\ext\vector_integer.inl" />
+    <None Include="src\glm\ext\vector_packing.inl" />
+    <None Include="src\glm\ext\vector_relational.inl" />
+    <None Include="src\glm\ext\vector_ulp.inl" />
+    <None Include="src\glm\gtc\bitfield.inl" />
+    <None Include="src\glm\gtc\color_space.inl" />
+    <None Include="src\glm\gtc\constants.inl" />
+    <None Include="src\glm\gtc\epsilon.inl" />
+    <None Include="src\glm\gtc\integer.inl" />
+    <None Include="src\glm\gtc\matrix_access.inl" />
+    <None Include="src\glm\gtc\matrix_inverse.inl" />
+    <None Include="src\glm\gtc\matrix_transform.inl" />
+    <None Include="src\glm\gtc\noise.inl" />
+    <None Include="src\glm\gtc\packing.inl" />
+    <None Include="src\glm\gtc\quaternion.inl" />
+    <None Include="src\glm\gtc\quaternion_simd.inl" />
+    <None Include="src\glm\gtc\random.inl" />
+    <None Include="src\glm\gtc\reciprocal.inl" />
+    <None Include="src\glm\gtc\round.inl" />
+    <None Include="src\glm\gtc\type_precision.inl" />
+    <None Include="src\glm\gtc\type_ptr.inl" />
+    <None Include="src\glm\gtc\ulp.inl" />
+    <None Include="src\glm\gtx\associated_min_max.inl" />
+    <None Include="src\glm\gtx\bit.inl" />
+    <None Include="src\glm\gtx\closest_point.inl" />
+    <None Include="src\glm\gtx\color_encoding.inl" />
+    <None Include="src\glm\gtx\color_space.inl" />
+    <None Include="src\glm\gtx\color_space_YCoCg.inl" />
+    <None Include="src\glm\gtx\common.inl" />
+    <None Include="src\glm\gtx\compatibility.inl" />
+    <None Include="src\glm\gtx\component_wise.inl" />
+    <None Include="src\glm\gtx\dual_quaternion.inl" />
+    <None Include="src\glm\gtx\easing.inl" />
+    <None Include="src\glm\gtx\euler_angles.inl" />
+    <None Include="src\glm\gtx\extend.inl" />
+    <None Include="src\glm\gtx\extended_min_max.inl" />
+    <None Include="src\glm\gtx\exterior_product.inl" />
+    <None Include="src\glm\gtx\fast_exponential.inl" />
+    <None Include="src\glm\gtx\fast_square_root.inl" />
+    <None Include="src\glm\gtx\fast_trigonometry.inl" />
+    <None Include="src\glm\gtx\float_notmalize.inl" />
+    <None Include="src\glm\gtx\functions.inl" />
+    <None Include="src\glm\gtx\gradient_paint.inl" />
+    <None Include="src\glm\gtx\handed_coordinate_space.inl" />
+    <None Include="src\glm\gtx\hash.inl" />
+    <None Include="src\glm\gtx\integer.inl" />
+    <None Include="src\glm\gtx\intersect.inl" />
+    <None Include="src\glm\gtx\io.inl" />
+    <None Include="src\glm\gtx\log_base.inl" />
+    <None Include="src\glm\gtx\matrix_cross_product.inl" />
+    <None Include="src\glm\gtx\matrix_decompose.inl" />
+    <None Include="src\glm\gtx\matrix_factorisation.inl" />
+    <None Include="src\glm\gtx\matrix_interpolation.inl" />
+    <None Include="src\glm\gtx\matrix_major_storage.inl" />
+    <None Include="src\glm\gtx\matrix_operation.inl" />
+    <None Include="src\glm\gtx\matrix_query.inl" />
+    <None Include="src\glm\gtx\matrix_transform_2d.inl" />
+    <None Include="src\glm\gtx\mixed_product.inl" />
+    <None Include="src\glm\gtx\norm.inl" />
+    <None Include="src\glm\gtx\normal.inl" />
+    <None Include="src\glm\gtx\normalize_dot.inl" />
+    <None Include="src\glm\gtx\number_precision.inl" />
+    <None Include="src\glm\gtx\optimum_pow.inl" />
+    <None Include="src\glm\gtx\orthonormalize.inl" />
+    <None Include="src\glm\gtx\perpendicular.inl" />
+    <None Include="src\glm\gtx\polar_coordinates.inl" />
+    <None Include="src\glm\gtx\projection.inl" />
+    <None Include="src\glm\gtx\quaternion.inl" />
+    <None Include="src\glm\gtx\raw_data.inl" />
+    <None Include="src\glm\gtx\rotate_normalized_axis.inl" />
+    <None Include="src\glm\gtx\rotate_vector.inl" />
+    <None Include="src\glm\gtx\scalar_relational.inl" />
+    <None Include="src\glm\gtx\spline.inl" />
+    <None Include="src\glm\gtx\std_based_type.inl" />
+    <None Include="src\glm\gtx\string_cast.inl" />
+    <None Include="src\glm\gtx\texture.inl" />
+    <None Include="src\glm\gtx\transform.inl" />
+    <None Include="src\glm\gtx\transform2.inl" />
+    <None Include="src\glm\gtx\type_aligned.inl" />
+    <None Include="src\glm\gtx\type_trait.inl" />
+    <None Include="src\glm\gtx\vector_angle.inl" />
+    <None Include="src\glm\gtx\vector_query.inl" />
+    <None Include="src\glm\gtx\wrap.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\glm\detail\glm.cpp" />
+    <ClCompile Include="src\imgui\imgui.cpp" />
+    <ClCompile Include="src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="src\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Root\CollisionListener.cpp" />
+    <ClCompile Include="src\Root\components\Animator.cpp" />
+    <ClCompile Include="src\Root\components\Collider.cpp" />
+    <ClCompile Include="src\Root\components\Component.cpp" />
+    <ClCompile Include="src\Root\components\ParticleSystem.cpp" />
+    <ClCompile Include="src\Root\components\ParticleSystemGettersAndSetters.cpp" />
+    <ClCompile Include="src\Root\components\Rigidbody.cpp" />
+    <ClCompile Include="src\Root\components\Script.cpp" />
+    <ClCompile Include="src\Root\engine\ComponentEngine.cpp" />
+    <ClCompile Include="src\Root\engine\InputEngine.cpp" />
+    <ClCompile Include="src\Root\engine\PhysicsEngine.cpp" />
+    <ClCompile Include="src\Root\engine\RendererEngine.cpp" />
+    <ClCompile Include="src\Root\engine\RootEngine.cpp" />
+    <ClCompile Include="src\Root\engine\TransformEngine.cpp" />
+    <ClCompile Include="src\Root\Input.cpp" />
+    <ClCompile Include="src\Root\Logger.cpp" />
+    <ClCompile Include="src\Root\Math.cpp" />
+    <ClCompile Include="src\Root\Physics.cpp" />
+    <ClCompile Include="src\Root\Random.cpp" />
+    <ClCompile Include="src\Root\rendering\Camera.cpp" />
+    <ClCompile Include="src\Root\rendering\Renderer.cpp" />
+    <ClCompile Include="src\Root\rendering\ScreenSpaceEffect.cpp" />
+    <ClCompile Include="src\Root\rendering\SpriteRenderer.cpp" />
+    <ClCompile Include="src\Root\Root.cpp" />
+    <ClCompile Include="src\Root\shaders\AbstractShader.cpp" />
+    <ClCompile Include="src\Root\shaders\ComputeShader.cpp" />
+    <ClCompile Include="src\Root\shaders\Shader.cpp" />
+    <ClCompile Include="src\Root\Time.cpp" />
+    <ClCompile Include="src\Root\Transform.cpp" />
+    <ClCompile Include="src\simplegui\Image.cpp" />
+    <ClCompile Include="src\simplegui\Item.cpp" />
+    <ClCompile Include="src\simplegui\Rectangle.cpp" />
+    <ClCompile Include="src\simplegui\SimpleGUI.cpp" />
+    <ClCompile Include="src\simpleprofiler\Profiler.cpp" />
+    <ClCompile Include="src\simpletext\SimpleText.cpp" />
+    <ClCompile Include="src\stbi_utility\TextureData.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
