@@ -1,19 +1,19 @@
 #include "Rectangle.h"
 
-#include "SimpleGUI.h"
+#include "RootGUI.h"
 
-SimpleGUIComponent::Rectangle::Rectangle(unsigned int windowWidth, unsigned int windowHeight, 
+RootGUIComponent::Rectangle::Rectangle(unsigned int windowWidth, unsigned int windowHeight, 
 	glm::vec2 position, glm::vec2 size, glm::vec2 scale)
-	: SimpleGUIComponent::Item(windowWidth, windowHeight, position, size, scale)
+	: RootGUIComponent::Item(windowWidth, windowHeight, position, size, scale)
 	, color(glm::vec3(1.0f, 0.0f, 1.0f))
 {
 }
 
-SimpleGUIComponent::Rectangle::~Rectangle()
+RootGUIComponent::Rectangle::~Rectangle()
 {
 }
 
-void SimpleGUIComponent::Rectangle::render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height)
+void RootGUIComponent::Rectangle::render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height)
 {
 	Item::render(guiShader, textShader, width, height);
 
@@ -27,7 +27,7 @@ void SimpleGUIComponent::Rectangle::render(unsigned int guiShader, unsigned int 
 	glUniform2f(glGetUniformLocation(guiShader, "size"), screenSize.x, screenSize.y);
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 0); // Don't use the texture
 
-	glBindVertexArray(SimpleGUI::quadVAO);
+	glBindVertexArray(RootGUI::getQuadVAO());
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

@@ -1638,16 +1638,16 @@
     <ClInclude Include="src\Root\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\simplegui\Image.h">
+    <ClInclude Include="src\rootgui\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\simplegui\Item.h">
+    <ClInclude Include="src\rootgui\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\simplegui\Rectangle.h">
+    <ClInclude Include="src\rootgui\Rectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\simplegui\SimpleGUI.h">
+    <ClInclude Include="src\rootgui\RootGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\simpleprofiler\Profiler.h">
@@ -2215,16 +2215,16 @@
     <ClCompile Include="src\Root\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\simplegui\Image.cpp">
+    <ClCompile Include="src\rootgui\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\simplegui\Item.cpp">
+    <ClCompile Include="src\rootgui\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\simplegui\Rectangle.cpp">
+    <ClCompile Include="src\rootgui\Rectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\simplegui\SimpleGUI.cpp">
+    <ClCompile Include="src\rootgui\RootGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\simpleprofiler\Profiler.cpp">

@@ -2,11 +2,10 @@
 
 #include "Item.h"
 
-class SimpleGUI;
 
-namespace SimpleGUIComponent
+namespace RootGUIComponent
 {
-	class Rectangle : public SimpleGUIComponent::Item
+	class Rectangle : public RootGUIComponent::Item
 	{
 	public:
 		Rectangle(unsigned int windowWidth, unsigned int windowHeight,

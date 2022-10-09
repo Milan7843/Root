@@ -1,19 +1,19 @@
 #include "Image.h"
 
-#include "SimpleGUI.h"
+#include "RootGUI.h"
 
-SimpleGUIComponent::Image::Image(const char* imagePath,
+RootGUIComponent::Image::Image(const char* imagePath,
 	unsigned int windowWidth, unsigned int windowHeight,
     glm::vec2 position, glm::vec2 size, glm::vec2 scale)
-    : SimpleGUIComponent::Rectangle(windowWidth, windowHeight, position, size, scale)
+    : RootGUIComponent::Rectangle(windowWidth, windowHeight, position, size, scale)
 {
 	float aspectRatio{ loadImage(imagePath) };
 }
 
-SimpleGUIComponent::Image::Image(const char* imagePath, 
+RootGUIComponent::Image::Image(const char* imagePath, 
 	unsigned int windowWidth, unsigned int windowHeight, 
 	float imageHeight, glm::vec2 position, glm::vec2 scale)
-	: SimpleGUIComponent::Rectangle(windowWidth, windowHeight, position, glm::vec2(imageHeight), scale)
+	: RootGUIComponent::Rectangle(windowWidth, windowHeight, position, glm::vec2(imageHeight), scale)
 {
 	float aspectRatio{ loadImage(imagePath) };
 
@@ -22,11 +22,11 @@ SimpleGUIComponent::Image::Image(const char* imagePath,
 	std::cout << "r: " << aspectRatio << ", " << size.x << ", " << size.y << std::endl;
 }
 
-SimpleGUIComponent::Image::~Image()
+RootGUIComponent::Image::~Image()
 {
 }
 
-void SimpleGUIComponent::Image::render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height)
+void RootGUIComponent::Image::render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height)
 {
 	Item::render(guiShader, textShader, width, height);
 
@@ -44,14 +44,14 @@ void SimpleGUIComponent::Image::render(unsigned int guiShader, unsigned int text
 	glUniform1i(glGetUniformLocation(guiShader, "textureSampler"), 0);
 
 	// Draw call
-	glBindVertexArray(SimpleGUI::quadVAO);
+	glBindVertexArray(RootGUI::getQuadVAO());
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 }
 
-float SimpleGUIComponent::Image::loadImage(const char* imagePath)
+float RootGUIComponent::Image::loadImage(const char* imagePath)
 {
 	glGenTextures(1, &textureID);
 

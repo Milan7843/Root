@@ -4,11 +4,9 @@
 
 #include <stbi_utility/TextureData.h>
 
-class SimpleGUI;
-
-namespace SimpleGUIComponent
+namespace RootGUIComponent
 {
-	class Image : public SimpleGUIComponent::Rectangle
+	class Image : public RootGUIComponent::Rectangle
 	{
 	public:
 		Image(const char* imagePath,

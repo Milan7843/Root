@@ -20,7 +20,7 @@ enum class HorizontalAnchorPoint {
 	Right
 };
 
-namespace SimpleGUIComponent
+namespace RootGUIComponent
 {
 	class Item
 	{

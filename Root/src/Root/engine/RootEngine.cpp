@@ -100,7 +100,7 @@ namespace RootEngine
         unsigned int frame = 0;
 
         SimpleText simpleText("src/fonts/arial.ttf");
-        SimpleGUI simpleGUI(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+        RootGUI::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
         // Calling all component and script start() functions
         ComponentEngine::startScripts();
@@ -146,6 +146,8 @@ namespace RootEngine
             ComponentEngine::renderComponents();
 
             RendererEngine::runScreenSpaceEffects();
+
+            RootGUI::render(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
             RendererEngine::displayFrame();
 

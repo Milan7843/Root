@@ -1,6 +1,6 @@
 #include "Item.h"
 
-SimpleGUIComponent::Item::Item(unsigned int windowWidth, unsigned int windowHeight,
+RootGUIComponent::Item::Item(unsigned int windowWidth, unsigned int windowHeight,
 	glm::vec2 position, glm::vec2 size, glm::vec2 scale)
 	: position(position)
 	, size(glm::vec2(size.x / windowWidth, size.y / windowHeight))
@@ -10,22 +10,22 @@ SimpleGUIComponent::Item::Item(unsigned int windowWidth, unsigned int windowHeig
 {
 }
 
-SimpleGUIComponent::Item::~Item()
+RootGUIComponent::Item::~Item()
 {
 	std::cout << "Item destroyed." << std::endl;
 }
 
-void SimpleGUIComponent::Item::setVerticalAnchorPoint(VerticalAnchorPoint newVerticalAnchorPoint)
+void RootGUIComponent::Item::setVerticalAnchorPoint(VerticalAnchorPoint newVerticalAnchorPoint)
 {
 	this->verticalAnchorPoint = newVerticalAnchorPoint;
 }
 
-void SimpleGUIComponent::Item::setHorizontalAnchorPoint(HorizontalAnchorPoint newHorizontalAnchorPoint)
+void RootGUIComponent::Item::setHorizontalAnchorPoint(HorizontalAnchorPoint newHorizontalAnchorPoint)
 {
 	this->horizontalAnchorPoint = newHorizontalAnchorPoint;
 }
 
-glm::vec2 SimpleGUIComponent::Item::getPosition(unsigned int windowWidth, unsigned int windowHeight)
+glm::vec2 RootGUIComponent::Item::getPosition(unsigned int windowWidth, unsigned int windowHeight)
 {
 	float verticalAnchor;
 	float horizontalAnchor;
@@ -58,7 +58,7 @@ glm::vec2 SimpleGUIComponent::Item::getPosition(unsigned int windowWidth, unsign
 	return glm::vec2(position.x - realSize.x * horizontalAnchor, position.y - realSize.y * verticalAnchor);
 }
 
-glm::vec2 SimpleGUIComponent::Item::getSize(unsigned int windowWidth, unsigned int windowHeight)
+glm::vec2 RootGUIComponent::Item::getSize(unsigned int windowWidth, unsigned int windowHeight)
 {
 	return glm::vec2(size.x
 		* ((float)previousWindowWidth / (float)windowWidth)
