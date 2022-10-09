@@ -150,8 +150,8 @@ namespace RendererEngine
         setTextureSize(width, height);
 
         screenTextureShader = new Shader(
-            "include/Root/shaders/default_shader_source/screenSpaceVertex.shader",
-            "include/Root/shaders/default_shader_source/screenSpaceFragment.shader");
+            "include/Root/default_shader_source/screenSpaceVertex.shader",
+            "include/Root/default_shader_source/screenSpaceFragment.shader");
 
         createSquareVAO();
         createScreenRectVAO();

@@ -79,13 +79,13 @@ namespace RootEngine
         initialiseImGui(window);
 
         spriteRenderShader = new Shader(
-            "include/Root/shaders/default_shader_source/spriteVertex.shader",
-            "include/Root/shaders/default_shader_source/spriteFragment.shader");
+            "include/Root/default_shader_source/spriteVertex.shader",
+            "include/Root/default_shader_source/spriteFragment.shader");
 
         particleRenderShader = new Shader(
-            "include/Root/shaders/default_shader_source/particleVertex.shader",
-            "include/Root/shaders/default_shader_source/particleFragment.shader",
-            "include/Root/shaders/default_shader_source/particleGeometry.shader");
+            "include/Root/default_shader_source/particleVertex.shader",
+            "include/Root/default_shader_source/particleFragment.shader",
+            "include/Root/default_shader_source/particleGeometry.shader");
 
         // Shader textRenderShader("src/shaders/textVertex.shader", "src/shaders/textFragment.shader");
 

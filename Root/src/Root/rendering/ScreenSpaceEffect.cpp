@@ -26,6 +26,6 @@ bool ScreenSpaceEffect::isEnabled()
 }
 
 ScreenSpaceEffect::ScreenSpaceEffect(const std::string& shaderPath)
-	: Shader("include/Root/shaders/default_shader_source/screenSpaceVertex.shader", shaderPath.c_str())
+	: Shader("include/Root/default_shader_source/screenSpaceVertex.shader", shaderPath.c_str())
 {
 }
