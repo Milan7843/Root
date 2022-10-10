@@ -8,6 +8,7 @@ out vec3 FragIn_BaseColor;
 
 uniform mat4 projection;
 uniform mat4 model;
+uniform mat4 view;
 uniform float renderDepth;
 
 in vec3 baseColor[];
@@ -36,7 +37,7 @@ void main()
 		FragIn_TexCoords = offsets[i] + vec2(0.5, 0.5);
 		FragIn_BaseColor = baseColor[0];
 		gl_Position = gl_in[0].gl_Position
-			+ projection * model * vec4(rotationMatrix * vec2(offsets[i].x * particleSize[0].x, offsets[i].y * particleSize[0].y), 0.0, 1.0);
+			+ projection * view * model * vec4(rotationMatrix * vec2(offsets[i].x * particleSize[0].x, offsets[i].y * particleSize[0].y), 0.0, 1.0);
 		// Depth
 		gl_Position.z = renderDepth;
 		EmitVertex();

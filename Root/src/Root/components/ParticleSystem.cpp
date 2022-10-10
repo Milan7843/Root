@@ -154,6 +154,10 @@ void ParticleSystem::render(float renderDepth)
 
     RootEngine::getParticleRenderShader()
         ->setMat4("projection", Root::getActiveCamera()->getProjectionMatrix());
+    RootEngine::getParticleRenderShader()
+        ->setMat4("view",
+        Root::getActiveCamera()->getTransform()->getInverseTransformMatrix());
+
     RootEngine::getParticleRenderShader()->setInt("sprite", 0);
     RootEngine::getParticleRenderShader()
         ->setFloat("renderDepth", renderDepth / 10000.0f);

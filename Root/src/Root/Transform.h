@@ -216,7 +216,7 @@ public:
 	 * \returns the first components on this transform with the given type.
 	 */
 	template <class T>
-	std::shared_ptr<Component> getComponent()
+	std::shared_ptr<T> getComponent()
 	{
 		for (std::shared_ptr<Component>& component : components)
 		{
