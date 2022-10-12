@@ -17,7 +17,7 @@ namespace RootGUIInternal
 	void terminate();
 
 	// Render the GUI with the given width and height
-	void render(unsigned int width, unsigned int height);
+	void render();
 
 	/**
 	 * Get the index of a Vertex Array Object which defines a quad.
@@ -26,7 +26,33 @@ namespace RootGUIInternal
 	 */
 	unsigned int getQuadVAO();
 
-	// Add an item to the render queue
-	void addItemToRenderQueue(RootGUIComponent::Item* item);
+	/**
+	 * Add a new item to the render queue.
+	 *
+	 * \param item: the item to add to the render queue.
+	 */
+	void addItemToRenderQueue(std::shared_ptr<RootGUIComponent::Item> item);
+
+	/**
+	 * Set the size of the window.
+	 * 
+	 * \param windowWidth: the width of the window in pixels.
+	 * \param windowHeight: the height of the window in pixels.
+	 */
+	void setWindowSize(unsigned int windowWidth, unsigned int windowHeight);
+
+	/**
+	 * Get the current width of the window in pixels.
+	 *
+	 * \returns the current width of the window.
+	 */
+	unsigned int getWindowWidth();
+
+	/**
+	 * Get the current height of the window in pixels.
+	 *
+	 * \returns the current height of the window.
+	 */
+	unsigned int getWindowHeight();
 };
 

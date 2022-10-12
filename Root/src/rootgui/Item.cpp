@@ -1,12 +1,14 @@
 #include "Item.h"
 
-RootGUIComponent::Item::Item(unsigned int windowWidth, unsigned int windowHeight,
+#include "internal/RootGUIInternal.h"
+
+RootGUIComponent::Item::Item(
 	glm::vec2 position, glm::vec2 size, glm::vec2 scale)
 	: position(position)
-	, size(glm::vec2(size.x / windowWidth, size.y / windowHeight))
+	, size(glm::vec2(size.x / RootGUIInternal::getWindowWidth(), size.y / RootGUIInternal::getWindowHeight()))
 	, scale(scale)
-	, previousWindowHeight(windowHeight)
-	, previousWindowWidth(windowWidth)
+	, previousWindowHeight(RootGUIInternal::getWindowHeight())
+	, previousWindowWidth(RootGUIInternal::getWindowWidth())
 {
 }
 
@@ -25,7 +27,7 @@ void RootGUIComponent::Item::setHorizontalAnchorPoint(HorizontalAnchorPoint newH
 	this->horizontalAnchorPoint = newHorizontalAnchorPoint;
 }
 
-glm::vec2 RootGUIComponent::Item::getPosition(unsigned int windowWidth, unsigned int windowHeight)
+glm::vec2 RootGUIComponent::Item::getPosition()
 {
 	float verticalAnchor;
 	float horizontalAnchor;
@@ -54,15 +56,15 @@ glm::vec2 RootGUIComponent::Item::getPosition(unsigned int windowWidth, unsigned
 		break;
 	}
 
-	glm::vec2 realSize{ getSize(windowWidth, windowHeight) };
+	glm::vec2 realSize{ getSize() };
 	return glm::vec2(position.x - realSize.x * horizontalAnchor, position.y - realSize.y * verticalAnchor);
 }
 
-glm::vec2 RootGUIComponent::Item::getSize(unsigned int windowWidth, unsigned int windowHeight)
+glm::vec2 RootGUIComponent::Item::getSize()
 {
 	return glm::vec2(size.x
-		* ((float)previousWindowWidth / (float)windowWidth)
-		/ ((float)previousWindowHeight / (float)windowHeight),
+		* ((float)previousWindowWidth / (float)RootGUIInternal::getWindowWidth())
+		/ ((float)previousWindowHeight / (float)RootGUIInternal::getWindowHeight()),
 		size.y);
 		//size.y * (float)previousWindowHeight / (float)windowHeight);
 }

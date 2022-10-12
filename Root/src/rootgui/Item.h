@@ -25,23 +25,23 @@ namespace RootGUIComponent
 	class Item
 	{
 	public:
-		Item(unsigned int windowWidth, unsigned int windowHeight, 
+		Item(
 			glm::vec2 position = glm::vec2(0.1f),
 			glm::vec2 size = glm::vec2(0.1f),
 			glm::vec2 scale = glm::vec2(1.0f));
 		~Item();
 
 		// Render this GUI item
-		virtual void render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height) {
+		virtual void render(unsigned int guiShader, unsigned int textShader) {
 		}
 
 		// Set the vertical anchor point of this item
 		void setVerticalAnchorPoint(VerticalAnchorPoint newVerticalAnchorPoint);
 		void setHorizontalAnchorPoint(HorizontalAnchorPoint newHorizontalAnchorPoint);
 
-		glm::vec2 getPosition(unsigned int windowWidth, unsigned int windowHeight);
+		glm::vec2 getPosition();
 
-		glm::vec2 getSize(unsigned int windowWidth, unsigned int windowHeight);
+		glm::vec2 getSize();
 
 	protected:
 
@@ -50,6 +50,8 @@ namespace RootGUIComponent
 
 		// Size of this item
 		glm::vec2 size;
+
+		bool enabled{ true };
 
 	private:
 

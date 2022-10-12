@@ -14,7 +14,7 @@
 #include "simpleprofiler/Profiler.h"
 
 #include <simpletext/SimpleText.h>
-#include <rootgui/RootGUI.h>
+#include <rootgui/internal/RootGUIInternal.h>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

@@ -24,6 +24,20 @@ namespace RootGUI
 	 * 
 	 * \param item: the item to add to the render queue.
 	 */
-	void addItemToRenderQueue(RootGUIComponent::Item* item);
+	void addItemToRenderQueue(std::shared_ptr<RootGUIComponent::Item> item);
+
+	/**
+	 * Get the current width of the window in pixels.
+	 * 
+	 * \returns the current width of the window.
+	 */
+	unsigned int getWindowWidth();
+
+	/**
+	 * Get the current height of the window in pixels.
+	 *
+	 * \returns the current height of the window.
+	 */
+	unsigned int getWindowHeight();
 };
 

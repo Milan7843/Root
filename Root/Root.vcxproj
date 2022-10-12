@@ -147,6 +147,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\rootgui\internal\RootGUIInternal.h" />
     <ClInclude Include="src\assimp\aabb.h" />
     <ClInclude Include="src\assimp\ai_assert.h" />
     <ClInclude Include="src\assimp\anim.h" />
@@ -845,6 +846,7 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\rootgui\internal\RootGUIInternal.cpp" />
     <ClCompile Include="src\glm\detail\glm.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
     <ClCompile Include="src\imgui\imgui_demo.cpp" />

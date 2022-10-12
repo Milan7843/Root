@@ -4,10 +4,13 @@ namespace RootGUIInternal
 {
     namespace
     {
-        std::vector<RootGUIComponent::Item*> renderQueue;
+        std::vector<std::shared_ptr<RootGUIComponent::Item>> renderQueue;
 
         unsigned int guiShader{ 0 };
         unsigned int textShader{ 0 };
+
+        unsigned int windowWidthUsing{ 0 };
+        unsigned int windowHeightUsing{ 0 };
 
         unsigned int quadVAO{ 0 };
         unsigned int quadVBO{ 0 };
@@ -156,6 +159,9 @@ namespace RootGUIInternal
 
     void initialise(unsigned int windowWidth, unsigned int windowHeight)
     {
+        windowWidthUsing = windowWidth;
+        windowHeightUsing = windowHeight;
+
         createShaderPrograms();
 
         /* INITIALISING THE QUAD VAO */
@@ -201,21 +207,27 @@ namespace RootGUIInternal
     void terminate()
     {
         // Deleting every pointer in the render queue
-        for (RootGUIComponent::Item* p : renderQueue)
+        /*
+        for (std::shared_ptr<RootGUIComponent::Item>& p : renderQueue)
         {
             delete p;
         }
+        */
 
-        std::cout << "RootGUI instance destroyed." << std::endl;
+        renderQueue.clear();
+
+        std::cout << "RootGUI terminated." << std::endl;
     }
 
-    void render(unsigned int width, unsigned int height)
+    void render()
     {
         // Draw GUI on top of everything
         glDisable(GL_DEPTH_TEST);
-        for (RootGUIComponent::Item* item : renderQueue)
+        std::cout << "rendering gui components" << std::endl;
+        for (std::shared_ptr<RootGUIComponent::Item>& item : renderQueue)
         {
-            item->render(guiShader, textShader, width, height);
+            item->render(guiShader, textShader);
+            std::cout << "rendering gui component" << std::endl;
         }
     }
 
@@ -224,9 +236,25 @@ namespace RootGUIInternal
         return quadVAO;
     }
 
-    void addItemToRenderQueue(RootGUIComponent::Item* item)
+    void addItemToRenderQueue(std::shared_ptr<RootGUIComponent::Item> item)
     {
         renderQueue.push_back(item);
+    }
+
+    void setWindowSize(unsigned int windowWidth, unsigned int windowHeight)
+    {
+        windowWidthUsing = windowWidth;
+        windowHeightUsing = windowHeight;
+    }
+
+    unsigned int getWindowWidth()
+    {
+        return windowWidthUsing;
+    }
+
+    unsigned int getWindowHeight()
+    {
+        return windowHeightUsing;
     }
 };
 

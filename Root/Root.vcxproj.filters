@@ -1665,6 +1665,9 @@
     <ClInclude Include="src\ft2build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\rootgui\internal\RootGUIInternal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2234,6 +2237,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\stbi_utility\TextureData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rootgui\internal\RootGUIInternal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

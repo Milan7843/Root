@@ -9,8 +9,16 @@ namespace RootGUI
         return RootGUIInternal::getQuadVAO();
     }
 
-    void addItemToRenderQueue(RootGUIComponent::Item * item)
+    void addItemToRenderQueue(std::shared_ptr<RootGUIComponent::Item> item)
     {
         RootGUIInternal::addItemToRenderQueue(item);
+    }
+    unsigned int getWindowWidth()
+    {
+        return 0;
+    }
+    unsigned int getWindowHeight()
+    {
+        return 0;
     }
 };

@@ -1,19 +1,18 @@
 #include "Image.h"
 
 #include "RootGUI.h"
+#include "internal/RootGUIInternal.h"
 
 RootGUIComponent::Image::Image(const char* imagePath,
-	unsigned int windowWidth, unsigned int windowHeight,
     glm::vec2 position, glm::vec2 size, glm::vec2 scale)
-    : RootGUIComponent::Rectangle(windowWidth, windowHeight, position, size, scale)
+    : RootGUIComponent::Rectangle(position, size, scale)
 {
 	float aspectRatio{ loadImage(imagePath) };
 }
 
-RootGUIComponent::Image::Image(const char* imagePath, 
-	unsigned int windowWidth, unsigned int windowHeight, 
+RootGUIComponent::Image::Image(const char* imagePath,
 	float imageHeight, glm::vec2 position, glm::vec2 scale)
-	: RootGUIComponent::Rectangle(windowWidth, windowHeight, position, glm::vec2(imageHeight), scale)
+	: RootGUIComponent::Rectangle(position, glm::vec2(imageHeight), scale)
 {
 	float aspectRatio{ loadImage(imagePath) };
 
@@ -22,13 +21,51 @@ RootGUIComponent::Image::Image(const char* imagePath,
 	std::cout << "r: " << aspectRatio << ", " << size.x << ", " << size.y << std::endl;
 }
 
+ImagePointer RootGUIComponent::Image::create(const char* imagePath,
+	glm::vec2 position,
+	glm::vec2 size,
+	glm::vec2 scale)
+{
+	// Creating a new Image on the heap
+	RootGUIComponent::Image* image = 
+		new RootGUIComponent::Image(imagePath,
+			position,
+			size,
+			scale);
+
+	// Making a shared pointer from it
+	std::shared_ptr<RootGUIComponent::Image> pointer{ image };
+	// Adding it to the GUI
+	RootGUIInternal::addItemToRenderQueue(pointer);
+	return image;
+}
+
+ImagePointer RootGUIComponent::Image::create(const char* imagePath,
+	float imageHeight,
+	glm::vec2 position,
+	glm::vec2 scale)
+{
+	// Creating a new Image on the heap
+	RootGUIComponent::Image* image = 
+		new RootGUIComponent::Image(imagePath,
+			imageHeight,
+			position,
+			scale);
+
+	// Making a shared pointer from it
+	std::shared_ptr<RootGUIComponent::Image> pointer{ image };
+	// Adding it to the GUI
+	RootGUIInternal::addItemToRenderQueue(pointer);
+	return image;
+}
+
 RootGUIComponent::Image::~Image()
 {
 }
 
-void RootGUIComponent::Image::render(unsigned int guiShader, unsigned int textShader, unsigned int width, unsigned int height)
+void RootGUIComponent::Image::render(unsigned int guiShader, unsigned int textShader)
 {
-	Item::render(guiShader, textShader, width, height);
+	Item::render(guiShader, textShader);
 
 	glUseProgram(guiShader);
 
@@ -36,8 +73,8 @@ void RootGUIComponent::Image::render(unsigned int guiShader, unsigned int textSh
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Setting the uniforms
-	glm::vec2 screenPosition{ getPosition(width, height) };
-	glm::vec2 screenSize{ getSize(width, height) };
+	glm::vec2 screenPosition{ getPosition() };
+	glm::vec2 screenSize{ getSize() };
 	glUniform2f(glGetUniformLocation(guiShader, "position"), screenPosition.x, screenPosition.y);
 	glUniform2f(glGetUniformLocation(guiShader, "size"), screenSize.x, screenSize.y);
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 1); // Use the texture

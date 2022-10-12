@@ -100,7 +100,7 @@ namespace RootEngine
         unsigned int frame = 0;
 
         SimpleText simpleText("src/fonts/arial.ttf");
-        RootGUI::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+        RootGUIInternal::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
         // Calling all component and script start() functions
         ComponentEngine::startScripts();
@@ -117,6 +117,7 @@ namespace RootEngine
             // Getting viewport size
             glfwGetWindowSize(window, (int*)&WINDOW_SIZE_X, (int*)&WINDOW_SIZE_Y);
             RendererEngine::setTextureSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+            RootGUIInternal::setWindowSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
             // Updating the input engine
             InputEngine::update();
@@ -147,9 +148,9 @@ namespace RootEngine
 
             RendererEngine::runScreenSpaceEffects();
 
-            RootGUI::render(WINDOW_SIZE_X, WINDOW_SIZE_Y);
-
             RendererEngine::displayFrame();
+
+            RootGUIInternal::render();
 
             InputEngine::newFrame();
 
