@@ -9,9 +9,10 @@ namespace Renderer
         RendererEngine::initialise(width, height);
 	}
 
-    void addScreenSpaceEffect(ScreenSpaceEffectPointer screenSpaceEffect)
+    ScreenSpaceEffect* addScreenSpaceEffect(ScreenSpaceEffectPointer screenSpaceEffect)
     {
         RendererEngine::addScreenSpaceEffect(screenSpaceEffect);
+        return screenSpaceEffect.get();
     }
 
     unsigned int getSquareVAO()
@@ -22,5 +23,66 @@ namespace Renderer
     unsigned int getScreenRectVAO()
     {
         return RendererEngine::getScreenRectVAO();
+    }
+
+    namespace Bloom
+    {
+        namespace
+        {
+            ScreenSpaceEffect* bloom = nullptr;
+
+            void initialiseBloom()
+            {
+                // Initialising the bloom screen space effect
+                bloom = Renderer::addScreenSpaceEffect(ScreenSpaceEffect::create("include/Root/default_shader_source/bloomFragment.shader"));
+
+                bloom->use();
+
+                // Setting default values
+                bloom->setEnabled(false);
+                bloom->setFloat("threshold", 0.7f);
+                bloom->setFloat("intensity", 1.0f);
+            }
+        }
+
+
+        void setEnabled(bool enabled)
+        {
+            // Initialise the bloom if it was not initialised yet
+            if (bloom == nullptr)
+                initialiseBloom();
+
+            // Then set the parameter
+            bloom->use();
+            bloom->setEnabled(enabled);
+        }
+
+        void setThreshold(float threshold)
+        {
+            // Initialise the bloom if it was not initialised yet
+            if (bloom == nullptr)
+                initialiseBloom();
+
+            // Then set the parameter
+            bloom->use();
+            bloom->setFloat("threshold", threshold);
+        }
+
+        void setIntensity(float intensity)
+        {
+            // Initialise the bloom if it was not initialised yet
+            if (bloom == nullptr)
+                initialiseBloom();
+
+            // Then set the parameter
+            bloom->use();
+            bloom->setFloat("intensity", intensity);
+        }
+
+        void setRadius(int radius)
+        {
+            Logger::logWarning("Using non-implemented function Renderer::Bloom::setRadius.");
+        }
+
     }
 };

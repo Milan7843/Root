@@ -1,5 +1,7 @@
 #include "RendererEngine.h"
 
+#include "Root/engine/RootEngine.h"
+
 namespace RendererEngine
 {
     namespace
@@ -127,6 +129,7 @@ namespace RendererEngine
 
             screenSpaceEffect->use();
             screenSpaceEffect->setInt("baseTexture", 0);
+            screenSpaceEffect->setVector2("windowSize", RootEngine::getScreenWidth(), RootEngine::getScreenHeight());
 
             glBindVertexArray(getScreenRectVAO());
 

@@ -223,11 +223,10 @@ namespace RootGUIInternal
     {
         // Draw GUI on top of everything
         glDisable(GL_DEPTH_TEST);
-        std::cout << "rendering gui components" << std::endl;
+
         for (std::shared_ptr<RootGUIComponent::Item>& item : renderQueue)
         {
             item->render(guiShader, textShader);
-            std::cout << "rendering gui component" << std::endl;
         }
     }
 
