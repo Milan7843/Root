@@ -27,8 +27,14 @@ public:
 	 * Will automatically add this component to the given transform.
 	 * 
 	 * \param transform: the transform to add this component to.
+	 * \param pixelPerfect: whether the sprite should be pixel perfect (default = false).
+	 * \param columnCount: the number of columns in this sprite (sheet).
+	 * \param rowCount: the number of rows in this sprite (sheet).
 	 */
-	static SpriteRendererPointer create(TransformPointer transform, const char* spritePath);
+	static SpriteRendererPointer create(TransformPointer transform,
+		const char* spritePath,
+		bool pixelPerfect = false,
+		unsigned int columnCount = 1, unsigned int rowCount = 1);
 
 	/**
 	 * Get a string representing this Component.
@@ -43,15 +49,35 @@ public:
 	 * Set the sprite used by this sprite renderer.
 	 * 
 	 * \param spritePath: the path to the sprite to set.
+	 * \param pixelPerfect: whether the sprite should be pixelated or not.
 	 */
-	void setSprite(const char* spritePath);
+	void setSprite(const char* spritePath, bool pixelPerfect);
+
+	/**
+	 * Set the column that is being used from the sprite sheet.
+	 *
+	 * \param column: the index of the column to be used.
+	 */
+	void setSpriteSheetColumnIndex(unsigned int column);
+
+	/**
+	 * Set the row that is being used from the sprite sheet.
+	 * 
+	 * \param row: the index of the row to be used.
+	 */
+	void setSpriteSheetRowIndex(unsigned int row);
 
 private:
 
-	SpriteRenderer();
+	SpriteRenderer(unsigned int columnCount, unsigned int rowCount);
 
 	float height;
 
 	unsigned int textureID{ 0 };
 
+	unsigned int columnCount;
+	unsigned int rowCount;
+
+	unsigned int columnIndex{ 0 };
+	unsigned int rowIndex{ 0 };
 };
