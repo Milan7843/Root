@@ -147,6 +147,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\animation\Animation.h" />
     <ClInclude Include="src\rootgui\internal\RootGUIInternal.h" />
     <ClInclude Include="src\assimp\aabb.h" />
     <ClInclude Include="src\assimp\ai_assert.h" />
@@ -698,6 +699,8 @@
     <ClInclude Include="src\simpletext\SimpleText.h" />
     <ClInclude Include="src\stbi_utility\TextureData.h" />
     <ClInclude Include="src\stb_image\stbi_image.h" />
+    <ClInclude Include="src\Root\animation\ValueAnimation.h" />
+    <ClInclude Include="src\Root\animation\ValueAnimationInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl" />
@@ -846,6 +849,7 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\animation\Animation.cpp" />
     <ClCompile Include="src\rootgui\internal\RootGUIInternal.cpp" />
     <ClCompile Include="src\glm\detail\glm.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
@@ -892,6 +896,8 @@
     <ClCompile Include="src\simpleprofiler\Profiler.cpp" />
     <ClCompile Include="src\simpletext\SimpleText.cpp" />
     <ClCompile Include="src\stbi_utility\TextureData.cpp" />
+    <ClCompile Include="src\Root\animation\ValueAnimation.cpp" />
+    <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

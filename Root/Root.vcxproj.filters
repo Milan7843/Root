@@ -1668,6 +1668,15 @@
     <ClInclude Include="src\rootgui\internal\RootGUIInternal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\animation\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\ValueAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\ValueAnimationInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2240,6 +2249,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rootgui\internal\RootGUIInternal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\ValueAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

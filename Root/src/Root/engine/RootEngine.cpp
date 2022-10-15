@@ -216,6 +216,7 @@ namespace RootEngine
             if (transforms[i].get() == transformToRemove)
             {
                 transforms.erase(transforms.begin() + i);
+                return;
             }
         }
     }
