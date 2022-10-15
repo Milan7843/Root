@@ -25,6 +25,11 @@ namespace Renderer
         return RendererEngine::getScreenRectVAO();
     }
 
+    void setMSAAQualityLevel(unsigned int qualityLevel)
+    {
+        RendererEngine::setMSAAQualityLevel(qualityLevel);
+    }
+
     namespace Bloom
     {
         namespace

@@ -32,6 +32,13 @@ namespace Renderer
 	 */
 	unsigned int getScreenRectVAO();
 
+	/**
+	 * Set the quality level of the MSAA.
+	 * 
+	 * \param qualityLevel: the new MSAA quality level.
+	 */
+	void setMSAAQualityLevel(unsigned int qualityLevel);
+
 	// Functions related to bloom
 	namespace Bloom
 	{

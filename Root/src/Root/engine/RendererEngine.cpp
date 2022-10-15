@@ -254,6 +254,16 @@ namespace RendererEngine
         glDeleteFramebuffers(1, &mainFrameBuffer);
     }
 
+    void setMSAAQualityLevel(unsigned int qualityLevel)
+    {
+        glEnable(GL_MULTISAMPLE);
+
+        if (qualityLevel == 1)
+            glDisable(GL_MULTISAMPLE);
+
+        glfwWindowHint(GLFW_SAMPLES, glm::pow(2, qualityLevel));
+    }
+
     unsigned int getSquareVAO()
     {
         return squareVAO;

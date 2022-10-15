@@ -46,6 +46,13 @@ namespace RendererEngine
 	void setTextureSize(unsigned int width, unsigned int height);
 
 	/**
+	 * Set the quality level of the MSAA.
+	 *
+	 * \param qualityLevel: the new MSAA quality level.
+	 */
+	void setMSAAQualityLevel(unsigned int qualityLevel);
+
+	/**
 	 * Get the index of a vertex array object which holds information to draw a square.
 	 */
 	unsigned int getSquareVAO();
