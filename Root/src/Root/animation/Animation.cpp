@@ -45,6 +45,7 @@ void Animation::update()
 void Animation::play()
 {
 	playing = true;
+	animationTime = 0.0f;
 }
 
 void Animation::stop()

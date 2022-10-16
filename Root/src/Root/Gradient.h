@@ -51,6 +51,7 @@ public:
 		// Creating a single gradient point at 0, whose value will always be used.
 		this->points = std::vector<GradientPoint<T>>{ { 0.0f, value } };
 	}
+
 	/**
 	 * Create a new gradient.
 	 * 
@@ -60,6 +61,48 @@ public:
 		: points(points)
 	{
 		std::sort(points.begin(), points.end(), &Gradient::gradientSorter);
+	}
+
+	/**
+	 * Create an new gradient with only a start point and an end point.
+	 *
+	 * \param startValue: the value to start on.
+	 * \param endValue: the value to end on.
+	 * \param duration: the total length of the gradient.
+	 */
+	Gradient(T startValue, T endValue, float duration)
+	{
+		// Creating one point at 0 and another at 'duration'
+		this->points = std::vector<GradientPoint<T>>{ { 0.0f, startValue }, { duration, endValue } };
+	}
+
+	/**
+	 * Create a gradient which can be used for sprite indexing.
+	 * 
+	 * \param startIndex: the index to start on (inclusive).
+	 * \param endIndex: the index to end on (inclusive).
+	 * \param duration: the total time this gradient has.
+	 * \return a gradient which can be used for sprite indexing.
+	 */
+	static Gradient<unsigned int> spriteIndexGradient(unsigned int startIndex, unsigned int endIndex, float duration)
+	{
+		unsigned int frameCount = endIndex - startIndex + 1;
+
+		std::vector<GradientPoint<unsigned int>> points = std::vector<GradientPoint<unsigned int>>{
+			{ 0.0f, startIndex },
+			{ duration * (1.0f - 1.0f / (float)frameCount), endIndex},
+			{ duration, endIndex }
+		};
+
+		std::cout
+			<< points[0].point << " -> " << points[0].value << "\n"
+			<< points[1].point << " -> " << points[1].value << "\n"
+			<< points[2].point << " -> " << points[2].value
+			<< std::endl;
+
+		Gradient<unsigned int> gradient(points);
+
+		return gradient;
 	}
 
 	~Gradient()
