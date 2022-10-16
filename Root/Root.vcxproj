@@ -147,6 +147,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\animation\SetterValueAnimation.h" />
     <ClInclude Include="src\Root\animation\Animation.h" />
     <ClInclude Include="src\rootgui\internal\RootGUIInternal.h" />
     <ClInclude Include="src\assimp\aabb.h" />
@@ -860,6 +861,7 @@
     <ClCompile Include="src\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="src\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Root\animation\SetterValueAnimation.cpp" />
     <ClCompile Include="src\Root\CollisionListener.cpp" />
     <ClCompile Include="src\Root\components\Animator.cpp" />
     <ClCompile Include="src\Root\components\Collider.cpp" />

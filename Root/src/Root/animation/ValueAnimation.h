@@ -66,7 +66,7 @@ private:
 	
 	Gradient<T> gradient;
 
-	T* value;
+	T* value = nullptr;
 };
 
 template<class T>
@@ -75,6 +75,7 @@ inline ValueAnimation<T>::ValueAnimation(T* valuePointer, Gradient<T> gradient)
 	, gradient(gradient)
 {
 }
+
 
 template<class T>
 inline ValueAnimation<T>* ValueAnimation<T>::create(Animation* animation, T* valuePointer, Gradient<T> gradient)
@@ -95,7 +96,11 @@ template<class T>
 inline bool ValueAnimation<T>::update(float animationTime)
 {
 	float usingAnimationTime{ animationTime * animationSpeed };
-	(*value) = gradient.sample(usingAnimationTime);
+
+	float newValue = gradient.sample(usingAnimationTime);
+
+	if (value != nullptr)
+		(*value) = newValue;
 
 	// Return whether the animation is finished
 	return (usingAnimationTime >= duration);
