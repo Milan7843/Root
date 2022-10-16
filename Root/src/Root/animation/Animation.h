@@ -26,8 +26,10 @@ public:
 
 	/**
 	 * Update the value animations of this animation.
+	 * 
+	 * \returns whether the animation was done.
 	 */
-	void update();
+	bool update();
 
 	/**
 	 * Play this animation.

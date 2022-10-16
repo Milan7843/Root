@@ -9,11 +9,11 @@ Animation::~Animation()
 	Logger::destructorMessage("Animation");
 }
 
-void Animation::update()
+bool Animation::update()
 {
 	// Don't update anything if it's not playing the animation
 	if (!playing)
-		return;
+		return true;
 
 	animationTime += Time::getDeltaTime() * animationSpeed;
 
@@ -40,6 +40,8 @@ void Animation::update()
 				break;
 		}
 	}
+
+	return animationFinished;
 }
 
 void Animation::play()
