@@ -99,8 +99,6 @@ void SpriteRenderer::setSprite(const char* spritePath, bool pixelPerfect)
 void SpriteRenderer::setSpriteSheetColumnIndex(unsigned int column)
 {
 	columnIndex = column;
-
-	Logger::log(std::to_string(column) + " - " + std::to_string(Time::getTime()));
 }
 
 void SpriteRenderer::setSpriteSheetRowIndex(unsigned int row)

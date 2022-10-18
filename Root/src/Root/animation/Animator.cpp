@@ -27,22 +27,23 @@ void Animator::update()
 
 	bool animationDone{ currentAnimation == nullptr ? true : currentAnimation->update() };
 
-	if (animationDone)
+	// Going to the next animation:
+	for (AnimationLink& link : links)
 	{
-		// Going to the next animation:
-		for (AnimationLink& link : links)
-		{
-			// Making sure the link starts from the current animation
-			if (link.tag1 != currentAnimationTag)
-				continue;
+		// Making sure the link starts from the current animation
+		if (link.tag1 != currentAnimationTag)
+			continue;
 
-			// The condition was true
-			if (evaluateCondition(link.condition))
-			{
-				// Moving to the next animation
-				currentAnimation = &animations[link.tag2];
-				currentAnimationTag = link.tag2;
-			}
+		// Check whether we must wait for the end of the previous animation
+		if (link.waitForEndOfAnimation && !animationDone)
+			continue;
+
+		// The condition was true
+		if (evaluateCondition(link.condition))
+		{
+			// Moving to the next animation
+			currentAnimation = &animations[link.tag2];
+			currentAnimationTag = link.tag2;
 		}
 	}
 }
@@ -65,9 +66,9 @@ void Animator::addAnimation(Animation& animation, const std::string& tag, bool s
 	}
 }
 
-void Animator::createLink(const std::string& tag1, const std::string& tag2)
+void Animator::createLink(const std::string& tag1, const std::string& tag2, bool waitForEndOfAnimation)
 {
-	links.emplace_back(AnimationLink{ tag1, tag2 });
+	links.emplace_back(AnimationLink{ tag1, tag2, waitForEndOfAnimation });
 }
 
 void Animator::addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative)

@@ -18,6 +18,7 @@ struct AnimationLink
 {
 	std::string tag1;
 	std::string tag2;
+	bool waitForEndOfAnimation;
 	BoolAnimationCondition condition;
 };
 
@@ -49,8 +50,10 @@ public:
 	 * 
 	 * \param tag1: the tag of the first animation.
 	 * \param tag2: the tag of the second animation.
+	 * \param waitForEndOfAnimation: 
+	 * whether to wait for the end of the current animation to transition.
 	 */
-	void createLink(const std::string& tag1, const std::string& tag2);
+	void createLink(const std::string& tag1, const std::string& tag2, bool waitForEndOfAnimation);
 
 	void addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative);
 
