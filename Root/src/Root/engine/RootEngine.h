@@ -5,8 +5,9 @@
 
 #include "Root/engine/InputEngine.h"
 #include "Root/engine/PhysicsEngine.h"
-#include "Root/Engine/TransformEngine.h"
-#include "Root/Engine/ComponentEngine.h"
+#include "Root/engine/TransformEngine.h"
+#include "Root/engine/ComponentEngine.h"
+#include "Root/engine/AnimationHandlerEngine.h"
 #include "Root/shaders/Shader.h"
 
 #include "Root/Time.h"

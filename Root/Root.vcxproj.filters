@@ -1548,7 +1548,7 @@
     <ClInclude Include="src\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Root\components\Animator.h">
+    <ClInclude Include="src\Root\animation\Animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\components\Collider.h">
@@ -1678,6 +1678,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\animation\SetterValueAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\AnimationHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2143,7 +2149,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Root\components\Animator.cpp">
+    <ClCompile Include="src\Root\animation\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\components\Collider.cpp">
@@ -2264,6 +2270,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\animation\SetterValueAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\AnimationHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

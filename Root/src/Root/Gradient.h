@@ -149,6 +149,7 @@ public:
 	}
 
 private:
+
 	std::vector<GradientPoint<T>> points;
 
 	static bool gradientSorter(GradientPoint<T> const& lhs, GradientPoint<T> const& rhs)

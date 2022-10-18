@@ -147,6 +147,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h" />
+    <ClInclude Include="src\Root\animation\AnimationHandler.h" />
     <ClInclude Include="src\Root\animation\SetterValueAnimation.h" />
     <ClInclude Include="src\Root\animation\Animation.h" />
     <ClInclude Include="src\rootgui\internal\RootGUIInternal.h" />
@@ -664,7 +666,7 @@
     <ClInclude Include="src\KHR\khrplatform.h" />
     <ClInclude Include="src\Root\CollisionListener.h" />
     <ClInclude Include="src\Root\Components.h" />
-    <ClInclude Include="src\Root\components\Animator.h" />
+    <ClInclude Include="src\Root\animation\Animator.h" />
     <ClInclude Include="src\Root\components\Collider.h" />
     <ClInclude Include="src\Root\components\Component.h" />
     <ClInclude Include="src\Root\components\ParticleSystem.h" />
@@ -850,6 +852,8 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp" />
+    <ClCompile Include="src\Root\animation\AnimationHandler.cpp" />
     <ClCompile Include="src\Root\animation\Animation.cpp" />
     <ClCompile Include="src\rootgui\internal\RootGUIInternal.cpp" />
     <ClCompile Include="src\glm\detail\glm.cpp" />
@@ -863,7 +867,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Root\animation\SetterValueAnimation.cpp" />
     <ClCompile Include="src\Root\CollisionListener.cpp" />
-    <ClCompile Include="src\Root\components\Animator.cpp" />
+    <ClCompile Include="src\Root\animation\Animator.cpp" />
     <ClCompile Include="src\Root\components\Collider.cpp" />
     <ClCompile Include="src\Root\components\Component.cpp" />
     <ClCompile Include="src\Root\components\ParticleSystem.cpp" />

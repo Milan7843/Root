@@ -128,6 +128,8 @@ namespace RootEngine
             // Calling all component and script update() functions
             ComponentEngine::updateScripts();
 
+            AnimationHandlerEngine::update();
+
             PhysicsEngine::step(Time::getDeltaTime());
 
             ComponentEngine::updateRigidbodiesTransforms();

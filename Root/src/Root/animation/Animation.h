@@ -56,9 +56,9 @@ private:
 	std::vector<std::shared_ptr<ValueAnimationInterface>> valueAnimations;
 
 	// Defines what should happen when the animation finishes
-	OnAnimationFinish onAnimationFinish;
+	OnAnimationFinish onAnimationFinish { OnAnimationFinish::REPEAT };
 
-	bool playing{ false };
+	bool playing{ true };
 
 	// The speed multiplier of this animation
 	float animationSpeed{ 1.0f };
