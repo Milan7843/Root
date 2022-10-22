@@ -60,6 +60,9 @@ namespace ComponentEngine
 
     void renderComponents()
     {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         // Don't render if there is no active camera
         if (RootEngine::getActiveCamera() == nullptr)
             return;
