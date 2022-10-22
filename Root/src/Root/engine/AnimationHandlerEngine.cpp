@@ -38,6 +38,31 @@ namespace AnimationHandlerEngine
     {
         // Creating a copy of the animation web and putting it into a vector to ensure memory contiguity
         animationWebs.push_back(TaggedAnimationWeb{ animationWeb, tag });
+
+        // Reset the last get call result index
+        lastGetAnimationWebCallResultIndex = -1;
+    }
+
+    bool removeAnimationWeb(const std::string& tag)
+    {
+        for (int i = 0; i < animationWebs.size(); i++)
+        {
+            if (animationWebs[i].tag == tag)
+            {
+                // Removing the animation web at the index where it is found
+                animationWebs.erase(animationWebs.begin() + i);
+
+                // Reset the last get call result index,
+                // since the object's index may have changed
+                lastGetAnimationWebCallResultIndex = -1;
+
+                // Return true indicating an animation was removed
+                return true;
+            }
+        }
+
+        // Return false indicating no animation was removed
+        return false;
     }
 
     void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value)
@@ -47,6 +72,7 @@ namespace AnimationHandlerEngine
         if (animationWeb == nullptr)
         {
             Logger::logError("Tried to access animation web with tag that doesn't exist. (" + animationWebTag + ")");
+            return;
         }
 
         animationWeb->setBool(parameterTag, value);

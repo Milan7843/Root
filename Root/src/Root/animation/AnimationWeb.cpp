@@ -80,7 +80,20 @@ void AnimationWeb::addConditionToLink(const std::string& tag1, const std::string
 
 void AnimationWeb::setBool(const std::string& tag, bool value)
 {
+	//std::map<std::string, bool>::iterator iterator{ boolParameters.find(tag) };
+
+	// Check if a parameter with the given tag exists
+	if (boolParameters.find(tag) == boolParameters.end())
+	{
+		Logger::logError("Tried to access animation web with tag that doesn't exist. (" + tag + ")");
+	}
+
 	boolParameters[tag] = value;
+	/*
+	else
+	{
+		iterator->second = value;
+	}*/
 }
 
 void AnimationWeb::addParameter(const std::string& tag, bool initialValue)

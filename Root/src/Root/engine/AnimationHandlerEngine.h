@@ -9,10 +9,12 @@ namespace AnimationHandlerEngine
 	struct TaggedAnimationWeb
 	{
 		AnimationWeb animationWeb;
-		const std::string tag;
+		std::string tag;
 	};
 
 	void addAnimationWeb(AnimationWeb animationWeb, const std::string& tag);
+
+	bool removeAnimationWeb(const std::string& tag);
 
 	void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value);
 

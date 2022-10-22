@@ -9,6 +9,11 @@ namespace AnimationHandler
 		AnimationHandlerEngine::addAnimationWeb(animationWeb, tag);
 	}
 
+	bool removeAnimationWeb(const std::string& tag)
+	{
+		return AnimationHandlerEngine::removeAnimationWeb(tag);
+	}
+
 	void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value)
 	{
 		AnimationHandlerEngine::setAnimationWebParameter(animationWebTag, parameterTag, value);

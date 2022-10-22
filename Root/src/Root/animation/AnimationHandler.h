@@ -14,6 +14,14 @@ namespace AnimationHandler
 	void addAnimationWeb(AnimationWeb& animationWeb, const std::string& tag);
 
 	/**
+	 * Remove an animation web from the handler.
+	 *
+	 * \param tag: the tag assigned to the animation web, to identify it.
+	 * \returns: true if an animation web was found and removed, false otherwise.
+	 */
+	bool removeAnimationWeb(const std::string& tag);
+
+	/**
 	 * Set a bool parameter in a certain animation web.
 	 * 
 	 * \param animatorTag: the tag of the animation web to set the parameter in.
