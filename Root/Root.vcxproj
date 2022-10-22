@@ -666,7 +666,7 @@
     <ClInclude Include="src\KHR\khrplatform.h" />
     <ClInclude Include="src\Root\CollisionListener.h" />
     <ClInclude Include="src\Root\Components.h" />
-    <ClInclude Include="src\Root\animation\Animator.h" />
+    <ClInclude Include="src\Root\animation\AnimationWeb.h" />
     <ClInclude Include="src\Root\components\Collider.h" />
     <ClInclude Include="src\Root\components\Component.h" />
     <ClInclude Include="src\Root\components\ParticleSystem.h" />
@@ -867,7 +867,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Root\animation\SetterValueAnimation.cpp" />
     <ClCompile Include="src\Root\CollisionListener.cpp" />
-    <ClCompile Include="src\Root\animation\Animator.cpp" />
+    <ClCompile Include="src\Root\animation\AnimationWeb.cpp" />
     <ClCompile Include="src\Root\components\Collider.cpp" />
     <ClCompile Include="src\Root\components\Component.cpp" />
     <ClCompile Include="src\Root\components\ParticleSystem.cpp" />

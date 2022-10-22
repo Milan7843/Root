@@ -22,16 +22,19 @@ struct AnimationLink
 	BoolAnimationCondition condition;
 };
 
-class Animator
+/**
+ * The Animation Web is a class which holds some animations, and any links between them.
+ */
+class AnimationWeb
 {
 public:
 
 	/**
-	 * Create a new Animator.
+	 * Create a new Animation Web.
 	 */
-	Animator();
+	AnimationWeb();
 
-	~Animator();
+	~AnimationWeb();
 
 	void update();
 

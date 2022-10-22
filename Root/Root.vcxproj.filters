@@ -1548,7 +1548,7 @@
     <ClInclude Include="src\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Root\animation\Animator.h">
+    <ClInclude Include="src\Root\animation\AnimationWeb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\components\Collider.h">
@@ -2149,7 +2149,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Root\animation\Animator.cpp">
+    <ClCompile Include="src\Root\animation\AnimationWeb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\components\Collider.cpp">

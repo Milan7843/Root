@@ -4,13 +4,13 @@
 
 namespace AnimationHandler
 {
-	void addAnimator(Animator& animator, const std::string& tag)
+	void addAnimationWeb(AnimationWeb& animationWeb, const std::string& tag)
 	{
-		AnimationHandlerEngine::addAnimator(animator, tag);
+		AnimationHandlerEngine::addAnimationWeb(animationWeb, tag);
 	}
 
-	void setAnimatorParameter(const std::string& animatorTag, const std::string& parameterTag, bool value)
+	void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value)
 	{
-		AnimationHandlerEngine::setAnimatorParameter(animatorTag, parameterTag, value);
+		AnimationHandlerEngine::setAnimationWebParameter(animationWebTag, parameterTag, value);
 	}
 }

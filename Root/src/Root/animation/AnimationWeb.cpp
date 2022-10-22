@@ -1,15 +1,15 @@
-#include "Animator.h"
+#include "AnimationWeb.h"
 
-Animator::Animator()
+AnimationWeb::AnimationWeb()
 {
 }
 
-Animator::~Animator()
+AnimationWeb::~AnimationWeb()
 {
-	Logger::destructorMessage("Animator");
+	Logger::destructorMessage("Animation web");
 }
 
-void Animator::update()
+void AnimationWeb::update()
 {
 	if (animationsMapChanged)
 	{
@@ -48,7 +48,7 @@ void Animator::update()
 	}
 }
 
-void Animator::addAnimation(Animation& animation, const std::string& tag, bool startAnimation)
+void AnimationWeb::addAnimation(Animation& animation, const std::string& tag, bool startAnimation)
 {
 	animations.emplace(tag, animation);
 	
@@ -66,29 +66,29 @@ void Animator::addAnimation(Animation& animation, const std::string& tag, bool s
 	}
 }
 
-void Animator::createLink(const std::string& tag1, const std::string& tag2, bool waitForEndOfAnimation)
+void AnimationWeb::createLink(const std::string& tag1, const std::string& tag2, bool waitForEndOfAnimation)
 {
 	links.emplace_back(AnimationLink{ tag1, tag2, waitForEndOfAnimation });
 }
 
-void Animator::addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative)
+void AnimationWeb::addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative)
 {
 	AnimationLink* link{ getLinkByTags(tag1, tag2) };
 
 	link->condition = BoolAnimationCondition{ parameterTag, comparative };
 }
 
-void Animator::setBool(const std::string& tag, bool value)
+void AnimationWeb::setBool(const std::string& tag, bool value)
 {
 	boolParameters[tag] = value;
 }
 
-void Animator::addParameter(const std::string& tag, bool initialValue)
+void AnimationWeb::addParameter(const std::string& tag, bool initialValue)
 {
 	boolParameters.emplace(tag, initialValue);
 }
 
-AnimationLink* Animator::getLinkByTags(const std::string& tag1, const std::string& tag2)
+AnimationLink* AnimationWeb::getLinkByTags(const std::string& tag1, const std::string& tag2)
 {
 	for (AnimationLink& link : links)
 	{
@@ -102,7 +102,7 @@ AnimationLink* Animator::getLinkByTags(const std::string& tag1, const std::strin
 	return nullptr;
 }
 
-bool Animator::evaluateCondition(BoolAnimationCondition& condition)
+bool AnimationWeb::evaluateCondition(BoolAnimationCondition& condition)
 {
 	if (condition.parameterTag == "nc")
 	{

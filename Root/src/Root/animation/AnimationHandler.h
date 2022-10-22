@@ -1,24 +1,24 @@
 #pragma once
 
-#include <Root/animation/Animator.h>
+#include <Root/animation/AnimationWeb.h>
 
 namespace AnimationHandler
 {
 	/**
-	 * Add an animator to the handler.
+	 * Add an animation web to the handler.
 	 * 
-	 * \param animator: the animator to add.
-	 * Will be copied, so the original instance will be active.
-	 * \param tag: the tag to assign to the animator, which it will be identified by in the future.
+	 * \param animationWeb: the animation web to add.
+	 * Will be copied, so the original instance will not be active.
+	 * \param tag: the tag to assign to the animation web, which it will be identified by in the future.
 	 */
-	void addAnimator(Animator& animator, const std::string& tag);
+	void addAnimationWeb(AnimationWeb& animationWeb, const std::string& tag);
 
 	/**
-	 * Set a bool parameter in a certain animator.
+	 * Set a bool parameter in a certain animation web.
 	 * 
-	 * \param animatorTag: the tag of the animator to set the parameter in.
+	 * \param animatorTag: the tag of the animation web to set the parameter in.
 	 * \param parameterTag: the tag of the parameter to set.
 	 * \param value: the new value of the parameter.
 	 */
-	void setAnimatorParameter(const std::string& animatorTag, const std::string& parameterTag, bool value);
+	void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value);
 };

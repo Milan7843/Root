@@ -1,23 +1,23 @@
 #pragma once
 
-#include <Root/animation/Animator.h>
+#include <Root/animation/AnimationWeb.h>
 
 #include <vector>
 
 namespace AnimationHandlerEngine
 {
-	struct TaggedAnimator
+	struct TaggedAnimationWeb
 	{
-		Animator animator;
+		AnimationWeb animationWeb;
 		const std::string tag;
 	};
 
-	void addAnimator(Animator animator, const std::string& tag);
+	void addAnimationWeb(AnimationWeb animationWeb, const std::string& tag);
 
-	void setAnimatorParameter(const std::string& animatorTag, const std::string& parameterTag, bool value);
+	void setAnimationWebParameter(const std::string& animationWebTag, const std::string& parameterTag, bool value);
 
 	/**
-	 * Update all active animators.
+	 * Update all active animations webs.
 	 */
 	void update();
 
