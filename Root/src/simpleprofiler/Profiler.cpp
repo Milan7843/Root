@@ -43,7 +43,7 @@ void Profiler::disable()
 	Profiler::enabled = false;
 }
 
-void Profiler::addCheckpoint(const char* label)
+void Profiler::addCheckpoint(const std::string label)
 {
 	if (!Profiler::enabled)
 		return;

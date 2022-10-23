@@ -147,6 +147,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\components\Animator.h" />
     <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h" />
     <ClInclude Include="src\Root\animation\AnimationHandler.h" />
     <ClInclude Include="src\Root\animation\SetterValueAnimation.h" />
@@ -852,6 +853,7 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\components\Animator.cpp" />
     <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp" />
     <ClCompile Include="src\Root\animation\AnimationHandler.cpp" />
     <ClCompile Include="src\Root\animation\Animation.cpp" />

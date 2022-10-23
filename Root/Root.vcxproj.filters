@@ -1686,6 +1686,9 @@
     <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\components\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2276,6 +2279,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\components\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

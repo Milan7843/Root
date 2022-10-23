@@ -222,7 +222,7 @@ public:
 		{
 			if (typeid(*component) == typeid(T))
 			{
-				return components[0];
+				return std::static_pointer_cast<T>(component);
 			}
 		}
 		return NULL;

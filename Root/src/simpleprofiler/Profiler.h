@@ -45,7 +45,7 @@ namespace Profiler
 	void disable();
 
 	// Add a new checkpoint to the current list
-	void addCheckpoint(const char* label);
+	void addCheckpoint(const std::string label);
 
 	// Empty the current list of checkpoints
 	void emptyCheckpointList();
