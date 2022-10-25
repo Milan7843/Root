@@ -130,6 +130,18 @@
 #define KEY_RIGHT_SUPER			GLFW_KEY_RIGHT_SUPER
 #define KEY_MENU				GLFW_KEY_MENU
 
+#define MOUSE_LEFT				GLFW_MOUSE_BUTTON_1
+#define MOUSE_RIGHT				GLFW_MOUSE_BUTTON_2
+#define MOUSE_MIDDLE			GLFW_MOUSE_BUTTON_3
+#define MOUSE_BUTTON_1			GLFW_MOUSE_BUTTON_1
+#define MOUSE_BUTTON_2			GLFW_MOUSE_BUTTON_2
+#define MOUSE_BUTTON_3			GLFW_MOUSE_BUTTON_3
+#define MOUSE_BUTTON_4			GLFW_MOUSE_BUTTON_4
+#define MOUSE_BUTTON_5			GLFW_MOUSE_BUTTON_5
+#define MOUSE_BUTTON_6			GLFW_MOUSE_BUTTON_6
+#define MOUSE_BUTTON_7			GLFW_MOUSE_BUTTON_7
+#define MOUSE_BUTTON_8			GLFW_MOUSE_BUTTON_8
+
 namespace Input
 {
 	/**
@@ -158,6 +170,33 @@ namespace Input
 	 * \return whether the key is released.
 	 */
 	bool getKeyReleased(int key);
+
+	/**
+	 * Get whether the mouse button is currently pressed.
+	 * Returns true on every frame the mouse button is down.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the button is down for the first frame.
+	 */
+	bool getMouseButton(int mouseButton);
+
+	/**
+	 * Get whether the mouse button was pressed.
+	 * Returns true on the frame the mouse button is pressed.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the key is pressed.
+	 */
+	bool getMouseButtonPressed(int mouseButton);
+
+	/**
+	 * Get whether the mouse button was released.
+	 * Returns true on the frame the mouse button is released.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the mouse button is released.
+	 */
+	bool getMouseButtonReleased(int mouseButton);
 
 	/**
 	 * Get the current location of the mouse.

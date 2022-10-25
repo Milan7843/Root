@@ -18,6 +18,21 @@ namespace Input
 		return InputEngine::getKeyReleased(key);
 	}
 
+	bool getMouseButton(int mouseButton)
+	{
+		return InputEngine::getMouseButton(mouseButton);
+	}
+
+	bool getMouseButtonPressed(int mouseButton)
+	{
+		return InputEngine::getMouseButtonPressed(mouseButton);
+	}
+
+	bool getMouseButtonReleased(int mouseButton)
+	{
+		return InputEngine::getMouseButtonReleased(mouseButton);
+	}
+
 	glm::vec2 getMousePosition()
 	{
 		return InputEngine::getMousePosition();

@@ -21,6 +21,12 @@ public:
 	 */
 	virtual void update() {}
 
+	bool internal_started();
+
+	void internal_start();
+
 private:
 
+	// Holds whether the start method has been called or not
+	bool internal_called_start{ false };
 };

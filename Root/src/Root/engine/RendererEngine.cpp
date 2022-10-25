@@ -10,6 +10,7 @@ namespace RendererEngine
 
         unsigned int screenDestinationTexture{ 0 };
         unsigned int screenSourceTexture{ 0 };
+        unsigned int depthRenderBuffer{ 0 };
 
         unsigned int squareVAO{ 0 };
         unsigned int screenRectVAO{ 0 };
@@ -235,6 +236,14 @@ namespace RendererEngine
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screenDestinationTexture, 0);
+        
+        // Creating the depth buffer as a 
+        glGenRenderbuffers(1, &depthRenderBuffer);
+
+        glBindRenderbuffer(GL_RENDERBUFFER, depthRenderBuffer);
+
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
 
         /*
         unsigned int depthRenderBuffer;

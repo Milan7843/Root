@@ -138,6 +138,21 @@ namespace InputEngine
 			KEY_MENU
 		};
 
+
+		const int ALL_MOUSE_BUTTONS[]{
+			MOUSE_LEFT,
+			MOUSE_RIGHT,
+			MOUSE_MIDDLE,
+			MOUSE_BUTTON_1,
+			MOUSE_BUTTON_2,
+			MOUSE_BUTTON_3,
+			MOUSE_BUTTON_4,
+			MOUSE_BUTTON_5,
+			MOUSE_BUTTON_6,
+			MOUSE_BUTTON_7,
+			MOUSE_BUTTON_8
+		};
+
 		bool find(std::vector<int>& v, int s)
 		{
 			for (int i : v)
@@ -159,6 +174,11 @@ namespace InputEngine
 		{
 			if (glfwGetKey(RootEngine::getActiveWindow(), key) == GLFW_PRESS)
 				keysDownThisFrame.push_back(key);
+		}
+		for (int button : ALL_MOUSE_BUTTONS)
+		{
+			if (glfwGetMouseButton(RootEngine::getActiveWindow(), button) == GLFW_PRESS)
+				keysDownThisFrame.push_back(button);
 		}
 		double mouseX, mouseY;
 		glfwGetCursorPos(RootEngine::getActiveWindow(), &mouseX, &mouseY);
@@ -186,6 +206,23 @@ namespace InputEngine
 	{
 		// Key must not be pressed now but last frame
 		return !find(keysDownThisFrame, key) && find(keysDownLastFrame, key);
+	}
+
+	bool getMouseButton(int mouseButton)
+	{
+		return find(keysDownThisFrame, mouseButton);
+	}
+
+	bool getMouseButtonPressed(int mouseButton)
+	{
+		// Key must be pressed now but not last frame
+		return find(keysDownThisFrame, mouseButton) && !find(keysDownLastFrame, mouseButton);
+	}
+
+	bool getMouseButtonReleased(int mouseButton)
+	{
+		// Key must not be pressed now but last frame
+		return !find(keysDownThisFrame, mouseButton) && find(keysDownLastFrame, mouseButton);
 	}
 
 	glm::vec2 getMousePosition()

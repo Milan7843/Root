@@ -52,8 +52,15 @@ public:
 	 */
 	virtual std::string toString() { return std::string{}; };
 
+	bool internal_started();
+
+	void internal_start();
+
 protected:
 
 	// A pointer to the transform this component belongs to.
 	Transform* transform;
+
+	// Holds whether the start method has been called or not
+	bool internal_called_start{ false };
 };

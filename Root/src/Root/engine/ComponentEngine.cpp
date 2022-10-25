@@ -4,25 +4,44 @@ namespace ComponentEngine
 {
     void startScripts()
     {
+        // Copying the scripts so that the original vector can be modified 
+        std::vector<std::shared_ptr<Script>> scripts{ RootEngine::getScripts() };
+
         // Calling all script start() functions
         for (std::shared_ptr<Script>& script : RootEngine::getScripts())
         {
-            script->start();
+            if (!script->internal_started())
+            {
+                script->start();
+                script->internal_start();
+            }
         }
 
+        // Copying the transforms so that the original vector can be modified 
+        std::vector<std::shared_ptr<Transform>> transforms{ RootEngine::getTransforms() };
+
         // Calling all components' start() functions
-        for (std::shared_ptr<Transform>& transform : RootEngine::getTransforms())
+        for (std::shared_ptr<Transform> transform : transforms)
         {
+            // Copying the components so that the original vector can be modified 
+            std::vector<std::shared_ptr<Component>> components{ transform->getComponents() };
+
             // Calling start() on each component attached to this Transform
-            for (std::shared_ptr<Component>& component : transform->getComponents())
+            for (std::shared_ptr<Component>& component : components)
             {
-                component->start();
+                if (!component->internal_started())
+                {
+                    component->start();
+                    component->internal_start();
+                }
             }
         }
     }
 
     void updateScripts()
     {
+        startScripts();
+
         // Calling all script update() functions
         for (std::shared_ptr<Script>& script : RootEngine::getScripts())
         {
@@ -31,11 +50,17 @@ namespace ComponentEngine
 
         Profiler::addCheckpoint("Script updates");
 
-        // Calling all components' update() functions
-        for (std::shared_ptr<Transform>& transform : RootEngine::getTransforms())
+        // Copying the transforms so that the original vector can be modified 
+        std::vector<std::shared_ptr<Transform>> transforms{ RootEngine::getTransforms() };
+
+        // Calling all components' start() functions
+        for (std::shared_ptr<Transform> transform : transforms)
         {
+            // Copying the components so that the original vector can be modified 
+            std::vector<std::shared_ptr<Component>> components{ transform->getComponents() };
+
             // Calling update() on each component attached to this Transform
-            for (std::shared_ptr<Component>& component : transform->getComponents())
+            for (std::shared_ptr<Component>& component : components)
             {
                 component->update();
             }

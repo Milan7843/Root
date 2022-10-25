@@ -222,6 +222,18 @@ std::vector<std::shared_ptr<Component>>& Transform::getComponents()
 	return components;
 }
 
+glm::vec2 Transform::getLocalUpVector()
+{
+	return glm::vec2(glm::cos(glm::radians(this->rotation + 90.0f)),
+		glm::sin(glm::radians(this->rotation + 90.0f)));
+}
+
+glm::vec2 Transform::getLocalRightVector()
+{
+	return glm::vec2(glm::cos(glm::radians(this->rotation)),
+		glm::sin(glm::radians(this->rotation)));
+}
+
 glm::mat4 Transform::getModelMatrix()
 {
 	glm::mat4 model{ glm::mat4(1.0f) };

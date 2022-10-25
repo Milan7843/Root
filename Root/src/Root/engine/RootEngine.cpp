@@ -102,9 +102,6 @@ namespace RootEngine
         SimpleText simpleText("src/fonts/arial.ttf");
         RootGUIInternal::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
-        // Calling all component and script start() functions
-        ComponentEngine::startScripts();
-
         //std::thread physicsSimulation(PhysicsEngine::simulate);
 
         while (!glfwWindowShouldClose(window))
@@ -125,7 +122,7 @@ namespace RootEngine
             // Setting viewport size
             glViewport(0, 0, WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
-            // Calling all component and script update() functions
+            // Calling all component and script start() and update() functions
             ComponentEngine::updateScripts();
 
             AnimationHandlerEngine::update();
@@ -145,6 +142,10 @@ namespace RootEngine
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            // Enabling depth testing for rasterized view: 
+            // makes sure objects get drawn on top of each other in the correct order
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LEQUAL);
             // Calling all component render() functions
             ComponentEngine::renderComponents();
 

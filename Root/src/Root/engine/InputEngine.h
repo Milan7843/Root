@@ -55,6 +55,33 @@ namespace InputEngine
 	bool getKeyReleased(int key);
 
 	/**
+	 * Get whether the mouse button is currently pressed.
+	 * Returns true on every frame the mouse button is down.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the button is down for the first frame.
+	 */
+	bool getMouseButton(int mouseButton);
+
+	/**
+	 * Get whether the mouse button was pressed.
+	 * Returns true on the frame the mouse button is pressed.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the key is pressed.
+	 */
+	bool getMouseButtonPressed(int mouseButton);
+
+	/**
+	 * Get whether the mouse button was released.
+	 * Returns true on the frame the mouse button is released.
+	 *
+	 * \param mouseButton: the mouse button to check for. Use 'MOUSE_' followed by the desired key to specify a key, e.g. MOUSE_LEFT.
+	 * \return whether the mouse button is released.
+	 */
+	bool getMouseButtonReleased(int mouseButton);
+
+	/**
 	 * Get the current location of the mouse.
 	 *
 	 * \return the location of the mouse.

@@ -166,6 +166,20 @@ public:
 	RigidbodyPointer getAttachedRigidbody();
 
 	/**
+	 * Get a normalized vector which points up.
+	 *
+	 * \returns the up vector.
+	 */
+	glm::vec2 getLocalUpVector();
+
+	/**
+	 * Get a normalized vector which points right.
+	 *
+	 * \returns the right vector.
+	 */
+	glm::vec2 getLocalRightVector();
+
+	/**
 	 * Get a matrix which correctly transforms world space points to local space.
 	 * 
 	 * \returns the model matrix.

@@ -11,3 +11,14 @@ Transform* Component::getTransform()
 {
 	return transform;
 }
+
+bool Component::internal_started()
+{
+	return internal_called_start;
+}
+
+void Component::internal_start()
+{
+	internal_called_start = true;
+}
+

@@ -4,6 +4,8 @@
 #include "Root/engine/RootEngine.h"
 #include "simpleprofiler/Profiler.h"
 
+#include <vector>
+
 namespace ComponentEngine
 {
     /**
