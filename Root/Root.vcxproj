@@ -147,6 +147,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\colliders\BoxCollider.h" />
+    <ClInclude Include="src\Root\colliders\ChainCollider.h" />
+    <ClInclude Include="src\Root\colliders\CircleCollider.h" />
+    <ClInclude Include="src\Root\colliders\EdgeCollider.h" />
+    <ClInclude Include="src\Root\colliders\LoopCollider.h" />
+    <ClInclude Include="src\Root\colliders\PolygonCollider.h" />
     <ClInclude Include="src\Root\components\Animator.h" />
     <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h" />
     <ClInclude Include="src\Root\animation\AnimationHandler.h" />
@@ -668,7 +674,7 @@
     <ClInclude Include="src\Root\CollisionListener.h" />
     <ClInclude Include="src\Root\Components.h" />
     <ClInclude Include="src\Root\animation\AnimationWeb.h" />
-    <ClInclude Include="src\Root\components\Collider.h" />
+    <ClInclude Include="src\Root\colliders\Collider.h" />
     <ClInclude Include="src\Root\components\Component.h" />
     <ClInclude Include="src\Root\components\ParticleSystem.h" />
     <ClInclude Include="src\Root\components\Rigidbody.h" />
@@ -853,6 +859,12 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\colliders\BoxCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\ChainCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\CircleCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\EdgeCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\LoopCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\PolygonCollider.cpp" />
     <ClCompile Include="src\Root\components\Animator.cpp" />
     <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp" />
     <ClCompile Include="src\Root\animation\AnimationHandler.cpp" />
@@ -870,7 +882,7 @@
     <ClCompile Include="src\Root\animation\SetterValueAnimation.cpp" />
     <ClCompile Include="src\Root\CollisionListener.cpp" />
     <ClCompile Include="src\Root\animation\AnimationWeb.cpp" />
-    <ClCompile Include="src\Root\components\Collider.cpp" />
+    <ClCompile Include="src\Root\colliders\Collider.cpp" />
     <ClCompile Include="src\Root\components\Component.cpp" />
     <ClCompile Include="src\Root\components\ParticleSystem.cpp" />
     <ClCompile Include="src\Root\components\ParticleSystemGettersAndSetters.cpp" />

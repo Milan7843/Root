@@ -1551,7 +1551,7 @@
     <ClInclude Include="src\Root\animation\AnimationWeb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Root\components\Collider.h">
+    <ClInclude Include="src\Root\colliders\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\components\Component.h">
@@ -1687,6 +1687,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\components\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\CircleCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\PolygonCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\EdgeCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\BoxCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\ChainCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\colliders\LoopCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2155,7 +2173,7 @@
     <ClCompile Include="src\Root\animation\AnimationWeb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Root\components\Collider.cpp">
+    <ClCompile Include="src\Root\colliders\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\components\Component.cpp">
@@ -2282,6 +2300,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\components\Animator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\CircleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\PolygonCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\EdgeCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\BoxCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\ChainCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\colliders\LoopCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
