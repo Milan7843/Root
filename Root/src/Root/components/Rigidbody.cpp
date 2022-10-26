@@ -23,6 +23,7 @@ Rigidbody::Rigidbody(TransformPointer transform, float linearDamping, float angu
 
 	body = PhysicsEngine::addBody(&bodyDef);
 
+	/*
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
@@ -37,7 +38,7 @@ Rigidbody::Rigidbody(TransformPointer transform, float linearDamping, float angu
 	fixture->GetUserDataRef().pointer = ptr;
 
 	fixtureData->mFixture = fixture;
-	fixtureData->rigidbody = this;
+	fixtureData->rigidbody = this;*/
 }
 
 Rigidbody::Rigidbody(TransformPointer transform,
@@ -91,11 +92,11 @@ RigidbodyPointer Rigidbody::create(
 	TransformPointer transform,
 	b2BodyType type,
 	float gravityScale,
+	bool bullet,
 	bool fixedRotation,
 	bool allowSleep,
 	float linearDamping,
 	float angularDamping,
-	bool bullet,
 	bool awake,
 	bool enabled)
 {
@@ -111,11 +112,11 @@ RigidbodyPointer Rigidbody::create(
 	Collider& collider,
 	b2BodyType type,
 	float gravityScale,
+	bool bullet,
 	bool fixedRotation,
 	bool allowSleep,
 	float linearDamping,
 	float angularDamping,
-	bool bullet,
 	bool awake,
 	bool enabled)
 {

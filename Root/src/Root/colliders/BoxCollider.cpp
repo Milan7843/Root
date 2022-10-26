@@ -18,7 +18,7 @@ b2Shape* BoxCollider::getShape()
 	{
 		// Creating the polygon shape and setting it to be a box
 		shape = new b2PolygonShape;
-		shape->SetAsBox(width, height);
+		shape->SetAsBox(width / 2.0f, height / 2.0f);
 	}
 
 	return shape;

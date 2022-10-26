@@ -22,6 +22,11 @@ struct FixtureData
 	b2Fixture* mFixture{};
 };
 
+#define STATIC		b2_staticBody
+#define KINEMATIC	b2_kinematicBody
+#define DYNAMIC		b2_dynamicBody
+
+
 class Rigidbody : public Component
 {
 public:
@@ -33,8 +38,12 @@ public:
 	 * Will automatically add this component to the given transform.
 	 *
 	 * \param transform:		the transform to add this component to.
-	 * \param type:				the body type: static, kinematic, or dynamic (b2_staticBody, b2_kinematicBody, b2_dynamicBody).
+	 * \param type:				the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
 	 * \param gravityScale:		scale the gravity applied to this body.
+	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
+	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
+	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
+	 *							Increases processing time.
 	 * \param fixedRotation:	should this body be prevented from rotating? Useful for characters.
 	 * \param allowSleep:		set this flag to false if this body should never fall asleep. Note that
 	 * 							this increases CPU usage.
@@ -46,10 +55,6 @@ public:
 	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
 	 * 							time step when the damping parameter is large.
 	 * 							Units are 1/time
-	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
-	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
-	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
-	 *							Increases processing time.
 	 * \param awake:			is this body initially awake or sleeping?
 	 * \param enabled:			does this body start out enabled?
 	 */
@@ -57,11 +62,11 @@ public:
 		TransformPointer transform,
 		b2BodyType type = b2_staticBody,
 		float gravityScale = 1.0f,
+		bool bullet = false,
 		bool fixedRotation = false,
 		bool allowSleep = true,
 		float linearDamping = 0.0f,
 		float angularDamping = 0.0f,
-		bool bullet = false,
 		bool awake = true,
 		bool enabled = true);
 
@@ -71,8 +76,12 @@ public:
 	 *
 	 * \param transform:		the transform to add this component to.
 	 * \param collider:			the collider that this rigidbody will get.
-	 * \param type:				the body type: static, kinematic, or dynamic (b2_staticBody, b2_kinematicBody, b2_dynamicBody).
+	 * \param type:				the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
 	 * \param gravityScale:		scale the gravity applied to this body.
+	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
+	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
+	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
+	 *							Increases processing time.
 	 * \param fixedRotation:	should this body be prevented from rotating? Useful for characters.
 	 * \param allowSleep:		set this flag to false if this body should never fall asleep. Note that
 	 * 							this increases CPU usage.
@@ -84,10 +93,6 @@ public:
 	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
 	 * 							time step when the damping parameter is large.
 	 * 							Units are 1/time
-	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
-	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
-	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
-	 *							Increases processing time.
 	 * \param awake:			is this body initially awake or sleeping?
 	 * \param enabled:			does this body start out enabled?
 	 */
@@ -96,11 +101,11 @@ public:
 		Collider& collider,
 		b2BodyType type = b2_staticBody,
 		float gravityScale = 1.0f,
+		bool bullet = false,
 		bool fixedRotation = false,
 		bool allowSleep = true,
 		float linearDamping = 0.0f,
 		float angularDamping = 0.0f,
-		bool bullet = false,
 		bool awake = true,
 		bool enabled = true);
 
