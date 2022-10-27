@@ -153,3 +153,180 @@ void Rigidbody::setPosition(glm::vec2 position, bool alsoSetTransformPosition)
 {
 	body->SetTransform(b2Vec2(position.x, position.y), body->GetAngle());
 }
+
+
+void Rigidbody::setLinearVelocity(const glm::vec2& velocity)
+{
+	b2Vec2 v{ velocity.x, velocity.y };
+	this->body->SetLinearVelocity(v);
+}
+
+glm::vec2 Rigidbody::getLinearVelocity() const
+{
+	b2Vec2 velocity{ this->body->GetLinearVelocity() };
+	return glm::vec2{ velocity.x, velocity.y };
+}
+
+void Rigidbody::setAngularVelocity(float velocity)
+{
+	float omega{ glm::radians(velocity) };
+	body->SetAngularVelocity(omega);
+}
+
+float Rigidbody::getAngularVelocity() const
+{
+	float velocity{ glm::degrees(body->GetAngularVelocity()) };
+	return velocity;
+}
+
+void Rigidbody::applyForce(const glm::vec2& force, const glm::vec2& point, bool wake)
+{
+	b2Vec2 f{ force.x, force.y };
+	b2Vec2 p{ point.x, point.y };
+	body->ApplyForce(f, p, wake);
+}
+
+void Rigidbody::applyForceToCenter(const glm::vec2& force, bool wake)
+{
+	b2Vec2 f{ force.x, force.y };
+	body->ApplyForceToCenter(f, wake);
+}
+
+void Rigidbody::applyTorque(float torque, bool wake)
+{
+	body->ApplyTorque(torque, wake);
+}
+
+void Rigidbody::applyLinearImpulse(const glm::vec2& impulse, const glm::vec2& point, bool wake)
+{
+	b2Vec2 i{ impulse.x, impulse.y };
+	b2Vec2 p{ point.x, point.y };
+	body->ApplyLinearImpulse(i, p, wake);
+}
+
+void Rigidbody::applyLinearImpulseToCenter(const glm::vec2& impulse, bool wake)
+{
+	b2Vec2 i{ impulse.x, impulse.y };
+	body->ApplyLinearImpulseToCenter(i, wake);
+}
+
+void Rigidbody::applyAngularImpulse(float impulse, bool wake)
+{
+	body->ApplyAngularImpulse(impulse, wake);
+}
+
+float Rigidbody::getMass() const
+{
+	return body->GetMass();
+}
+
+float Rigidbody::getInertia() const
+{
+	return body->GetInertia();
+}
+
+glm::vec2 Rigidbody::getLinearVelocityFromWorldPoint(const glm::vec2& worldPoint) const
+{
+	b2Vec2 l{ body->GetLinearVelocityFromWorldPoint(b2Vec2{ worldPoint.x, worldPoint.y })};
+
+	glm::vec2 linearVelocity{ l.x, l.y };
+	return linearVelocity;
+}
+
+glm::vec2 Rigidbody::getLinearVelocityFromLocalPoint(const glm::vec2& localPoint) const
+{
+	b2Vec2 l{ body->GetLinearVelocityFromLocalPoint(b2Vec2{ localPoint.x, localPoint.y }) };
+
+	glm::vec2 linearVelocity{ l.x, l.y };
+	return linearVelocity;
+}
+
+float Rigidbody::getLinearDamping() const
+{
+	return body->GetLinearDamping();
+}
+
+void Rigidbody::setLinearDamping(float linearDamping)
+{
+	body->SetLinearDamping(linearDamping);
+}
+
+float Rigidbody::getAngularDamping() const
+{
+	return body->GetAngularDamping();
+}
+
+void Rigidbody::setAngularDamping(float angularDamping)
+{
+	body->SetAngularDamping(angularDamping);
+}
+
+float Rigidbody::getGravityScale() const
+{
+	return body->GetGravityScale();
+}
+
+void Rigidbody::setGravityScale(float scale)
+{
+	body->SetGravityScale(scale);
+}
+
+void Rigidbody::setType(b2BodyType type)
+{
+	body->SetType(type);
+}
+
+b2BodyType Rigidbody::getType() const
+{
+	return body->GetType();
+}
+
+void Rigidbody::setBullet(bool flag)
+{
+	body->SetBullet(flag);
+}
+
+bool Rigidbody::isBullet() const
+{
+	return body->IsBullet();
+}
+
+void Rigidbody::setSleepingAllowed(bool flag)
+{
+	body->SetSleepingAllowed(flag);
+}
+
+bool Rigidbody::isSleepingAllowed() const
+{
+	return body->IsSleepingAllowed();
+}
+
+void Rigidbody::setAwake(bool flag)
+{
+	body->SetAwake(flag);
+}
+
+bool Rigidbody::isAwake() const
+{
+	return body->IsAwake();
+}
+
+void Rigidbody::setEnabled(bool flag)
+{
+	body->SetEnabled(flag);
+}
+
+bool Rigidbody::isEnabled() const
+{
+	return body->IsEnabled();
+}
+
+void Rigidbody::setFixedRotation(bool flag)
+{
+	body->SetFixedRotation(flag);
+}
+
+bool Rigidbody::isFixedRotation() const
+{
+	return body->IsFixedRotation();
+}
