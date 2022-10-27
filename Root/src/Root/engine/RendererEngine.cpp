@@ -203,6 +203,8 @@ namespace RendererEngine
             if (screenSpaceEffect->isEnabled())
                 runScreenSpaceEffect(screenSpaceEffect);
         }
+
+        Profiler::addCheckpoint("Screen space effects");
     }
 
     void setTextureSize(unsigned int width, unsigned int height)

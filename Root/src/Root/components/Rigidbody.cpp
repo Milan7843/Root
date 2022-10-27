@@ -4,7 +4,16 @@
 
 #include <box2d/b2_settings.h>
 
-Rigidbody::Rigidbody(TransformPointer transform, float linearDamping, float angularDamping, bool allowSleep, bool awake, bool fixedRotation, bool bullet, b2BodyType type, bool enabled, float gravityScale)
+Rigidbody::Rigidbody(TransformPointer transform,
+	float linearDamping,
+	float angularDamping,
+	bool allowSleep,
+	bool awake,
+	bool fixedRotation,
+	bool bullet,
+	b2BodyType type,
+	bool enabled,
+	float gravityScale)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -42,6 +51,8 @@ Rigidbody::Rigidbody(TransformPointer transform, float linearDamping, float angu
 }
 
 Rigidbody::Rigidbody(TransformPointer transform,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	Collider& collider,
 	float linearDamping,
 	float angularDamping,
@@ -75,6 +86,10 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
 
+	// Setting the layer masks
+	fixtureDef.filter.categoryBits = selfLayerMask;
+	fixtureDef.filter.maskBits = interactionLayerMask;
+
 	// Creating a fixture data
 	fixtureData = new FixtureData;
 
@@ -100,7 +115,7 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-
+	std::cout << "gravity scale " << gravityScale << std::endl;
 	Rigidbody* rigidbody = new Rigidbody(transform, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
@@ -111,6 +126,8 @@ RigidbodyPointer Rigidbody::create(
 	TransformPointer transform,
 	Collider& collider,
 	b2BodyType type,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	float gravityScale,
 	bool bullet,
 	bool fixedRotation,
@@ -120,8 +137,8 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-
-	Rigidbody* rigidbody = new Rigidbody(transform, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
+	std::cout << "gravity scale " << gravityScale << std::endl;
+	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
 	return rigidbody;
@@ -333,4 +350,28 @@ void Rigidbody::setFixedRotation(bool flag)
 bool Rigidbody::isFixedRotation() const
 {
 	return body->IsFixedRotation();
+}
+
+void Rigidbody::setSelfLayerMask(LayerMask mask)
+{
+	b2Filter filter{ fixture->GetFilterData() };
+	filter.categoryBits = mask;
+	fixture->SetFilterData(filter);
+}
+
+void Rigidbody::setInteractionLayerMask(LayerMask mask)
+{
+	b2Filter filter{ fixture->GetFilterData() };
+	filter.maskBits = mask;
+	fixture->SetFilterData(filter);
+}
+
+LayerMask Rigidbody::getSelfLayerMask()
+{
+	return fixture->GetFilterData().categoryBits;
+}
+
+LayerMask Rigidbody::getInteractionLayerMask()
+{
+	return fixture->GetFilterData().maskBits;
 }

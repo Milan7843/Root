@@ -61,6 +61,8 @@ namespace PhysicsEngine
 		bodiesToDestroy.clear();
 
 		world.Step(deltaTime, velocityIterations, positionIterations);
+
+		Profiler::addCheckpoint("Physics step");
 	}
 
 	void setGravity(float x, float y)

@@ -26,6 +26,42 @@ struct FixtureData
 #define KINEMATIC	b2_kinematicBody
 #define DYNAMIC		b2_dynamicBody
 
+/**
+ * How to use layers:
+ *
+ * A layermask consists of 0-16 layers.
+ * You can add two or more layers together in a layermask by using |
+ * E.g. LAYER_0 | LAYER_1
+ *
+ * You can remove a layer from a layermask using -
+ * E.g. LAYER_ALL - LAYER_0
+ *
+ * All colliders have layermasks self: LAYER_0 and interaction: LAYER_ALL by default.
+ *
+ * For a collision to occur, both collider must have
+ * each other's self layer mask in their interaction layer mask.
+ */
+
+#define LayerMask uint16
+
+#define LAYER_0 1
+#define LAYER_1 2
+#define LAYER_2 4
+#define LAYER_3 8
+#define LAYER_4 16
+#define LAYER_5 32
+#define LAYER_6 64
+#define LAYER_7 128
+#define LAYER_8 256
+#define LAYER_9 512
+#define LAYER_10 1024
+#define LAYER_11 2048
+#define LAYER_12 4096
+#define LAYER_13 8192
+#define LAYER_14 16384
+#define LAYER_15 32768
+#define LAYER_ALL 65535
+
 
 class Rigidbody : public Component
 {
@@ -37,26 +73,26 @@ public:
 	 * Create a new rigidbody.
 	 * Will automatically add this component to the given transform.
 	 *
-	 * \param transform:		the transform to add this component to.
-	 * \param type:				the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
-	 * \param gravityScale:		scale the gravity applied to this body.
-	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
-	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
-	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
-	 *							Increases processing time.
-	 * \param fixedRotation:	should this body be prevented from rotating? Useful for characters.
-	 * \param allowSleep:		set this flag to false if this body should never fall asleep. Note that
-	 * 							this increases CPU usage.
-	 * \param linearDamping:	linear damping is use to reduce the linear velocity. The damping parameter
-	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
-	 * 							time step when the damping parameter is large.
-	 * 							Units are 1/time
-	 * \param angularDamping:	angular damping is use to reduce the angular velocity. The damping parameter
-	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
-	 * 							time step when the damping parameter is large.
-	 * 							Units are 1/time
-	 * \param awake:			is this body initially awake or sleeping?
-	 * \param enabled:			does this body start out enabled?
+	 * \param transform:			the transform to add this component to.
+	 * \param type:					the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
+	 * \param gravityScale:			scale the gravity applied to this body.
+	 * \param bullet:				Is this a fast moving body that should be prevented from tunneling through
+	 * 								other moving bodies? Note that all bodies are prevented from tunneling through
+	 * 								kinematic and static bodies. This setting is only considered on dynamic bodies.
+	 *								Increases processing time.
+	 * \param fixedRotation:		should this body be prevented from rotating? Useful for characters.
+	 * \param allowSleep:			set this flag to false if this body should never fall asleep. Note that
+	 * 								this increases CPU usage.
+	 * \param linearDamping:		linear damping is use to reduce the linear velocity. The damping parameter
+	 * 								can be larger than 1.0f but the damping effect becomes sensitive to the
+	 * 								time step when the damping parameter is large.
+	 * 								Units are 1/time
+	 * \param angularDamping:		angular damping is use to reduce the angular velocity. The damping parameter
+	 * 								can be larger than 1.0f but the damping effect becomes sensitive to the
+	 * 								time step when the damping parameter is large.
+	 * 								Units are 1/time
+	 * \param awake:				is this body initially awake or sleeping?
+	 * \param enabled:				does this body start out enabled?
 	 */
 	static RigidbodyPointer create(
 		TransformPointer transform,
@@ -74,32 +110,36 @@ public:
 	 * Create a new rigidbody with a collider attached to it.
 	 * Will automatically add this component to the given transform.
 	 *
-	 * \param transform:		the transform to add this component to.
-	 * \param collider:			the collider that this rigidbody will get.
-	 * \param type:				the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
-	 * \param gravityScale:		scale the gravity applied to this body.
-	 * \param bullet:			Is this a fast moving body that should be prevented from tunneling through
-	 * 							other moving bodies? Note that all bodies are prevented from tunneling through
-	 * 							kinematic and static bodies. This setting is only considered on dynamic bodies.
-	 *							Increases processing time.
-	 * \param fixedRotation:	should this body be prevented from rotating? Useful for characters.
-	 * \param allowSleep:		set this flag to false if this body should never fall asleep. Note that
-	 * 							this increases CPU usage.
-	 * \param linearDamping:	linear damping is use to reduce the linear velocity. The damping parameter
-	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
-	 * 							time step when the damping parameter is large.
-	 * 							Units are 1/time
-	 * \param angularDamping:	angular damping is use to reduce the angular velocity. The damping parameter
-	 * 							can be larger than 1.0f but the damping effect becomes sensitive to the
-	 * 							time step when the damping parameter is large.
-	 * 							Units are 1/time
-	 * \param awake:			is this body initially awake or sleeping?
-	 * \param enabled:			does this body start out enabled?
+	 * \param transform:			the transform to add this component to.
+	 * \param collider:				the collider that this rigidbody will get.
+	 * \param type:					the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with.
+	 * \param gravityScale:			scale the gravity applied to this body.
+	 * \param bullet:				Is this a fast moving body that should be prevented from tunneling through
+	 * 								other moving bodies? Note that all bodies are prevented from tunneling through
+	 * 								kinematic and static bodies. This setting is only considered on dynamic bodies.
+	 *								Increases processing time.
+	 * \param fixedRotation:		should this body be prevented from rotating? Useful for characters.
+	 * \param allowSleep:			set this flag to false if this body should never fall asleep. Note that
+	 * 								this increases CPU usage.
+	 * \param linearDamping:		linear damping is use to reduce the linear velocity. The damping parameter
+	 * 								can be larger than 1.0f but the damping effect becomes sensitive to the
+	 * 								time step when the damping parameter is large.
+	 * 								Units are 1/time
+	 * \param angularDamping:		angular damping is use to reduce the angular velocity. The damping parameter
+	 * 								can be larger than 1.0f but the damping effect becomes sensitive to the
+	 * 								time step when the damping parameter is large.
+	 * 								Units are 1/time
+	 * \param awake:				is this body initially awake or sleeping?
+	 * \param enabled:				does this body start out enabled?
 	 */
 	static RigidbodyPointer create(
 		TransformPointer transform,
 		Collider& collider,
 		b2BodyType type = b2_staticBody,
+		LayerMask selfLayerMask = LAYER_0,
+		LayerMask interactionLayerMask = LAYER_ALL,
 		float gravityScale = 1.0f,
 		bool bullet = false,
 		bool fixedRotation = false,
@@ -342,10 +382,64 @@ public:
 	/// Does this body have fixed rotation?
 	bool isFixedRotation() const;
 
+
+
+	/**
+	 * Set the self layer mask, which defines on what layer(s) this collider resides.
+	 *
+	 * \param mask: the new self layer mask.
+	 */
+	void setSelfLayerMask(LayerMask mask);
+
+	/**
+	 * Set the interaction layer mask,
+	 * which defines with which layers this object can interact.
+	 *
+	 * \param mask: the new interaction layer mask.
+	 */
+	void setInteractionLayerMask(LayerMask mask);
+
+	/**
+	 * Get the self layer mask, which defines on what layer(s) this collider resides.
+	 *
+	 * \returns: the self layer mask.
+	 */
+	LayerMask getSelfLayerMask();
+
+	/**
+	 * Get the interaction layer mask,
+	 * which defines with which layers this object can interact.
+	 *
+	 * \returns: the interaction layer mask.
+	 */
+	LayerMask getInteractionLayerMask();
+
 private:
 
-	Rigidbody(TransformPointer transform, float linearDamping, float angularDamping, bool allowSleep, bool awake, bool fixedRotation, bool bullet, b2BodyType type, bool enabled, float gravityScale);
-	Rigidbody(TransformPointer transform, Collider& collider, float linearDamping, float angularDamping, bool allowSleep, bool awake, bool fixedRotation, bool bullet, b2BodyType type, bool enabled, float gravityScale);
+	Rigidbody(TransformPointer transform,
+		float linearDamping,
+		float angularDamping,
+		bool allowSleep,
+		bool awake,
+		bool fixedRotation,
+		bool bullet,
+		b2BodyType type,
+		bool enabled,
+		float gravityScale);
+
+	Rigidbody(TransformPointer transform,
+		LayerMask selfLayerMask,
+		LayerMask interactionLayerMask,
+		Collider& collider,
+		float linearDamping,
+		float angularDamping,
+		bool allowSleep,
+		bool awake,
+		bool fixedRotation,
+		bool bullet,
+		b2BodyType type,
+		bool enabled,
+		float gravityScale);
 
 	FixtureData* fixtureData;
 	b2Fixture* fixture;

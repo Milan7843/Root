@@ -84,5 +84,7 @@ namespace AnimationHandlerEngine
         {
             animationWebs[i].animationWeb.update();
         }
+
+        Profiler::addCheckpoint("Animation updates");
     }
 }

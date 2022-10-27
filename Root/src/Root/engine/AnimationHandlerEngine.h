@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Root/animation/AnimationWeb.h>
+#include <simpleprofiler/Profiler.h>
 
 #include <vector>
 
