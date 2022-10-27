@@ -1,5 +1,7 @@
 #include "SpriteRenderer.h"
 
+#include <Root/engine/TextureEngine.h>
+
 SpriteRenderer::SpriteRenderer(unsigned int columnCount, unsigned int rowCount)
 	: columnCount(columnCount)
 	, rowCount(rowCount)
@@ -13,7 +15,7 @@ SpriteRenderer::~SpriteRenderer()
 
 SpriteRendererPointer SpriteRenderer::create(
 	TransformPointer transform,
-	const char* spritePath, 
+	const std::string& spritePath,
 	bool pixelPerfect,
 	unsigned int columnCount,
 	unsigned int rowCount)
@@ -62,38 +64,9 @@ void SpriteRenderer::render(float renderDepth)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void SpriteRenderer::setSprite(const char* spritePath, bool pixelPerfect)
+void SpriteRenderer::setSprite(const std::string& spritePath, bool pixelPerfect)
 {
-	glGenTextures(1, &textureID);
-
-	int width, height, nrComponents;
-	TextureData textureData(spritePath, &width, &height, &nrComponents, 0);
-
-	if (textureData.hasData())
-	{
-		GLenum format;
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
-			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, textureData.getData());
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pixelPerfect ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pixelPerfect ? GL_NEAREST : GL_LINEAR);
-	}
-	else
-	{
-		Logger::logError("Failed to load sprite: " + std::string(spritePath) + ".\nReason: " + textureData.getFailureReason());
-	}
+	textureID = TextureEngine::loadTexture(spritePath, pixelPerfect);
 }
 
 void SpriteRenderer::setSpriteSheetColumnIndex(unsigned int column)

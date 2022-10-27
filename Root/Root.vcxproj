@@ -711,6 +711,7 @@
     <ClInclude Include="src\stb_image\stbi_image.h" />
     <ClInclude Include="src\Root\animation\ValueAnimation.h" />
     <ClInclude Include="src\Root\animation\ValueAnimationInterface.h" />
+    <ClInclude Include="src\Root\engine\TextureEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl" />
@@ -918,6 +919,7 @@
     <ClCompile Include="src\stbi_utility\TextureData.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimation.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp" />
+    <ClCompile Include="src\Root\engine\TextureEngine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

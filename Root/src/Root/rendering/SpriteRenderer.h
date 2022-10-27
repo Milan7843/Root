@@ -32,7 +32,7 @@ public:
 	 * \param rowCount: the number of rows in this sprite (sheet).
 	 */
 	static SpriteRendererPointer create(TransformPointer transform,
-		const char* spritePath,
+		const std::string& spritePath,
 		bool pixelPerfect = false,
 		unsigned int columnCount = 1, unsigned int rowCount = 1);
 
@@ -51,7 +51,7 @@ public:
 	 * \param spritePath: the path to the sprite to set.
 	 * \param pixelPerfect: whether the sprite should be pixelated or not.
 	 */
-	void setSprite(const char* spritePath, bool pixelPerfect);
+	void setSprite(const std::string& spritePath, bool pixelPerfect);
 
 	/**
 	 * Set the column that is being used from the sprite sheet.
