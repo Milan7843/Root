@@ -1710,6 +1710,9 @@
     <ClInclude Include="src\Root\engine\TextureEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\CollisionCallbackHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2324,6 +2327,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\engine\TextureEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\CollisionCallbackHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

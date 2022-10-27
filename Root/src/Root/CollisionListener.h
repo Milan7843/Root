@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Root/components/Rigidbody.h>
+
 #include <box2d/b2_world_callbacks.h>
 #include <box2d/b2_contact.h>
 #include <box2d/b2_body.h>
@@ -14,12 +16,12 @@
  * - Use Physics::setCollisionListener() with a pointer to the new instance
  * - Make sure the instance stays alive
  */
-class CollisionListener : public b2ContactListener
+class CollisionListener
 {
 public:
 
-	virtual void BeginContact(b2Contact* contact) {}
+	virtual void BeginContact(b2Contact* contact, Rigidbody* rb1, Rigidbody* rb2) {}
 
-	virtual void EndContact(b2Contact* contact) {}
+	virtual void EndContact(b2Contact* contact, Rigidbody* rb1, Rigidbody* rb2) {}
 };
 

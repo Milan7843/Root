@@ -95,6 +95,8 @@ namespace RootEngine
 
         RendererEngine::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
+        PhysicsEngine::initialise();
+
         InputEngine::initialise();
 
         unsigned int frame = 0;

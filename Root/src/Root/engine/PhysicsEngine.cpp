@@ -1,4 +1,6 @@
 #include "PhysicsEngine.h"
+
+
 namespace PhysicsEngine
 {
 	namespace
@@ -12,10 +14,15 @@ namespace PhysicsEngine
 
 		// Initialise the world without gravity
 		b2World world{ b2World(b2Vec2(0.0f, -10.0f)) };
+
+		std::vector<b2Body*> bodiesToDestroy;
+
+		CollisionCallbackHandler collisionCallbackHandler;
 	}
 
 	void initialise()
 	{
+		world.SetContactListener(&collisionCallbackHandler);
 	}
 
 	void simulate()
@@ -45,6 +52,14 @@ namespace PhysicsEngine
 
 	void step(float deltaTime)
 	{
+		// First we delete all bodies waiting to be destroyed
+		for (b2Body*& body : bodiesToDestroy)
+		{
+			world.DestroyBody(body);
+		}
+
+		bodiesToDestroy.clear();
+
 		world.Step(deltaTime, velocityIterations, positionIterations);
 	}
 
@@ -55,7 +70,7 @@ namespace PhysicsEngine
 
 	void setCollisionListener(CollisionListener* contactListener)
 	{
-		world.SetContactListener(contactListener);
+		collisionCallbackHandler.setCollisionListener(contactListener);
 	}
 
 	b2Body* addBody(b2BodyDef* definition)
@@ -64,11 +79,18 @@ namespace PhysicsEngine
 		return body;
 	}
 
-	void destroyBody(b2Body* bodyToDestroy)
+	bool destroyBody(b2Body* bodyToDestroy)
 	{
 		if (!world.IsLocked())
+		{
 			world.DestroyBody(bodyToDestroy);
+			return true;
+		}
 		else
-			Logger::logError("Cannot destroy body during physics timestep");
+		{
+			// Add it to the queue to be destroyed later
+			bodiesToDestroy.push_back(bodyToDestroy);
+			return false;
+		}
 	}
 };

@@ -153,6 +153,7 @@
     <ClInclude Include="src\Root\colliders\EdgeCollider.h" />
     <ClInclude Include="src\Root\colliders\LoopCollider.h" />
     <ClInclude Include="src\Root\colliders\PolygonCollider.h" />
+    <ClInclude Include="src\Root\CollisionCallbackHandler.h" />
     <ClInclude Include="src\Root\components\Animator.h" />
     <ClInclude Include="src\Root\engine\AnimationHandlerEngine.h" />
     <ClInclude Include="src\Root\animation\AnimationHandler.h" />
@@ -866,6 +867,7 @@
     <ClCompile Include="src\Root\colliders\EdgeCollider.cpp" />
     <ClCompile Include="src\Root\colliders\LoopCollider.cpp" />
     <ClCompile Include="src\Root\colliders\PolygonCollider.cpp" />
+    <ClCompile Include="src\Root\CollisionCallbackHandler.cpp" />
     <ClCompile Include="src\Root\components\Animator.cpp" />
     <ClCompile Include="src\Root\engine\AnimationHandlerEngine.cpp" />
     <ClCompile Include="src\Root\animation\AnimationHandler.cpp" />

@@ -28,7 +28,6 @@ namespace TextureEngine
 		Texture* loaded = getLoaded(spritePath, pixelPerfect);
 		if (loaded != nullptr)
 		{
-			Logger::log("Loaded texture used.");
 			return loaded->textureID;
 		}
 
@@ -68,7 +67,6 @@ namespace TextureEngine
 
 		// Adding the new texture to the list of loaded textures
 		loadedTextures.push_back(newTexture);
-		Logger::log("Generating new texture...");
 
 		return newTexture.textureID;
 	}

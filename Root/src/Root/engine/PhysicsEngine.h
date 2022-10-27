@@ -2,7 +2,7 @@
 
 #include "Root/engine/RootEngine.h"
 
-#include <Root/CollisionListener.h>
+#include <Root/CollisionCallbackHandler.h>
 
 #include <box2d/box2d.h>
 
@@ -25,7 +25,13 @@ namespace PhysicsEngine
 
 	b2Body* addBody(b2BodyDef* definition);
 
-	void destroyBody(b2Body* bodyToDestroy);
+	/**
+	 * Destroy a particular body.
+	 * 
+	 * \returns true if the body was immediately destroyed,
+	 * or false if the body was put into queue for destruction.
+	 */
+	bool destroyBody(b2Body* bodyToDestroy);
 };
 
 

@@ -348,6 +348,6 @@ private:
 	Rigidbody(TransformPointer transform, Collider& collider, float linearDamping, float angularDamping, bool allowSleep, bool awake, bool fixedRotation, bool bullet, b2BodyType type, bool enabled, float gravityScale);
 
 	FixtureData* fixtureData;
-
+	b2Fixture* fixture;
 	b2Body* body;
 };

@@ -78,7 +78,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	// Creating a fixture data
 	fixtureData = new FixtureData;
 
-	b2Fixture* fixture{ body->CreateFixture(&fixtureDef) };
+	fixture = body->CreateFixture(&fixtureDef);
 
 	// Assigning the user data pointer of the fixture
 	uintptr_t ptr = reinterpret_cast<uintptr_t>(fixtureData);
@@ -133,6 +133,10 @@ Rigidbody::~Rigidbody()
 	PhysicsEngine::destroyBody(this->body);
 	// Deleting the fixture data created on the heap
 	delete fixtureData;
+
+	uintptr_t ptr = reinterpret_cast<uintptr_t>(nullptr);
+	fixture->GetUserDataRef().pointer = ptr;
+
 	// Indicating the rigidbody got destroyed
 	Logger::destructorMessage("Rigidbody");
 }
