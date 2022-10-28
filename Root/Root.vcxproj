@@ -122,7 +122,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>OpenAL32.lib;box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,10 +143,20 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>OpenAL32.lib;box2d.lib;freetype.lib;glfw3.lib;opengl32.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\Audio.h" />
+    <ClInclude Include="src\Root\AudioSource.h" />
+    <ClInclude Include="src\Root\engine\AudioEngine.h" />
+    <ClInclude Include="src\AL\al.h" />
+    <ClInclude Include="src\AL\alc.h" />
+    <ClInclude Include="src\AL\alext.h" />
+    <ClInclude Include="src\AL\efx-creative.h" />
+    <ClInclude Include="src\AL\efx-presets.h" />
+    <ClInclude Include="src\AL\efx.h" />
+    <ClInclude Include="src\AudioFile\AudioFile.h" />
     <ClInclude Include="src\Root\colliders\BoxCollider.h" />
     <ClInclude Include="src\Root\colliders\ChainCollider.h" />
     <ClInclude Include="src\Root\colliders\CircleCollider.h" />
@@ -861,6 +871,8 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\Audio.cpp" />
+    <ClCompile Include="src\Root\AudioSource.cpp" />
     <ClCompile Include="src\Root\colliders\BoxCollider.cpp" />
     <ClCompile Include="src\Root\colliders\ChainCollider.cpp" />
     <ClCompile Include="src\Root\colliders\CircleCollider.cpp" />
@@ -891,6 +903,7 @@
     <ClCompile Include="src\Root\components\ParticleSystemGettersAndSetters.cpp" />
     <ClCompile Include="src\Root\components\Rigidbody.cpp" />
     <ClCompile Include="src\Root\components\Script.cpp" />
+    <ClCompile Include="src\Root\engine\AudioEngine.cpp" />
     <ClCompile Include="src\Root\engine\ComponentEngine.cpp" />
     <ClCompile Include="src\Root\engine\InputEngine.cpp" />
     <ClCompile Include="src\Root\engine\PhysicsEngine.cpp" />
