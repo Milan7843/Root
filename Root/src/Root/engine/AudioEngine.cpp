@@ -8,7 +8,7 @@ namespace AudioEngine
 	{
 		std::map<std::string, unsigned int> soundBufferIDs;
 
-		std::vector<std::shared_ptr<AudioSource>> activeAudioSources;
+		std::forward_list<std::shared_ptr<AudioSource>> activeAudioSources;
 
 		ALCcontext* context{ nullptr };
 		ALCdevice* device{ nullptr };
@@ -53,6 +53,30 @@ namespace AudioEngine
 		alListenerfv(AL_ORIENTATION, forwardAndUpVectors);
 	}
 
+	void update()
+	{
+		// Deleting all audio sources that are done
+		std::forward_list<std::shared_ptr<AudioSource>>::iterator before = activeAudioSources.before_begin();
+
+		for (std::forward_list<std::shared_ptr<AudioSource>>::iterator 
+			it = activeAudioSources.begin(); 
+			it != activeAudioSources.end(); )
+		{
+			// If the audio source we are checking is done, delete it
+			if (it->get()->isDone())
+			{
+				it = activeAudioSources.erase_after(before);
+			}
+			else
+			{
+				before = it;
+				++it;
+			}
+		}
+
+		Profiler::addCheckpoint("Audio sources update");
+	}
+
 	void terminate()
 	{
 		// Deleting all buffers
@@ -76,10 +100,11 @@ namespace AudioEngine
 		}
 
 		AudioSource* source = new AudioSource(name);
+		source->setOnFinishAudio(OnFinishAudio::DESTROY_SELF);
 		source->play();
 		std::shared_ptr<AudioSource> pointer(source);
 
-		activeAudioSources.push_back(pointer);
+		activeAudioSources.emplace_front(pointer);
 	}
 
 	void loadSound(const std::string& path, const std::string& name)

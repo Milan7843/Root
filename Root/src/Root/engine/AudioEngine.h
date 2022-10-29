@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Root/Logger.h>
+#include <simpleprofiler/Profiler.h>
 
 #include <AL/al.h>
 #include <AL/alc.h>
@@ -11,10 +12,13 @@
 
 #include <map>
 #include <vector>
+#include <forward_list>
 
 namespace AudioEngine
 {
 	void initialise();
+
+	void update();
 
 	void terminate();
 

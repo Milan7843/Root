@@ -5,6 +5,13 @@
 
 #include <string>
 
+enum class OnFinishAudio
+{
+	PAUSE,
+	LOOP,
+	DESTROY_SELF
+};
+
 class AudioSource
 {
 public:
@@ -29,6 +36,11 @@ public:
 	void pause();
 
 	/**
+	 * Stop this audio source.
+	 */
+	void stop();
+
+	/**
 	 * Set the audio clip that this source plays.
 	 * 
 	 * \param name: the name of the audio clip that this audio source will play.
@@ -50,13 +62,24 @@ public:
 	void setPitch(float pitch);
 
 	/**
-	 * Set whether this audio source should loop.
-	 *
-	 * \param loop: whether this audio source should loop.
+	 * Get whether this audio source is done.
+	 * Only happens when the audio clip has finished playing
+	 * and the onFinishAudio is set to DESTROY_SELF.
+	 * 
+	 * \return whether this audio source is done.
 	 */
-	void setLooping(bool loop);
+	bool isDone();
+
+	/**
+	 * Define what should happen when the audio playing finishes.
+	 * 
+	 * \param onFinishAudio: what should happen when the audio playing finishes.
+	 */
+	void setOnFinishAudio(OnFinishAudio onFinishAudio);
 
 private:
+
+	OnFinishAudio onFinishAudio{ OnFinishAudio::PAUSE };
 
 	unsigned int sourceID{ 0 };
 };

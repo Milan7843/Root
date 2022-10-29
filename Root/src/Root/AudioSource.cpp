@@ -9,7 +9,7 @@ AudioSource::AudioSource()
 	alSource3f(sourceID, AL_VELOCITY, 0.f, 0.f, 0.f);
 	alSourcef(sourceID, AL_PITCH, 1.f);
 	alSourcef(sourceID, AL_GAIN, 1.f);
-	alSourcei(sourceID, AL_LOOPING, AL_FALSE);
+	alSourcei(sourceID, AL_LOOPING, onFinishAudio == OnFinishAudio::LOOP);
 }
 
 AudioSource::AudioSource(const std::string& name)
@@ -19,7 +19,7 @@ AudioSource::AudioSource(const std::string& name)
 	alSource3f(sourceID, AL_VELOCITY, 0.f, 0.f, 0.f);
 	alSourcef(sourceID, AL_PITCH, 1.f);
 	alSourcef(sourceID, AL_GAIN, 1.f);
-	alSourcei(sourceID, AL_LOOPING, AL_FALSE);
+	alSourcei(sourceID, AL_LOOPING, onFinishAudio == OnFinishAudio::LOOP);
 
 	setAudioClip(name);
 }
@@ -39,6 +39,11 @@ void AudioSource::pause()
 	alSourcePause(sourceID);
 }
 
+void AudioSource::stop()
+{
+	alSourceStop(sourceID);
+}
+
 void AudioSource::setAudioClip(const std::string& name)
 {
 	unsigned int buffer{ AudioEngine::findBufferByName(name) };
@@ -55,7 +60,16 @@ void AudioSource::setPitch(float pitch)
 	alSourcef(sourceID, AL_PITCH, pitch);
 }
 
-void AudioSource::setLooping(bool loop)
+bool AudioSource::isDone()
 {
-	alSourcei(sourceID, AL_LOOPING, loop);
+	ALint sourceState{ AL_PLAYING };
+	//alGetSourcei(sourceID, AL_SOURCE_STATE, &sourceState);
+	return onFinishAudio == OnFinishAudio::DESTROY_SELF && sourceState == AL_STOPPED;
+}
+
+void AudioSource::setOnFinishAudio(OnFinishAudio onFinishAudio)
+{
+	this->onFinishAudio = onFinishAudio;
+
+	alSourcei(sourceID, AL_LOOPING, onFinishAudio == OnFinishAudio::LOOP);
 }

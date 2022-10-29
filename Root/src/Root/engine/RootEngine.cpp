@@ -129,6 +129,8 @@ namespace RootEngine
             // Calling all component and script start() and update() functions
             ComponentEngine::updateScripts();
 
+            AudioEngine::update();
+
             AnimationHandlerEngine::update();
 
             PhysicsEngine::step(Time::getDeltaTime());
