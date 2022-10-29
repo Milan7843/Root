@@ -93,6 +93,8 @@ namespace RootEngine
         // makes sure objects get drawn on top of each other in the correct order
         glEnable(GL_DEPTH_TEST);
 
+        AudioEngine::initialise();
+
         RendererEngine::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
         PhysicsEngine::initialise();
@@ -180,6 +182,8 @@ namespace RootEngine
         terminateRoot();
 
         RendererEngine::terminate();
+
+        AudioEngine::terminate();
 
         Logger::stop();
 

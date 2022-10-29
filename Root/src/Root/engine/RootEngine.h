@@ -8,6 +8,7 @@
 #include "Root/engine/TransformEngine.h"
 #include "Root/engine/ComponentEngine.h"
 #include "Root/engine/AnimationHandlerEngine.h"
+#include "Root/engine/AudioEngine.h"
 #include "Root/shaders/Shader.h"
 
 #include "Root/Time.h"

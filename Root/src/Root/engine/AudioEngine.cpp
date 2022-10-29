@@ -71,6 +71,7 @@ namespace AudioEngine
 		if (buffer == 0)
 		{
 			// No audio clip was found with the given name
+			Logger::logError("Tried to play sound with name that was not loaded: " + name);
 			return;
 		}
 

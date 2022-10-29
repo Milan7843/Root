@@ -15,7 +15,7 @@ AudioSource::AudioSource()
 AudioSource::AudioSource(const std::string& name)
 {
 	alGenSources(1, &sourceID);
-	alSource3f(sourceID, AL_POSITION, 1.f, 0.f, 0.f);
+	alSource3f(sourceID, AL_POSITION, 0.f, 0.f, 0.f);
 	alSource3f(sourceID, AL_VELOCITY, 0.f, 0.f, 0.f);
 	alSourcef(sourceID, AL_PITCH, 1.f);
 	alSourcef(sourceID, AL_GAIN, 1.f);
