@@ -111,7 +111,7 @@ std::string Transform::toString()
 {
 	std::stringstream stream;
 	// Writing this object to the stream
-	stream << "[Transform] " << name
+	stream << "[Transform] " << name << ", tagged " << tag
 		<< "\n > position: (" << position.x << ", " << position.y << ")"
 		<< "\n > rotation: " << rotation
 		<< "\n > scale: (" << scale.x << ", " << scale.y << ")"
@@ -159,6 +159,16 @@ void Transform::setName(std::string name)
 std::string Transform::getName()
 {
 	return name;
+}
+
+void Transform::setTag(std::string tag)
+{
+	this->tag = tag;
+}
+
+std::string Transform::getTag()
+{
+	return tag;
 }
 
 Transform* Transform::getParent()

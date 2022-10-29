@@ -96,6 +96,22 @@ public:
 	std::string getName();
 
 	/**
+	 * Set this transform's tag.
+	 * Any transform's tag starts out as empty ("").
+	 *
+	 * \param tag: the new tag.
+	 */
+	void setTag(std::string tag);
+
+	/**
+	 * Get this transform's tag.
+	 * Any transform's tag starts out as empty ("").
+	 *
+	 * \returns tag: the tag.
+	 */
+	std::string getTag();
+
+	/**
 	 * Get the parent of this transform.
 	 * 
 	 * \returns the parent of this transform, or NULL if it does not have one.
@@ -412,6 +428,7 @@ private:
 	glm::vec2 scale;
 
 	std::string name{};
+	std::string tag{};
 
 	float renderDepth{ -1.0f };
 
