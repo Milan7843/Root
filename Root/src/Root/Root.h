@@ -46,12 +46,10 @@ class Camera;
 namespace Root
 {
 	/**
-	* <summary>
 	* Start the Root framework.
-	* <param> windowWidth the width of the window used to render to.
-	* <param> windowHeight the height of the window used to render to.
-	* <returns> 0 for succesful run, -1 for error.
-	* </summary>
+	* \param windowWidth: the width of the window used to render to.
+	* \param windowHeight: the height of the window used to render to.
+	* \returns 0 for succesful run, -1 for error.
 	*/
 	int Start(unsigned int windowWidth, unsigned int windowHeight);
 

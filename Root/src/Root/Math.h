@@ -46,7 +46,7 @@ namespace Math
 			return v2;
 
 		float t2{ (1.0f - glm::cos(t * glm::pi<float>())) / 2.0f };
-		return(v1 * (1.0f - t2) + v2 * t2);
+		return (1.0f - t2) * v1  + t2 * v2;
 	}
 
 	/**

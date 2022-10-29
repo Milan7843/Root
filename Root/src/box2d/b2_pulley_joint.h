@@ -73,14 +73,14 @@ struct B2_API b2PulleyJointDef : public b2JointDef
 	float ratio;
 };
 
-/// The pulley joint is connected to two bodies and two fixed ground points.
-/// The pulley supports a ratio such that:
-/// length1 + ratio * length2 <= constant
-/// Yes, the force transmitted is scaled by the ratio.
-/// Warning: the pulley joint can get a bit squirrelly by itself. They often
-/// work better when combined with prismatic joints. You should also cover the
-/// the anchor points with static shapes to prevent one side from going to
-/// zero length.
+// The pulley joint is connected to two bodies and two fixed ground points.
+// The pulley supports a ratio such that:
+// length1 + ratio * length2 <= constant
+// Yes, the force transmitted is scaled by the ratio.
+// Warning: the pulley joint can get a bit squirrelly by itself. They often
+// work better when combined with prismatic joints. You should also cover the
+// the anchor points with static shapes to prevent one side from going to
+// zero length.
 class B2_API b2PulleyJoint : public b2Joint
 {
 public:
