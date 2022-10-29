@@ -26,6 +26,7 @@ AudioSource::AudioSource(const std::string& name)
 
 AudioSource::~AudioSource()
 {
+	Logger::destructorMessage("Audio source");
 	alDeleteSources(1, &sourceID);
 }
 
@@ -62,8 +63,8 @@ void AudioSource::setPitch(float pitch)
 
 bool AudioSource::isDone()
 {
-	ALint sourceState{ AL_PLAYING };
-	//alGetSourcei(sourceID, AL_SOURCE_STATE, &sourceState);
+	ALint sourceState;
+	alGetSourcei(sourceID, AL_SOURCE_STATE, &sourceState);
 	return onFinishAudio == OnFinishAudio::DESTROY_SELF && sourceState == AL_STOPPED;
 }
 

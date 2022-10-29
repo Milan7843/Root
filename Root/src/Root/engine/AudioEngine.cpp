@@ -65,6 +65,7 @@ namespace AudioEngine
 			// If the audio source we are checking is done, delete it
 			if (it->get()->isDone())
 			{
+				Logger::log("Deleting audio source");
 				it = activeAudioSources.erase_after(before);
 			}
 			else

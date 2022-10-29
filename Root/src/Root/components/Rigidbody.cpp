@@ -115,7 +115,6 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-	std::cout << "gravity scale " << gravityScale << std::endl;
 	Rigidbody* rigidbody = new Rigidbody(transform, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
@@ -137,7 +136,6 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-	std::cout << "gravity scale " << gravityScale << std::endl;
 	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
