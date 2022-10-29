@@ -101,6 +101,51 @@ void AnimationWeb::addParameter(const std::string& tag, bool initialValue)
 	boolParameters.emplace(tag, initialValue);
 }
 
+std::vector<AnimationLink> AnimationWeb::getLinksByAnimationTag(const std::string& tag)
+{
+	std::vector<AnimationLink> result;
+
+	for (AnimationLink& link : links)
+	{
+		if (link.tag1 == tag)
+		{
+			result.push_back(link);
+		}
+	}
+
+	return result;
+}
+
+std::string AnimationWeb::toString()
+{
+	std::stringstream sstream;
+
+	sstream << "Animation web: \n";
+	sstream << "Active animation: " << (currentAnimationTag == "" ? "None" : currentAnimationTag) << "\n";
+	
+	for (std::pair<std::string, Animation> taggedAnimation : animations)
+	{
+		const std::string& tag{ taggedAnimation.first };
+
+		sstream << "Animation: \n";
+		sstream << "Identifying tag: " << tag << "\n";
+		sstream << "Links:\n";
+		for (AnimationLink& link : getLinksByAnimationTag(tag))
+		{
+			sstream << "  - " << tag << " to " << link.tag2;
+
+			// Check if there is a condition set
+			if (link.condition.parameterTag != "nc")
+			{
+				sstream << " if " << link.condition.parameterTag << " is " << (link.condition.comparative ? "true" : "false") << "\n";
+			}
+		}
+		sstream << "\n";
+	}
+
+	return sstream.str();
+}
+
 AnimationLink* AnimationWeb::getLinkByTags(const std::string& tag1, const std::string& tag2)
 {
 	for (AnimationLink& link : links)

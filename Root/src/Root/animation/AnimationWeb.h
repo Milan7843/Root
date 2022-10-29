@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <sstream>
 #include <map>
 
 struct BoolAnimationCondition
@@ -58,9 +59,22 @@ public:
 	 */
 	void createLink(const std::string& tag1, const std::string& tag2, bool waitForEndOfAnimation);
 
+	/**
+	 * Add a condition to an existing link.
+	 * 
+	 * \param tag1: the tag of the "from" part of the link.
+	 * \param tag2: the tag of the "to" part of the link.
+	 * \param parameterTag: the tag of the parameter to check.
+	 * \param comparative: what to compare the parameter to.
+	 */
 	void addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative);
 
-
+	/**
+	 * Set a boolean parameter.
+	 * 
+	 * \param tag: the tag with which to identify the parameter.
+	 * \param value: the new value of the parameter.
+	 */
 	void setBool(const std::string& tag, bool value);
 
 	/**
@@ -71,12 +85,21 @@ public:
 	 */
 	void addParameter(const std::string& tag, bool initialValue);
 
+	/**
+	 * Create a human readable string from this animation web.
+	 * 
+	 * \return this animation web in a human readable format.
+	 */
+	std::string toString();
+
 private:
 
 	Animation* currentAnimation{ nullptr };
 	std::string currentAnimationTag{};
 
 	AnimationLink* getLinkByTags(const std::string& tag1, const std::string& tag2);
+
+	std::vector<AnimationLink> getLinksByAnimationTag(const std::string& tag);
 
 	bool evaluateCondition(BoolAnimationCondition& condition);
 
