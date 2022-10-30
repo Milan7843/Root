@@ -1,5 +1,12 @@
 #include "PolygonCollider.h"
 
+std::shared_ptr<Collider> PolygonCollider::create(std::vector<glm::vec2>& points)
+{
+	PolygonCollider* collider = new PolygonCollider(points);
+	std::shared_ptr<PolygonCollider> pointer{ collider };
+	return pointer;
+}
+
 PolygonCollider::PolygonCollider(std::vector<glm::vec2>& points)
 {
 	setPoints(points);
@@ -43,4 +50,46 @@ b2Shape* PolygonCollider::getShape()
 		shape->Set(&b2Points[0], pointCount);
 	}
 	return shape;
+}
+
+void PolygonCollider::renderDebugView()
+{
+	if (debugVAO == 0)
+	{
+		generateDebugVAO();
+	}
+	glBindVertexArray(debugVAO);
+
+	glDrawArrays(GL_LINE_LOOP, 0, points.size());
+
+	glBindVertexArray(0);
+}
+
+void PolygonCollider::generateDebugVAO()
+{
+	// Creating the VAO
+
+	unsigned int VBO;
+
+	// Generating the required objects
+	glGenVertexArrays(1, &debugVAO);
+	glGenBuffers(1, &VBO);
+
+	// Making sure everything gets put on this specific VAO
+	glBindVertexArray(debugVAO);
+
+	// Binding the buffers
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	// Putting the vertices into the buffer
+	glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(glm::vec2), points.data(), GL_STATIC_DRAW);
+
+	// Letting OpenGL know how to interpret the data:
+	// 2 floats for position
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// Unbinding
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }

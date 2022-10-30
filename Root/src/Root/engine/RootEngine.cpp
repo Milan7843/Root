@@ -15,6 +15,7 @@ namespace RootEngine
 
         Shader* spriteRenderShader;
         Shader* particleRenderShader;
+        Shader* debugRenderShader;
 
         Camera* activeCamera{ nullptr };
         GLFWwindow* window{ nullptr };
@@ -81,6 +82,10 @@ namespace RootEngine
         spriteRenderShader = new Shader(
             "include/Root/default_shader_source/spriteVertex.shader",
             "include/Root/default_shader_source/spriteFragment.shader");
+
+        debugRenderShader = new Shader(
+            "include/Root/default_shader_source/debugVertex.shader",
+            "include/Root/default_shader_source/debugFragment.shader");
 
         particleRenderShader = new Shader(
             "include/Root/default_shader_source/particleVertex.shader",
@@ -159,6 +164,10 @@ namespace RootEngine
 
             RendererEngine::displayFrame();
 
+            glDisable(GL_DEPTH_TEST);
+
+            PhysicsEngine::renderDebugView();
+
             RootGUIInternal::render();
 
             InputEngine::newFrame();
@@ -197,6 +206,11 @@ namespace RootEngine
     Shader* getSpriteRenderShader()
     {
         return spriteRenderShader;
+    }
+
+    Shader* getDebugRenderShader()
+    {
+        return debugRenderShader;
     }
 
     Shader* getParticleRenderShader()

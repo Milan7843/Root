@@ -4,6 +4,10 @@
 
 #include <box2d/b2_settings.h>
 
+void Rigidbody::generateDebugVAO()
+{
+}
+
 Rigidbody::Rigidbody(TransformPointer transform,
 	float linearDamping,
 	float angularDamping,
@@ -14,6 +18,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	b2BodyType type,
 	bool enabled,
 	float gravityScale)
+	: collider(nullptr)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -53,7 +58,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 Rigidbody::Rigidbody(TransformPointer transform,
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
-	Collider& collider,
+	std::shared_ptr<Collider> collider,
 	float linearDamping,
 	float angularDamping,
 	bool allowSleep,
@@ -63,6 +68,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	b2BodyType type,
 	bool enabled,
 	float gravityScale)
+	: collider(collider)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -82,7 +88,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	body = PhysicsEngine::addBody(&bodyDef);
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = collider.getShape();
+	fixtureDef.shape = collider->getShape();
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
 
@@ -123,7 +129,7 @@ RigidbodyPointer Rigidbody::create(
 
 RigidbodyPointer Rigidbody::create(
 	TransformPointer transform,
-	Collider& collider,
+	std::shared_ptr<Collider> collider,
 	b2BodyType type,
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
@@ -372,4 +378,20 @@ LayerMask Rigidbody::getSelfLayerMask()
 LayerMask Rigidbody::getInteractionLayerMask()
 {
 	return fixture->GetFilterData().maskBits;
+}
+
+void Rigidbody::renderDebugView()
+{
+	// Getting the shader
+	Shader* debugRenderShader{ Root::getDebugRenderShader() };
+
+	// Setting shader variables
+	debugRenderShader->use();
+	debugRenderShader->setMat4("model", transform->getModelMatrixWithoutScale());
+	debugRenderShader->setMat4("view", Root::getActiveCamera()->getTransform()->getInverseTransformMatrix());
+
+	debugRenderShader->setMat4("projection", Root::getActiveCamera()->getProjectionMatrix());
+	debugRenderShader->setVector3("lineColor", glm::vec3(0.0f, 1.0f, 0.0f));
+
+	collider->renderDebugView();
 }

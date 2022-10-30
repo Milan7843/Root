@@ -11,6 +11,7 @@ namespace PhysicsEngine
 		int32 positionIterations{ 2 };
 		float timeStep{ 1.0f / 60.0f };
 		b2Body* body;
+		bool debugModeEnabled{ false };
 
 		// Initialise the world without gravity
 		b2World world{ b2World(b2Vec2(0.0f, -10.0f)) };
@@ -63,6 +64,47 @@ namespace PhysicsEngine
 		world.Step(deltaTime, velocityIterations, positionIterations);
 
 		Profiler::addCheckpoint("Physics step");
+	}
+
+	void renderDebugView()
+	{
+		if (!debugModeEnabled)
+			return;
+
+		b2Body* body{ world.GetBodyList() };
+
+		for (unsigned int i{ 0 }; i < world.GetBodyCount(); i++)
+		{
+			// Retrieving the fixture data
+			FixtureData* fixtureData{ 
+				reinterpret_cast<FixtureData*>(
+					body->GetFixtureList()->GetUserData().pointer
+				)
+			};
+
+			if (fixtureData == nullptr)
+			{
+				body = body->GetNext();
+				continue;
+			}
+
+			// Retrieving the rigidbody
+			Rigidbody* rigidbody{ fixtureData->rigidbody };
+
+			rigidbody->renderDebugView();
+
+			body = body->GetNext();
+		}
+	}
+
+	void enableDebugMode()
+	{
+		debugModeEnabled = true;
+	}
+
+	void disableDebugMode()
+	{
+		debugModeEnabled = false;
 	}
 
 	void setGravity(float x, float y)

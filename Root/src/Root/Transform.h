@@ -203,6 +203,14 @@ public:
 	glm::mat4 getModelMatrix();
 
 	/**
+	 * Get a matrix which correctly transforms world space points to local space,
+	 * except for scaling.
+	 *
+	 * \returns the non-scaled model matrix.
+	 */
+	glm::mat4 getModelMatrixWithoutScale();
+
+	/**
 	 * Get a matrix which correctly transforms parent space points to local space.
 	 *
 	 * \returns the transform matrix.
@@ -210,11 +218,27 @@ public:
 	glm::mat4 getTransformMatrix();
 
 	/**
+	 * Get a matrix which correctly transforms parent space points to local space,
+	 * except for scaling.
+	 *
+	 * \returns the non-scaled transform matrix.
+	 */
+	glm::mat4 getTransformMatrixWithoutScale();
+
+	/**
 	 * Get a matrix which correctly transforms local space points to parent space.
 	 *
 	 * \returns the inverse transform matrix.
 	 */
 	glm::mat4 getInverseTransformMatrix();
+
+	/**
+	 * Get a matrix which correctly transforms local space points to parent space,
+	 * except for scaling.
+	 *
+	 * \returns the non-scaled inverse transform matrix.
+	 */
+	glm::mat4 getInverseTransformMatrixWithoutScale();
 
 	/**
 	 * Transform a point from world space into local space.
@@ -435,7 +459,9 @@ private:
 	// Flag that when set, causes the transform matrices to be updated
 	bool transformUpdated{ true };
 	glm::mat4 transform{ glm::identity<glm::mat4>() };
+	glm::mat4 transformWithoutScale{ glm::identity<glm::mat4>() };
 	glm::mat4 inverseTransform{ glm::identity<glm::mat4>() };
+	glm::mat4 inverseTransformWithoutScale{ glm::identity<glm::mat4>() };
 
 	Transform(glm::vec2 position, float rotation, glm::vec2 scale, float renderDepth);
 

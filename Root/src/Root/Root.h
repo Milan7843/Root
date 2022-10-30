@@ -61,6 +61,13 @@ namespace Root
 	Shader* getSpriteRenderShader();
 
 	/**
+	 * Get a pointer to the shader used for debug rendering.
+	 *
+	 * \returns a pointer to the shader used for debug rendering.
+	 */
+	Shader* getDebugRenderShader();
+
+	/**
 	 * Add a script to the scene.
 	 * 
 	 * \param script: the script to add to the scene.

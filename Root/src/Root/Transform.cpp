@@ -25,6 +25,8 @@ void Transform::updateTransformMatrices()
 	transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0, 0, 1));
 	//model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
 
+	transformWithoutScale = glm::mat4{ transform };
+
 	transform = glm::scale(transform, glm::vec3(scale.x, scale.y, 1.0f));
 
 	//glm::vec3 newTranslation = glm::mat3(transform) * glm::vec3(position.x, position.y, 0.0f);
@@ -41,6 +43,8 @@ void Transform::updateTransformMatrices()
 	// Updating the inverse transform matrix
 	
 	inverseTransform = glm::identity<glm::mat4>();
+
+	inverseTransformWithoutScale = glm::identity<glm::mat4>();
 	
 	// Scale must not be zero for this step
 	if (scale.x != 0.0f && scale.y != 0.0f)
@@ -48,9 +52,16 @@ void Transform::updateTransformMatrices()
 
 	//model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
 	inverseTransform = glm::rotate(inverseTransform, glm::radians(-rotation), glm::vec3(0, 0, 1));
+
+	inverseTransformWithoutScale
+		= glm::rotate(inverseTransformWithoutScale, glm::radians(-rotation), glm::vec3(0, 0, 1));
+
 	//model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
 
 	inverseTransform = glm::translate(inverseTransform, glm::vec3(-position.x, -position.y, 0.0f));
+
+	inverseTransformWithoutScale
+		= glm::translate(inverseTransformWithoutScale, glm::vec3(-position.x, -position.y, 0.0f));
 
 	//inverseTransform = glm::inverse(transform);
 	
@@ -257,6 +268,20 @@ glm::mat4 Transform::getModelMatrix()
 	return model;
 }
 
+glm::mat4 Transform::getModelMatrixWithoutScale()
+{
+	glm::mat4 model{ glm::mat4(1.0f) };
+
+	if (parent != NULL)
+	{
+		model = model * parent->getModelMatrix();
+	}
+
+	model = model * getTransformMatrixWithoutScale();
+
+	return model;
+}
+
 glm::mat4 Transform::getTransformMatrix()
 {
 	updateTransformMatrices();
@@ -264,11 +289,25 @@ glm::mat4 Transform::getTransformMatrix()
 	return transform;
 }
 
+glm::mat4 Transform::getTransformMatrixWithoutScale()
+{
+	updateTransformMatrices();
+
+	return transformWithoutScale;
+}
+
 glm::mat4 Transform::getInverseTransformMatrix()
 {
 	updateTransformMatrices();
 
 	return inverseTransform;
+}
+
+glm::mat4 Transform::getInverseTransformMatrixWithoutScale()
+{
+	updateTransformMatrices();
+
+	return inverseTransformWithoutScale;
 }
 
 glm::vec2 Transform::worldPointToLocalPoint(glm::vec2 point)

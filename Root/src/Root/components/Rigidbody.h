@@ -136,7 +136,7 @@ public:
 	 */
 	static RigidbodyPointer create(
 		TransformPointer transform,
-		Collider& collider,
+		std::shared_ptr<Collider> collider,
 		b2BodyType type = b2_staticBody,
 		LayerMask selfLayerMask = LAYER_0,
 		LayerMask interactionLayerMask = LAYER_ALL,
@@ -414,7 +414,12 @@ public:
 	 */
 	LayerMask getInteractionLayerMask();
 
+
+	void renderDebugView();
+
 private:
+
+	void generateDebugVAO();
 
 	Rigidbody(TransformPointer transform,
 		float linearDamping,
@@ -430,7 +435,7 @@ private:
 	Rigidbody(TransformPointer transform,
 		LayerMask selfLayerMask,
 		LayerMask interactionLayerMask,
-		Collider& collider,
+		std::shared_ptr<Collider> collider,
 		float linearDamping,
 		float angularDamping,
 		bool allowSleep,
@@ -444,4 +449,5 @@ private:
 	FixtureData* fixtureData;
 	b2Fixture* fixture;
 	b2Body* body;
+	std::shared_ptr<Collider> collider;
 };

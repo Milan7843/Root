@@ -17,5 +17,15 @@ namespace Physics
 	 * \param y: the y-component of the gravity (up or down)
 	 */
 	void setGravity(float x, float y);
+
+	/**
+	 * Enable the physics debug view mode.
+	 */
+	void enableDebugMode();
+
+	/**
+	 *  Disable the physics debug view mode.
+	 */
+	void disableDebugMode();
 };
 

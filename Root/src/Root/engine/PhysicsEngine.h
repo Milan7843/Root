@@ -19,6 +19,12 @@ namespace PhysicsEngine
 
 	void step(float deltaTima);
 
+	void renderDebugView();
+
+	void enableDebugMode();
+
+	void disableDebugMode();
+
 	void setGravity(float x, float y);
 
 	void setCollisionListener(CollisionListener* contactListener);

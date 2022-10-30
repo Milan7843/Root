@@ -8,9 +8,20 @@ namespace Physics
     {
         PhysicsEngine::setCollisionListener(collisionListener);
     }
+
     void setGravity(float x, float y)
     {
         PhysicsEngine::setGravity(x, y);
+    }
+
+    void enableDebugMode()
+    {
+        PhysicsEngine::enableDebugMode();
+    }
+
+    void disableDebugMode()
+    {
+        PhysicsEngine::disableDebugMode();
     }
 };
 

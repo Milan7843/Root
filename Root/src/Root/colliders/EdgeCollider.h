@@ -11,6 +11,23 @@
 class EdgeCollider : public Collider
 {
 public:
+
+	/**
+	 * Create a new edge collider.
+	 *
+	 * \param point1: the first point of the edge collider.
+	 * \param point2: the second point of the edge collider.
+	 */
+	static std::shared_ptr<Collider> create(glm::vec2& point1, glm::vec2& point2);
+
+	~EdgeCollider();
+
+	b2Shape* getShape() override;
+
+	void renderDebugView() override;
+
+private:
+
 	/**
 	 * Create a new edge collider.
 	 *
@@ -18,12 +35,8 @@ public:
 	 * \param point2: the second point of the edge collider.
 	 */
 	EdgeCollider(glm::vec2& point1, glm::vec2& point2);
-	~EdgeCollider();
 
-
-	b2Shape* getShape() override;
-
-private:
+	void generateDebugVAO();
 
 	// The points that make up this collider
 	glm::vec2 point1;

@@ -1,9 +1,29 @@
 #include "BoxCollider.h"
 
+std::shared_ptr<Collider> BoxCollider::create(float width, float height)
+{
+	BoxCollider* collider = new BoxCollider(width, height);
+	std::shared_ptr<BoxCollider> pointer{ collider };
+	return pointer;
+}
+
 BoxCollider::BoxCollider(float width, float height)
 	: width(width)
 	, height(height)
 {
+}
+
+void BoxCollider::renderDebugView()
+{
+    if (debugVAO == 0)
+    {
+        generateDebugVAO();
+    }
+    glBindVertexArray(debugVAO);
+
+    glDrawArrays(GL_LINE_LOOP, 0, 4);
+
+    glBindVertexArray(0);
 }
 
 BoxCollider::~BoxCollider()
@@ -22,4 +42,40 @@ b2Shape* BoxCollider::getShape()
 	}
 
 	return shape;
+}
+
+void BoxCollider::generateDebugVAO()
+{
+    // Creating the VAO for a square to draw 
+    unsigned int VBO;
+
+    float vertices[] = {
+        // Positions
+         width / 2.0f,  height / 2.0f, // top right
+         width / 2.0f, -height / 2.0f, // bottom right
+        -width / 2.0f, -height / 2.0f, // bottom left
+        -width / 2.0f,  height / 2.0f, // top left 
+    };
+
+    // Generating the required objects
+    glGenVertexArrays(1, &debugVAO);
+    glGenBuffers(1, &VBO);
+
+    // Making sure everything gets put on this specific VAO
+    glBindVertexArray(debugVAO);
+
+    // Binding the buffers
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // Putting the vertices into the buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Letting OpenGL know how to interpret the data:
+    // 2 floats for position
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbinding
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }

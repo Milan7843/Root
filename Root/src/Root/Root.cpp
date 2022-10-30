@@ -16,6 +16,10 @@ namespace Root
         return RootEngine::getSpriteRenderShader();
     }
 
+    Shader* getDebugRenderShader()
+    {
+        return RootEngine::getDebugRenderShader();
+    }
 
     void addScript(std::shared_ptr<Script> script)
     {

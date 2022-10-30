@@ -7,19 +7,32 @@
 class BoxCollider : public Collider
 {
 public:
+
 	/**
 	 * Create a new box collider.
 	 *
-	 * \param width: the width of the box collider;
-	 * \param height: the height of the box collider;
+	 * \param width: the width of the box collider.
+	 * \param height: the height of the box collider.
 	 */
-	BoxCollider(float width = 1.0f, float height = 1.0f);
+	static std::shared_ptr<Collider> create(float width = 1.0f, float height = 1.0f);
 
 	~BoxCollider();
 
 	b2Shape* getShape() override;
 
+	void renderDebugView() override;
+
 private:
+
+	/**
+	 * Create a new box collider.
+	 *
+	 * \param width: the width of the box collider.
+	 * \param height: the height of the box collider.
+	 */
+	BoxCollider(float width, float height);
+
+	void generateDebugVAO();
 
 	float width;
 	float height;
