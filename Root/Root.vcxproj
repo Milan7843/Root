@@ -717,12 +717,13 @@
     <ClInclude Include="src\rootgui\Rectangle.h" />
     <ClInclude Include="src\rootgui\RootGUI.h" />
     <ClInclude Include="src\simpleprofiler\Profiler.h" />
-    <ClInclude Include="src\simpletext\SimpleText.h" />
     <ClInclude Include="src\stbi_utility\TextureData.h" />
     <ClInclude Include="src\stb_image\stbi_image.h" />
     <ClInclude Include="src\Root\animation\ValueAnimation.h" />
     <ClInclude Include="src\Root\animation\ValueAnimationInterface.h" />
     <ClInclude Include="src\Root\engine\TextureEngine.h" />
+    <ClInclude Include="src\rootgui\Text.h" />
+    <ClInclude Include="src\rootgui\internal\TextEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl" />
@@ -930,11 +931,12 @@
     <ClCompile Include="src\rootgui\Rectangle.cpp" />
     <ClCompile Include="src\rootgui\RootGUI.cpp" />
     <ClCompile Include="src\simpleprofiler\Profiler.cpp" />
-    <ClCompile Include="src\simpletext\SimpleText.cpp" />
     <ClCompile Include="src\stbi_utility\TextureData.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimation.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp" />
     <ClCompile Include="src\Root\engine\TextureEngine.cpp" />
+    <ClCompile Include="src\rootgui\Text.cpp" />
+    <ClCompile Include="src\rootgui\internal\TextEngine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

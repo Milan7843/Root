@@ -111,6 +111,16 @@ namespace RootGUIInternal
             const char* textVertexShaderCode{
                 "#version 460 core\n"
                 "layout(location = 0) in vec4 vertex;\n"
+                "\n"
+                "struct CharacterInfo {\n"
+                "   vec2 uv;\n"
+                "   vec2 size;\n"
+                "}\n"
+                "layout(std140, binding = 0) buffer CharacterUVs\n"
+                "{\n"
+                "    CharacterInfo info[];\n"
+                "};\n"
+                "\n"
                 "out vec2 TexCoords;\n"
                 "\n"
                 "uniform mat4 projection;\n"
@@ -216,6 +226,8 @@ namespace RootGUIInternal
 
         renderQueue.clear();
 
+        TextEngine::terminate();
+
         std::cout << "RootGUI terminated." << std::endl;
     }
 
@@ -228,6 +240,11 @@ namespace RootGUIInternal
         {
             item->render(guiShader, textShader);
         }
+    }
+
+    unsigned int getTextShader()
+    {
+        return textShader;
     }
 
     unsigned int getQuadVAO()

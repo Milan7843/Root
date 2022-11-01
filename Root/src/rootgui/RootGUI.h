@@ -1,6 +1,5 @@
 #pragma once
 
-#include "simpletext/SimpleText.h"
 #include "Item.h"
 #include "Rectangle.h"
 #include "Image.h"
@@ -39,5 +38,13 @@ namespace RootGUI
 	 * \returns the current height of the window.
 	 */
 	unsigned int getWindowHeight();
+
+	/**
+	 * Load the data for a font.
+	 * 
+	 * \param fontPath: the path to the font.
+	 * \param tag: the tag to identify the font by from now.
+	 */
+	void loadFont(const std::string& fontPath, const std::string& tag);
 };
 

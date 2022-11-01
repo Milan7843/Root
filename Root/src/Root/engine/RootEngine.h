@@ -15,7 +15,6 @@
 #include "Root/engine/RendererEngine.h"
 #include "simpleprofiler/Profiler.h"
 
-#include <simpletext/SimpleText.h>
 #include <rootgui/internal/RootGUIInternal.h>
 
 #include <glad/glad.h>

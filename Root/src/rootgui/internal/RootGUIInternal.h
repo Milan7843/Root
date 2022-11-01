@@ -1,6 +1,6 @@
 #pragma once
 
-#include "simpletext/SimpleText.h"
+#include <rootgui/internal/TextEngine.h>
 #include "rootgui/Item.h"
 #include "rootgui/Rectangle.h"
 #include "rootgui/Image.h"
@@ -18,6 +18,9 @@ namespace RootGUIInternal
 
 	// Render the GUI with the given width and height
 	void render();
+
+
+	unsigned int getTextShader();
 
 	/**
 	 * Get the index of a Vertex Array Object which defines a quad.

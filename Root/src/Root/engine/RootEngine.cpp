@@ -108,7 +108,6 @@ namespace RootEngine
 
         unsigned int frame = 0;
 
-        SimpleText simpleText("src/fonts/arial.ttf");
         RootGUIInternal::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
         //std::thread physicsSimulation(PhysicsEngine::simulate);
