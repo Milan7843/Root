@@ -31,8 +31,14 @@ namespace TextEngine
         return nullptr;
     }
 
-    void loadFont(const std::string& fontPath, const std::string& tag)
+    void loadFont(const std::string& fontPath, const std::string& tag, float characterSpacing, unsigned int resolution)
     {
+        if (resolution <= 0)
+        {
+            std::cout << "ERROR: font resolution cannot be less than 1" << std::endl;
+            return;
+        }
+
         FT_Library ft;
         // All functions return a value different than 0 whenever an error occurred
         if (FT_Init_FreeType(&ft))
@@ -50,14 +56,14 @@ namespace TextEngine
         }
 
         // Setting size to load glyphs as
-        FT_Set_Pixel_Sizes(face, 0, 48);
+        FT_Set_Pixel_Sizes(face, 0, 96);
 
         // Disabling the restriction for byte-alignment
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         unsigned int textureWidth{ 0 };
         unsigned int textureHeight{ 0 };
-        unsigned int characterSpacing{ 1 }; // Number of pixel in between each character
+        unsigned int characterTextureGap{ 1 }; // Number of pixel in between each character
 
         // First calculating the total width and height required for the texture atlas
         for (unsigned char c{ 0 }; c < 128; c++)
@@ -72,17 +78,23 @@ namespace TextEngine
 
             FT_Bitmap* bitmap = &face->glyph->bitmap;
 
+            // Summing up the texture widths
             textureWidth += bitmap->width;
+
+            // And finding the maximum texture height
             if (bitmap->rows > textureHeight)
             {
                 textureHeight = bitmap->rows;
             }
         }
 
-        textureWidth += 127 * characterSpacing;
+        // Add characterSpacing pixels in between each character to the width
+        textureWidth += 127 * characterTextureGap;
 
+        // Creating an array for the final texture
         char* pixels = (char*)calloc(textureWidth * textureHeight, sizeof(char));
 
+        // The total number of pixel travelled along the texture
         unsigned int widthOffset{ 0 };
 
         // If we got here, the font was successfully loaded
@@ -100,6 +112,7 @@ namespace TextEngine
 
             FT_Bitmap* bitmap = &face->glyph->bitmap;
 
+            // Writing this character's texture to the big texture
             for (unsigned int row = 0; row < bitmap->rows; ++row)
             {
                 for (unsigned int col = 0; col < bitmap->width; ++col)
@@ -110,13 +123,12 @@ namespace TextEngine
                 }
             }
 
+            // Calculating inmportant character data
             Character character{
-                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 0.1f, // Width, height
-                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
+                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 10.0f, // Width, height
+                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 10.0f, // Offset from top left
                 glm::vec2(widthOffset / (float)textureWidth, 1.0f - (bitmap->rows / (float)textureHeight)), // UV
-                //glm::vec2(widthOffset / (float)textureWidth, 0.0f), // UV
                 glm::vec2(bitmap->width / (float)textureWidth, bitmap->rows / (float)textureHeight) // Texture space size
-                //glm::vec2(bitmap->width / (float)textureWidth, 1.0f) // Texture space size
             };
 
             /*
@@ -129,7 +141,8 @@ namespace TextEngine
             */
             characters.emplace(c, character);
 
-            widthOffset += bitmap->width + characterSpacing;
+            // Moving along by the character's width + the spacing (pixels)
+            widthOffset += bitmap->width + characterTextureGap;
         }
 
         // Creating a texture slot, binding it, and filling it with data
@@ -154,12 +167,14 @@ namespace TextEngine
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        /*
         std::cout << "======== FONT TEXTURE DATA ========\n";
         std::cout << "Width: " << textureWidth << "px\n";
         std::cout << "Height: " << textureHeight << "px\n";
         std::cout << std::endl;
+        */
 
-        fonts.emplace(tag, Font{ textureID } );
+        fonts.emplace(tag, Font{ textureID, characterSpacing } );
 
         // Destroying freetype after using it to extract all data
         FT_Done_Face(face);

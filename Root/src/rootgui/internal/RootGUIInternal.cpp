@@ -6,6 +6,8 @@ namespace RootGUIInternal
     {
         std::vector<std::shared_ptr<RootGUIComponent::Item>> renderQueue;
 
+        glm::mat4 projectionMatrix;
+
         unsigned int guiShader{ 0 };
         unsigned int textShader{ 0 };
 
@@ -119,7 +121,7 @@ namespace RootGUIInternal
                 "\n"
                 "void main()\n"
                 "{\n"
-                "   gl_Position = vec4(pos, 0.0, 1.0);\n"
+                "   gl_Position = projection * vec4(pos, 0.0, 1.0);\n"
                 "   TexCoords = uv;\n"
                 "}\0"
             };
@@ -178,8 +180,7 @@ namespace RootGUIInternal
 
     void initialise(unsigned int windowWidth, unsigned int windowHeight)
     {
-        windowWidthUsing = windowWidth;
-        windowHeightUsing = windowHeight;
+        setWindowSize(windowWidth, windowHeight);
 
         createShaderPrograms();
 
@@ -215,7 +216,6 @@ namespace RootGUIInternal
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         // Inserting data into the buffer
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 
         // Telling OpenGL how to interpret the data
         // Position data
@@ -261,6 +261,11 @@ namespace RootGUIInternal
         return quadVAO;
     }
 
+    glm::mat4& getProjectionMatrix()
+    {
+        return projectionMatrix;
+    }
+
     void addItemToRenderQueue(std::shared_ptr<RootGUIComponent::Item> item)
     {
         renderQueue.push_back(item);
@@ -270,6 +275,9 @@ namespace RootGUIInternal
     {
         windowWidthUsing = windowWidth;
         windowHeightUsing = windowHeight;
+
+        // Calculating the new projection matrix
+        projectionMatrix = glm::ortho(0.0f, (float)windowWidthUsing, 0.0f, (float)windowHeightUsing, -1.0f, 1.0f);
     }
 
     unsigned int getWindowWidth()

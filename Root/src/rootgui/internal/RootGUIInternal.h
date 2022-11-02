@@ -29,6 +29,8 @@ namespace RootGUIInternal
 	 */
 	unsigned int getQuadVAO();
 
+	glm::mat4& getProjectionMatrix();
+
 	/**
 	 * Add a new item to the render queue.
 	 *

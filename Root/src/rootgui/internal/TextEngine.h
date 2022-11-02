@@ -23,6 +23,7 @@ struct Character
 struct Font
 {
     unsigned int textureID;  // ID of the character texture atlas
+    float characterSpacing; // Spacing between each character
 };
 
 namespace TextEngine
@@ -31,7 +32,10 @@ namespace TextEngine
 
     Character* getCharacter(char c);
 
-    void loadFont(const std::string& fontPath, const std::string& tag);
+    void loadFont(const std::string& fontPath,
+        const std::string& tag,
+        float characterSpacing = 1.0f,
+        unsigned int resolution = 48);
 
     void setFont(const std::string& tag);
 

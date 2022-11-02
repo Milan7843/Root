@@ -35,6 +35,12 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     glUniform3f(glGetUniformLocation(RootGUIInternal::getTextShader(), "textColor"), 
         color.x, color.y, color.z);
 
+    glUniformMatrix4fv(
+        glGetUniformLocation(RootGUIInternal::getTextShader(), "projection"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(RootGUIInternal::getProjectionMatrix()));
+
     // Binding the sprite
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, font->textureID);
@@ -59,6 +65,13 @@ RootGUIComponent::Text::Text(const std::string& text,
 
 void RootGUIComponent::Text::updateVAO(const std::string& text)
 {
+    Font* font{ TextEngine::getFont(fontTag) };
+    if (font == nullptr)
+    {
+        std::cout << "ERROR: invalid font tag: " << fontTag << std::endl;
+        return;
+    }
+
     // Buffer with space for:
     // 6 vertices per character, each with 2 floats for pos, 2 floats for uv.
     float* vertexData = (float*)malloc(text.length() * 6 * 2 * 2 * sizeof(float));
@@ -134,7 +147,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         */
         // Moving to the next character in the input string
         characterIndex++;
-        xOffset += ch->size.x;
+        xOffset += ch->size.x + font->characterSpacing;
         c++;
     }
 
