@@ -16,7 +16,6 @@ namespace TextEngine
         for (std::pair<std::string, Font> font : fonts)
         {
             glDeleteTextures(1, &font.second.textureID);
-            glDeleteBuffers(1, &font.second.ssbo);
         }
     }
 
@@ -58,6 +57,7 @@ namespace TextEngine
 
         unsigned int textureWidth{ 0 };
         unsigned int textureHeight{ 0 };
+        unsigned int characterSpacing{ 1 }; // Number of pixel in between each character
 
         // First calculating the total width and height required for the texture atlas
         for (unsigned char c{ 0 }; c < 128; c++)
@@ -79,8 +79,9 @@ namespace TextEngine
             }
         }
 
+        textureWidth += 127 * characterSpacing;
+
         char* pixels = (char*)calloc(textureWidth * textureHeight, sizeof(char));
-        CharacterUV characterUVs[128];
 
         unsigned int widthOffset{ 0 };
 
@@ -110,19 +111,25 @@ namespace TextEngine
             }
 
             Character character{
-                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight, // Width, height
-                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight // Offset from top left
+                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 0.1f, // Width, height
+                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
+                glm::vec2(widthOffset / (float)textureWidth, 1.0f - (bitmap->rows / (float)textureHeight)), // UV
+                //glm::vec2(widthOffset / (float)textureWidth, 0.0f), // UV
+                glm::vec2(bitmap->width / (float)textureWidth, bitmap->rows / (float)textureHeight) // Texture space size
+                //glm::vec2(bitmap->width / (float)textureWidth, 1.0f) // Texture space size
             };
 
-            CharacterUV characterUV{
-                glm::vec2(bitmap->width, 0.0f) / (float)textureHeight, // UV
-                glm::vec2(bitmap->width / (float)textureWidth, bitmap->rows / (float)textureHeight) // Size
-            };
-
+            /*
+            std::cout << "======== Character " << c << " ========\n";
+            std::cout << "Size: " << character.size.x << ", " << character.size.y << "\n";
+            std::cout << "Offset: " << character.offset.x << ", " << character.offset.y << "\n";
+            std::cout << "UV: " << character.uv.x << ", " << character.uv.y << "\n";
+            std::cout << "Texture size: " << character.textureSize.x << ", " << character.textureSize.y;
+            std::cout << std::endl;
+            */
             characters.emplace(c, character);
-            characterUVs[c] = characterUV;
 
-            widthOffset += bitmap->width;
+            widthOffset += bitmap->width + characterSpacing;
         }
 
         // Creating a texture slot, binding it, and filling it with data
@@ -152,17 +159,7 @@ namespace TextEngine
         std::cout << "Height: " << textureHeight << "px\n";
         std::cout << std::endl;
 
-        // Creating a buffer which holds all the uv's and sizes
-        unsigned int uvSSBO{ 0 };
-        glGenBuffers(1, &uvSSBO);
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, uvSSBO);
-
-        // Loading the data into the new buffer
-        glBufferData(GL_SHADER_STORAGE_BUFFER, 128 * sizeof(CharacterUV), &characterUVs, GL_STATIC_DRAW);
-        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, uvSSBO);
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-        fonts.emplace(tag, Font{ textureID, uvSSBO });
+        fonts.emplace(tag, Font{ textureID } );
 
         // Destroying freetype after using it to extract all data
         FT_Done_Face(face);

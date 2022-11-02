@@ -49,7 +49,7 @@ namespace RootGUIComponent
 		std::string text;
 		std::string fontTag;
 
-		glm::vec3 color;
+		glm::vec3 color{ glm::vec3(1.0f) };
 
 		unsigned int textVAO;
 	};

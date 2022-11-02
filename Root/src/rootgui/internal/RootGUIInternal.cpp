@@ -74,7 +74,7 @@ namespace RootGUIInternal
             glShaderSource(guiFragment, 1, &guiFragmentShaderCode, NULL);
             glCompileShader(guiFragment);
 
-            // Fragment sahder compilation error check
+            // Fragment shader compilation error check
             glGetShaderiv(guiFragment, GL_COMPILE_STATUS, &success);
             if (!success)
             {
@@ -110,16 +110,8 @@ namespace RootGUIInternal
 
             const char* textVertexShaderCode{
                 "#version 460 core\n"
-                "layout(location = 0) in vec4 vertex;\n"
-                "\n"
-                "struct CharacterInfo {\n"
-                "   vec2 uv;\n"
-                "   vec2 size;\n"
-                "}\n"
-                "layout(std140, binding = 0) buffer CharacterUVs\n"
-                "{\n"
-                "    CharacterInfo info[];\n"
-                "};\n"
+                "layout(location = 0) in vec2 pos;\n"
+                "layout(location = 1) in vec2 uv;\n"
                 "\n"
                 "out vec2 TexCoords;\n"
                 "\n"
@@ -127,8 +119,8 @@ namespace RootGUIInternal
                 "\n"
                 "void main()\n"
                 "{\n"
-                "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
-                "    TexCoords = vertex.zw;\n"
+                "   gl_Position = vec4(pos, 0.0, 1.0);\n"
+                "   TexCoords = uv;\n"
                 "}\0"
             };
             const char* textFragmentShaderCode{
@@ -150,9 +142,26 @@ namespace RootGUIInternal
             textVertex = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(textVertex, 1, &textVertexShaderCode, NULL);
             glCompileShader(textVertex);
-            textFragment = glCreateShader(GL_VERTEX_SHADER);
+
+            // Vertex shader compilation error check
+            glGetShaderiv(textVertex, GL_COMPILE_STATUS, &success);
+            if (!success)
+            {
+                glGetShaderInfoLog(textVertex, 512, NULL, infoLog);
+                std::cout << "Internal text vertex shader compilation failed: " << infoLog << std::endl;
+            }
+
+            textFragment = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderSource(textFragment, 1, &textFragmentShaderCode, NULL);
             glCompileShader(textFragment);
+
+            // Fragment shader compilation error check
+            glGetShaderiv(textFragment, GL_COMPILE_STATUS, &success);
+            if (!success)
+            {
+                glGetShaderInfoLog(textFragment, 512, NULL, infoLog);
+                std::cout << "Internal text fragment shader compilation failed: " << infoLog << std::endl;
+            }
 
             /* Creating the shader program */
             textShader = glCreateProgram();

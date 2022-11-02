@@ -14,22 +14,16 @@
 
 struct Character
 {
-    glm::vec2 size; // Size of glyph
-    glm::vec2 offset; // Offset from baseline to left side of glyph
+    glm::vec2 size; // Size of glyph in real size (height [0,1], width proportional)
+    glm::vec2 offset; // Offset from baseline to left side of glyph (height [0,1], width proportional)
+    glm::vec2 uv; // UV of the glpyh in texture space
+    glm::vec2 textureSize; // Size of glyph in texture space
 };
 
 struct Font
 {
     unsigned int textureID;  // ID of the character texture atlas
-    unsigned int ssbo;
 };
-
-struct CharacterUV
-{
-    glm::vec2 uv;
-    glm::vec2 size;
-};
-
 
 namespace TextEngine
 {
