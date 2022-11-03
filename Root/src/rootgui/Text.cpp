@@ -127,7 +127,8 @@ void RootGUIComponent::Text::centerLine(
     // xOrigin is the left side of the first character,
     // xOffset the right side of the last one
     float mean{ xOrigin + (xOffset) / 2.0f };
-    float diff{ position.x - mean };
+    float targetMean{ 0.0f };
+    float diff{ mean - targetMean };
 
     // Iterating back and adjusting the x-values
     const char* ci{ c + 1 };
@@ -143,7 +144,7 @@ void RootGUIComponent::Text::centerLine(
             // Every 4th index holds x position data, which needs to be modified
             for (unsigned int i{ 0 }; i < 6; i++)
             {
-                vertexData[iteratingIndex + i * 4] += diff;
+                vertexData[iteratingIndex + i * 4] -= diff;
             }
 
             iteratingIndex -= indexOffsetPerCharacter;
@@ -306,6 +307,24 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         }
 
         c++;
+    }
+
+    if (centerVertically)
+    {
+        // Calculating how far to move each character
+        float mean{ yOrigin + (yOffset + font->lineHeight * textSize) / 2.0f };
+        float targetMean{ 0.0f };
+        float diff{ mean - targetMean };
+
+        // Updating each character's y position
+        for (unsigned int i{ 0 }; i < text.length(); i++)
+        {
+            // Every (4k + 1)th index holds y position data, which needs to be modified
+            for (unsigned int j{ 0 }; j < 6; j++)
+            {
+                vertexData[(i * 24) + (j * 4) + 1] -= diff;
+            }
+        }
     }
 
     // Putting the vertex data into a vertex buffer

@@ -1746,6 +1746,9 @@
     <ClInclude Include="src\rootgui\internal\TextEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\simpletext\SimpleText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2375,6 +2378,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rootgui\internal\TextEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simpletext\SimpleText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

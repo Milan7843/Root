@@ -717,6 +717,7 @@
     <ClInclude Include="src\rootgui\Rectangle.h" />
     <ClInclude Include="src\rootgui\RootGUI.h" />
     <ClInclude Include="src\simpleprofiler\Profiler.h" />
+    <ClInclude Include="src\simpletext\SimpleText.h" />
     <ClInclude Include="src\stbi_utility\TextureData.h" />
     <ClInclude Include="src\stb_image\stbi_image.h" />
     <ClInclude Include="src\Root\animation\ValueAnimation.h" />
@@ -931,6 +932,7 @@
     <ClCompile Include="src\rootgui\Rectangle.cpp" />
     <ClCompile Include="src\rootgui\RootGUI.cpp" />
     <ClCompile Include="src\simpleprofiler\Profiler.cpp" />
+    <ClCompile Include="src\simpletext\SimpleText.cpp" />
     <ClCompile Include="src\stbi_utility\TextureData.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimation.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp" />
