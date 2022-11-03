@@ -45,6 +45,20 @@ namespace RootGUIComponent
 		// Render this GUI text
 		void render(unsigned int guiShader, unsigned int textShader);
 
+		/**
+		 * Set whether to center this text vertically.
+		 *
+		 * \param centerHorizontally: true to center this text vertically.
+		 */
+		void setCenterVertically(bool centerVertically);
+
+		/**
+		 * Set whether to center this text horizontally.
+		 * 
+		 * \param centerHorizontally: true to center this text horizontally.
+		 */
+		void setCenterHorizontally(bool centerHorizontally);
+
 	protected:
 
 		Text(
@@ -59,10 +73,23 @@ namespace RootGUIComponent
 
 		float getWordLength(const char* c, Font* font);
 
+		void centerLine(
+			float xOrigin,
+			float xOffset,
+			const char* c,
+			unsigned int vertexStartIndex,
+			const char* firstCharacterOfCurrentLine,
+			float* vertexData,
+			unsigned int indexOffsetPerCharacter,
+			const char* begin);
+
 		std::string text;
 		std::string fontTag;
 
 		float textSize;
+
+		bool centerVertically{ false };
+		bool centerHorizontally{ false };
 
 		glm::vec3 color{ glm::vec3(1.0f) };
 

@@ -61,6 +61,18 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     glBindVertexArray(0);
 }
 
+void RootGUIComponent::Text::setCenterVertically(bool centerVertically)
+{
+    this->centerVertically = centerVertically;
+    updateVAO(text);
+}
+
+void RootGUIComponent::Text::setCenterHorizontally(bool centerHorizontally)
+{
+    this->centerHorizontally = centerHorizontally;
+    updateVAO(text);
+}
+
 RootGUIComponent::Text::Text(
     const std::string& text,
     const std::string& fontTag,
@@ -100,6 +112,45 @@ float RootGUIComponent::Text::getWordLength(const char* c, Font* font)
     return length;
 }
 
+void RootGUIComponent::Text::centerLine(
+    float xOrigin,
+    float xOffset,
+    const char* c,
+    unsigned int vertexStartIndex,
+    const char* firstCharacterOfCurrentLine,
+    float* vertexData,
+    unsigned int indexOffsetPerCharacter,
+    const char* begin)
+{
+    // Finding the mean x-value of the last line,
+    // and putting it in the middle
+    // xOrigin is the left side of the first character,
+    // xOffset the right side of the last one
+    float mean{ xOrigin + (xOffset) / 2.0f };
+    float diff{ position.x - mean };
+
+    // Iterating back and adjusting the x-values
+    const char* ci{ c + 1 };
+
+    // The index we are currently at
+    unsigned int iteratingIndex{ vertexStartIndex };
+
+
+    if (ci - 1 != firstCharacterOfCurrentLine)
+        do
+        {
+            ci--;
+            // Every 4th index holds x position data, which needs to be modified
+            for (unsigned int i{ 0 }; i < 6; i++)
+            {
+                vertexData[iteratingIndex + i * 4] += diff;
+            }
+
+            iteratingIndex -= indexOffsetPerCharacter;
+
+        } while (ci != firstCharacterOfCurrentLine && ci != &text[0]);
+}
+
 void RootGUIComponent::Text::updateVAO(const std::string& text)
 {
     glm::vec2 padding{ 0.02f, 0.02f };
@@ -116,7 +167,9 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
     // 6 vertices per character, each with 2 floats for pos, 2 floats for uv.
     float* vertexData = (float*)malloc(text.length() * 6 * 2 * 2 * sizeof(float));
 
-    unsigned int offsetPerCharacter{ 6 * 2 * 2 };
+    // The number of indices to offset to the next character:
+    // 6 vertices, each with 2 times 2 floats (pos, uv)
+    unsigned int indexOffsetPerCharacter{ 6 * 2 * 2 };
 
     unsigned int characterIndex{ 0 };
 
@@ -132,6 +185,10 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
 
     float wordLength{ 0.0f };
 
+    // Keeps track of the first character of the current line,
+    // So that we can iterate back to it
+    const char* firstCharacterOfCurrentLine{ c };
+
     while (*c != '\0') // Go on until hitting delimitter
     {
         Character* ch = TextEngine::getCharacter(*c);
@@ -140,10 +197,10 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         {
             std::cout << "Failed to load character " << *c << std::endl;
 
-            continue;
-
             characterIndex++;
             c++;
+
+            continue;
         }
 
         // Calculating the top-left position of this character
@@ -153,7 +210,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         float ySize{ ch->size.y * textSize };
 
         // Reference index for the vertex
-        unsigned int vertexStartIndex{ characterIndex * offsetPerCharacter };
+        unsigned int vertexStartIndex{ characterIndex * indexOffsetPerCharacter };
 
         // Setting the positions of the vertices
         vertexData[vertexStartIndex + 0] = xPos;
@@ -203,13 +260,48 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         // Calculate the word length when encountering a space, or if it hadn't been done yet
         if (*c == ' ' || wordLength == 0.0f)
         {
+            // Finding the length of the word we are in
             wordLength = getWordLength(c, font);
 
             // Checking for word wrapping
-            if (xOffset + wordLength > wrapWidth)
+            if (xOffset + wordLength > wrapWidth || *(c + 1) == '\0')
             {
+                // Centering the last line horizontally if needed
+                if (centerHorizontally)
+                {
+                    centerLine(xOrigin,
+                        xOffset - (xSize + font->characterSpacing * 0.01f),
+                        c,
+                        vertexStartIndex,
+                        firstCharacterOfCurrentLine,
+                        vertexData,
+                        indexOffsetPerCharacter,
+                        &text[0]);
+                }
+
+                // Moving back left
                 xOffset = 0.0f;
+                // And a line down
                 yOffset -= font->lineHeight * textSize;
+
+                // The next character will be the first of a new line
+                firstCharacterOfCurrentLine = c + 1;
+            }
+        }
+
+        // Also center the last line
+        if (*(c + 1) == '\0')
+        {
+            if (centerHorizontally)
+            {
+                centerLine(xOrigin,
+                    xOffset - (xSize + font->characterSpacing * 0.01f),
+                    c,
+                    vertexStartIndex,
+                    firstCharacterOfCurrentLine,
+                    vertexData,
+                    indexOffsetPerCharacter,
+                    &text[0]);
             }
         }
 
