@@ -24,6 +24,7 @@ struct Font
 {
     unsigned int textureID;  // ID of the character texture atlas
     float characterSpacing; // Spacing between each character
+    float lineHeight;
 };
 
 namespace TextEngine

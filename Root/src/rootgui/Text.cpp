@@ -5,12 +5,13 @@
 
 TextPointer RootGUIComponent::Text::create(
     const std::string& text,
-    const std::string& fontTag, 
+    const std::string& fontTag,
+    float textSize,
     glm::vec2 position,
     glm::vec2 size,
     glm::vec2 scale)
 {
-    TextPointer textPtr = new Text(text, fontTag, position, size, scale);
+    TextPointer textPtr = new Text(text, fontTag, textSize, position, size, scale);
     std::shared_ptr<Text> pointer(textPtr);
     RootGUI::addItemToRenderQueue(pointer);
     return textPtr;
@@ -20,9 +21,16 @@ RootGUIComponent::Text::~Text()
 {
 }
 
+void RootGUIComponent::Text::setColor(glm::vec3 color)
+{
+    this->color = color;
+}
+
 void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textShader)
 {
-    glUseProgram(RootGUIInternal::getTextShader());
+    unsigned int shader{ RootGUIInternal::getTextShader() };
+
+    glUseProgram(shader);
 
     Font* font{ TextEngine::getFont(fontTag) };
     if (font == nullptr)
@@ -31,15 +39,17 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
         return;
     }
 
-    glUniform1i(glGetUniformLocation(RootGUIInternal::getTextShader(), "text"), 0);
-    glUniform3f(glGetUniformLocation(RootGUIInternal::getTextShader(), "textColor"), 
+    glUniform1i(glGetUniformLocation(shader, "text"), 0);
+    glUniform3f(glGetUniformLocation(shader, "textColor"), 
         color.x, color.y, color.z);
 
     glUniformMatrix4fv(
-        glGetUniformLocation(RootGUIInternal::getTextShader(), "projection"),
+        glGetUniformLocation(shader, "projection"),
             1,
             GL_FALSE,
             glm::value_ptr(RootGUIInternal::getProjectionMatrix()));
+
+    glUniform1f(glGetUniformLocation(shader, "size"), textSize);
 
     // Binding the sprite
     glActiveTexture(GL_TEXTURE0);
@@ -52,19 +62,48 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     glBindVertexArray(0);
 }
 
-RootGUIComponent::Text::Text(const std::string& text,
+RootGUIComponent::Text::Text(
+    const std::string& text,
     const std::string& fontTag,
+    float textSize,
     glm::vec2 position,
     glm::vec2 size,
     glm::vec2 scale)
     : text(text)
     , fontTag(fontTag)
+    , textSize(textSize)
 {
     updateVAO(this->text);
 }
 
+float getWordLength(const char* c, Font* font)
+{
+    float length{ 0.0f };
+    if (*c == ' ')
+        c++;
+
+    while (*c != ' ' && *c != '\0') // Go on until hitting space or delimitter
+    {
+        Character* ch = TextEngine::getCharacter(*c);
+
+        if (ch == nullptr)
+        {
+            continue;
+
+            c++;
+        }
+
+        length += ch->size.x + font->characterSpacing;
+        c++;
+    }
+
+    return length;
+}
+
 void RootGUIComponent::Text::updateVAO(const std::string& text)
 {
+    float wrapWidth{ 100.0f };
+
     Font* font{ TextEngine::getFont(fontTag) };
     if (font == nullptr)
     {
@@ -81,6 +120,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
     unsigned int characterIndex{ 0 };
 
     float xOffset{ 0.0f };
+    float yOffset{ 0.0f };
 
     // Iterator through the string
     const char* c = &text[0];
@@ -101,7 +141,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
 
         // Calculating the top-left position of this character
         float xPos{ xOffset + ch->offset.x };
-        float yPos{ ch->offset.y };
+        float yPos{ yOffset + ch->offset.y };
 
         // Reference index for the vertex
         unsigned int vertexStartIndex{ characterIndex * offsetPerCharacter };
@@ -145,9 +185,21 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         std::cout << "UV End: " << ch->uv.x + ch->textureSize.x << ", " << ch->uv.y + ch->textureSize.y;
         std::cout << std::endl;
         */
+
+        
         // Moving to the next character in the input string
         characterIndex++;
         xOffset += ch->size.x + font->characterSpacing;
+
+        // Checking for word wrapping
+        // TODO: optimise word checking: only needs to be redone when hitting a space
+        float wordLength{ getWordLength(c, font) };
+        if (xOffset + wordLength > wrapWidth && wordLength < wrapWidth)
+        {
+            xOffset = 0.0f;
+            yOffset -= font->lineHeight;
+        }
+
         c++;
     }
 

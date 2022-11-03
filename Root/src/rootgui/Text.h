@@ -18,6 +18,7 @@ namespace RootGUIComponent
 		 *
 		 * \param text: the text to display.
 		 * \param fontTag: the tag of the font to use.
+		 * \param textSize: the size of the text.
 		 * \param position: the position of the rectangle (default = [0, 0]).
 		 * \param size: the size of the rectangle (default = [100, 100]).
 		 * \param scale: the position of the rectangle (default = [1, 1]).
@@ -26,11 +27,19 @@ namespace RootGUIComponent
 		static TextPointer create(
 			const std::string& text,
 			const std::string& fontTag,
+			float textSize,
 			glm::vec2 position = glm::vec2(0.0f),
 			glm::vec2 size = glm::vec2(1.0f),
 			glm::vec2 scale = glm::vec2(1.0f));
 
 		~Text();
+
+		/**
+		 * Set the text color.
+		 * 
+		 * \param color: the text color.
+		 */
+		void setColor(glm::vec3 color);
 
 		// Render this GUI text
 		void render(unsigned int guiShader, unsigned int textShader);
@@ -40,6 +49,7 @@ namespace RootGUIComponent
 		Text(
 			const std::string& text,
 			const std::string& fontTag,
+			float textSize,
 			glm::vec2 position,
 			glm::vec2 size,
 			glm::vec2 scale);
@@ -48,6 +58,8 @@ namespace RootGUIComponent
 
 		std::string text;
 		std::string fontTag;
+
+		float textSize;
 
 		glm::vec3 color{ glm::vec3(1.0f) };
 

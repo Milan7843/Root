@@ -118,10 +118,11 @@ namespace RootGUIInternal
                 "out vec2 TexCoords;\n"
                 "\n"
                 "uniform mat4 projection;\n"
+                "uniform float size;\n"
                 "\n"
                 "void main()\n"
                 "{\n"
-                "   gl_Position = projection * vec4(pos, 0.0, 1.0);\n"
+                "   gl_Position = projection * vec4(pos * size, 0.0, 1.0);\n"
                 "   TexCoords = uv;\n"
                 "}\0"
             };
@@ -278,6 +279,7 @@ namespace RootGUIInternal
 
         // Calculating the new projection matrix
         projectionMatrix = glm::ortho(0.0f, (float)windowWidthUsing, 0.0f, (float)windowHeightUsing, -1.0f, 1.0f);
+        projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
     }
 
     unsigned int getWindowWidth()
