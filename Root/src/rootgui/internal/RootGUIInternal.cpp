@@ -29,10 +29,20 @@ namespace RootGUIInternal
                 "\n"
                 "uniform vec2 position;\n"
                 "uniform vec2 size;\n"
+                "uniform vec2 screenAnchorPoint;\n"
+                "uniform bool scaleWidthHeight;\n"
+                "uniform float aspectRatio;\n"
                 "\n"
                 "void main()\n"
                 "{\n"
-                "    gl_Position = vec4((vertexPos * size + position) * 2 - vec2(1.0), 0.0, 1.0);\n"
+                "    vec2 relativePos = (vertexPos * size + position);\n"
+                "    if (scaleWidthHeight) {\n"
+                "        relativePos.x /= aspectRatio;"
+                "    }\n"
+                "    else {\n"
+                "        relativePos.y *= aspectRatio;"
+                "    }\n"
+                "    gl_Position = vec4(relativePos + screenAnchorPoint, 0.0, 1.0);\n"
                 "    TexCoords = vertexPos;\n"
                 "}\0"
             };
@@ -192,12 +202,13 @@ namespace RootGUIInternal
         glBindVertexArray(quadVAO);
 
         // Putting the vertices into the array buffer
+        float s{ 0.5f };
         float vertices[] = {
             // Position
-            0.0f, 0.0f,
-            1.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 1.0f,
+            -s, -s,
+            s, -s,
+            -s, s,
+            s, s
         };
         unsigned int indices[] = {
             1, 0, 2,

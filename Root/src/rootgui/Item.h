@@ -8,13 +8,15 @@
 
 #include <iostream>
 
-enum class VerticalAnchorPoint {
+enum class VerticalAnchorPoint
+{
 	Bottom,
 	Middle,
 	Top
 };
 
-enum class HorizontalAnchorPoint {
+enum class HorizontalAnchorPoint
+{
 	Left,
 	Middle,
 	Right
@@ -25,44 +27,38 @@ namespace RootGUIComponent
 	class Item
 	{
 	public:
-		Item(
-			glm::vec2 position = glm::vec2(0.1f),
-			glm::vec2 size = glm::vec2(0.1f),
-			glm::vec2 scale = glm::vec2(1.0f));
 		~Item();
 
 		// Render this GUI item
 		virtual void render(unsigned int guiShader, unsigned int textShader) {
 		}
 
-		// Set the vertical anchor point of this item
-		void setVerticalAnchorPoint(VerticalAnchorPoint newVerticalAnchorPoint);
-		void setHorizontalAnchorPoint(HorizontalAnchorPoint newHorizontalAnchorPoint);
-
 		glm::vec2 getPosition();
 
-		glm::vec2 getSize();
+		// Set the vertical screen anchor point of this item
+		void setVerticalScreenAnchorPoint(VerticalAnchorPoint newVerticalScreenAnchorPoint);
+		void setHorizontalScreenAnchorPoint(HorizontalAnchorPoint newHorizontalScreenAnchorPoint);
 
 	protected:
 
-		// Scale of this item: applied after everything else
-		glm::vec2 scale;
+		Item(glm::vec2 position = glm::vec2(0.1f));
 
-		// Size of this item
-		glm::vec2 size;
+		float getVerticalScreenAnchor();
+		float getHorizontalScreenAnchor();
 
 		bool enabled{ true };
 
-	private:
-
+		// Where on the screen this rectangle should be placed relative to
 		VerticalAnchorPoint verticalAnchorPoint{ VerticalAnchorPoint::Bottom };
 		HorizontalAnchorPoint horizontalAnchorPoint{ HorizontalAnchorPoint::Right };
+
+	private:
 
 		unsigned int previousWindowHeight{ 0 };
 		unsigned int previousWindowWidth{ 0 };
 
 		float widthToHeightRatio;
-		
+
 		// Position on the screen
 		glm::vec2 position;
 	};

@@ -74,9 +74,7 @@ void RootGUIComponent::Image::render(unsigned int guiShader, unsigned int textSh
 
 	// Setting the uniforms
 	glm::vec2 screenPosition{ getPosition() };
-	glm::vec2 screenSize{ getSize() };
 	glUniform2f(glGetUniformLocation(guiShader, "position"), screenPosition.x, screenPosition.y);
-	glUniform2f(glGetUniformLocation(guiShader, "size"), screenSize.x, screenSize.y);
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 1); // Use the texture
 	glUniform1i(glGetUniformLocation(guiShader, "textureSampler"), 0);
 

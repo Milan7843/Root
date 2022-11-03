@@ -4,6 +4,12 @@
 
 #define RectanglePointer RootGUIComponent::Rectangle*
 
+enum class ScaleReference
+{
+	Width,
+	Height
+};
+
 namespace RootGUIComponent
 {
 	class Rectangle : public RootGUIComponent::Item
@@ -28,14 +34,29 @@ namespace RootGUIComponent
 		// Render this GUI rectangle
 		void render(unsigned int guiShader, unsigned int textShader);
 
-	protected:
+		void setInternalAnchor(glm::vec2 anchor);
 
-		glm::vec3 color;
+		void setScaleReference(ScaleReference scaleReference);
+
+	protected:
 
 		Rectangle(
 			glm::vec2 position,
 			glm::vec2 size,
 			glm::vec2 scale);
+
+		glm::vec3 color;
+
+		// Scale of this item: applied after everything else
+		glm::vec2 scale;
+
+		// Size of this item
+		glm::vec2 size;
+
+		//glm::mat4 modelMatrix{};
+		glm::vec2 anchor{ glm::vec2(0.5f) };
+
+		ScaleReference scaleReference{ ScaleReference::Height };
 	};
 };
 

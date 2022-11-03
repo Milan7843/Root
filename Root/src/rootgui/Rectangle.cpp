@@ -8,8 +8,10 @@ RootGUIComponent::Rectangle::Rectangle(
 	glm::vec2 position,
 	glm::vec2 size,
 	glm::vec2 scale)
-	: RootGUIComponent::Item(position, size, scale)
+	: RootGUIComponent::Item(position)
 	, color(glm::vec3(1.0f, 0.0f, 1.0f))
+	, size(size)
+	, scale(scale)
 {
 }
 
@@ -43,9 +45,21 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	// Setting the color uniform
 	glUniform3f(glGetUniformLocation(guiShader, "baseColor"), color.x, color.y, color.z);
 	glm::vec2 screenPosition{ getPosition() };
-	glm::vec2 screenSize{ getSize() };
+
 	glUniform2f(glGetUniformLocation(guiShader, "position"), screenPosition.x, screenPosition.y);
-	glUniform2f(glGetUniformLocation(guiShader, "size"), screenSize.x, screenSize.y);
+
+	glUniform1f(glGetUniformLocation(guiShader, "aspectRatio"),
+		(float)RootGUIInternal::getWindowWidth() / (float)RootGUIInternal::getWindowHeight());
+
+	glUniform1f(glGetUniformLocation(guiShader, "scaleWithHeight"),
+		scaleReference == ScaleReference::Height);
+
+	glUniform2f(glGetUniformLocation(guiShader, "size"), size.x, size.y);
+
+	glUniform2f(glGetUniformLocation(guiShader, "screenAnchorPoint"),
+		getHorizontalScreenAnchor(),
+		getVerticalScreenAnchor());
+
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 0); // Don't use the texture
 
 	glBindVertexArray(RootGUI::getQuadVAO());
@@ -53,4 +67,14 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+}
+
+void RootGUIComponent::Rectangle::setInternalAnchor(glm::vec2 anchor)
+{
+	this->anchor = anchor;
+}
+
+void RootGUIComponent::Rectangle::setScaleReference(ScaleReference scaleReference)
+{
+	this->scaleReference = scaleReference;
 }
