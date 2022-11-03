@@ -57,6 +57,8 @@ namespace RootGUIComponent
 
 		void updateVAO(const std::string& text);
 
+		float getWordLength(const char* c, Font* font);
+
 		std::string text;
 		std::string fontTag;
 

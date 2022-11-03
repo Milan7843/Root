@@ -44,7 +44,13 @@ namespace RootGUI
 	 * 
 	 * \param fontPath: the path to the font.
 	 * \param tag: the tag to identify the font by from now.
+	 * \param characterSpacing: the space between each character.
+	 * \param resolution: the max resolution of each character texture.
 	 */
-	void loadFont(const std::string& fontPath, const std::string& tag);
+	void loadFont(const std::string& fontPath,
+		const std::string& tag,
+		float characterSpacing = 1.0f,
+		float spaceWidth = 1.0f,
+		unsigned int resolution = 48);
 };
 

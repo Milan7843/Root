@@ -50,8 +50,6 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
         1, GL_FALSE,
         glm::value_ptr(getTransformMatrix()));
 
-    glUniform1f(glGetUniformLocation(shader, "size"), textSize);
-
     // Binding the sprite
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, font->textureID);
@@ -78,7 +76,7 @@ RootGUIComponent::Text::Text(
     updateVAO(this->text);
 }
 
-float getWordLength(const char* c, Font* font)
+float RootGUIComponent::Text::getWordLength(const char* c, Font* font)
 {
     float length{ 0.0f };
     if (*c == ' ')
@@ -95,7 +93,7 @@ float getWordLength(const char* c, Font* font)
             c++;
         }
 
-        length += ch->size.x + font->characterSpacing * 0.01f;
+        length += (ch->size.x * textSize + font->characterSpacing * 0.01f);
         c++;
     }
 
@@ -124,15 +122,13 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
 
     // Start at top-left
     float xOrigin{ -size.x / 2.0f + padding.x };
-    float yOrigin{ -font->lineHeight + size.y / 2.0f - padding.y };
+    float yOrigin{ -font->lineHeight * textSize + size.y / 2.0f - padding.y };
 
     float xOffset{ 0.0f };
     float yOffset{ 0.0f };
 
     // Iterator through the string
     const char* c = &text[0];
-
-    bool encounteredOverflowingWordLastIteration{ false };
 
     float wordLength{ 0.0f };
 
@@ -151,8 +147,10 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         }
 
         // Calculating the top-left position of this character
-        float xPos{ xOrigin + xOffset + ch->offset.x };
-        float yPos{ yOrigin + yOffset + ch->offset.y };
+        float xPos{ xOrigin + xOffset + (ch->offset.x) * textSize };
+        float yPos{ yOrigin + yOffset + (ch->offset.y) * textSize };
+        float xSize{ ch->size.x * textSize };
+        float ySize{ ch->size.y * textSize };
 
         // Reference index for the vertex
         unsigned int vertexStartIndex{ characterIndex * offsetPerCharacter };
@@ -164,12 +162,12 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         vertexData[vertexStartIndex + 3] = ch->uv.y + ch->textureSize.y;
 
         vertexData[vertexStartIndex + 4] = xPos;
-        vertexData[vertexStartIndex + 5] = yPos - ch->size.y;
+        vertexData[vertexStartIndex + 5] = yPos - ySize;
         vertexData[vertexStartIndex + 6] = ch->uv.x;
         vertexData[vertexStartIndex + 7] = ch->uv.y;
 
-        vertexData[vertexStartIndex + 8] = xPos + ch->size.x;
-        vertexData[vertexStartIndex + 9] = yPos - ch->size.y;
+        vertexData[vertexStartIndex + 8] = xPos + xSize;
+        vertexData[vertexStartIndex + 9] = yPos - ySize;
         vertexData[vertexStartIndex + 10] = ch->uv.x + ch->textureSize.x;
         vertexData[vertexStartIndex + 11] = ch->uv.y;
 
@@ -178,12 +176,12 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         vertexData[vertexStartIndex + 14] = ch->uv.x;
         vertexData[vertexStartIndex + 15] = ch->uv.y + ch->textureSize.y;
 
-        vertexData[vertexStartIndex + 16] = xPos + ch->size.x;
-        vertexData[vertexStartIndex + 17] = yPos - ch->size.y;
+        vertexData[vertexStartIndex + 16] = xPos + xSize;
+        vertexData[vertexStartIndex + 17] = yPos - ySize;
         vertexData[vertexStartIndex + 18] = ch->uv.x + ch->textureSize.x;
         vertexData[vertexStartIndex + 19] = ch->uv.y;
 
-        vertexData[vertexStartIndex + 20] = xPos + ch->size.x;
+        vertexData[vertexStartIndex + 20] = xPos + xSize;
         vertexData[vertexStartIndex + 21] = yPos;
         vertexData[vertexStartIndex + 22] = ch->uv.x + ch->textureSize.x;
         vertexData[vertexStartIndex + 23] = ch->uv.y + ch->textureSize.y;
@@ -200,25 +198,19 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         
         // Moving to the next character in the input string
         characterIndex++;
-        xOffset += ch->size.x + font->characterSpacing * 0.01f;
+        xOffset += xSize + font->characterSpacing * 0.01f;
 
         // Calculate the word length when encountering a space, or if it hadn't been done yet
         if (*c == ' ' || wordLength == 0.0f)
+        {
             wordLength = getWordLength(c, font);
 
-        // Checking for word wrapping
-        if (xOffset + wordLength > wrapWidth && wordLength < wrapWidth && !encounteredOverflowingWordLastIteration)
-        {
-            xOffset = 0.0f;
-            yOffset -= font->lineHeight;
-        }
-        else if (wordLength > wrapWidth)
-        {
-            encounteredOverflowingWordLastIteration = true;
-        }
-        else
-        {
-            encounteredOverflowingWordLastIteration = false;
+            // Checking for word wrapping
+            if (xOffset + wordLength > wrapWidth)
+            {
+                xOffset = 0.0f;
+                yOffset -= font->lineHeight * textSize;
+            }
         }
 
         c++;

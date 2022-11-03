@@ -35,8 +35,9 @@ namespace TextEngine
 
     void loadFont(const std::string& fontPath,
         const std::string& tag,
-        float characterSpacing = 1.0f,
-        unsigned int resolution = 48);
+        float characterSpacing,
+        float spaceWidth,
+        unsigned int resolution);
 
     void setFont(const std::string& tag);
 

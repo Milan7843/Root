@@ -25,8 +25,12 @@ namespace RootGUI
         return 0;
     }
 
-    void loadFont(const std::string& fontPath, const std::string& tag)
+    void loadFont(const std::string& fontPath,
+        const std::string& tag,
+        float characterSpacing,
+        float spaceWidth,
+        unsigned int resolution)
     {
-        TextEngine::loadFont(fontPath, tag);
+        TextEngine::loadFont(fontPath, tag, characterSpacing, spaceWidth, resolution);
     }
 };

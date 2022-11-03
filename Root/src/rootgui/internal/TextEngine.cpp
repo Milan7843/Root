@@ -31,7 +31,11 @@ namespace TextEngine
         return nullptr;
     }
 
-    void loadFont(const std::string& fontPath, const std::string& tag, float characterSpacing, unsigned int resolution)
+    void loadFont(const std::string& fontPath,
+        const std::string& tag,
+        float characterSpacing,
+        float spaceWidth,
+        unsigned int resolution)
     {
         if (resolution <= 0)
         {
@@ -173,6 +177,9 @@ namespace TextEngine
         std::cout << "Height: " << textureHeight << "px\n";
         std::cout << std::endl;
         */
+
+        // Modifying the width of the space
+        characters[' '].size.x = spaceWidth * 0.02f;
 
         fonts.emplace(tag, Font{ textureID, characterSpacing, 0.1f } );
 
