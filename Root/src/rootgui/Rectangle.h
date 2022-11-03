@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Item.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define RectanglePointer RootGUIComponent::Rectangle*
 
@@ -44,6 +46,10 @@ namespace RootGUIComponent
 			glm::vec2 position,
 			glm::vec2 size,
 			glm::vec2 scale);
+
+		glm::mat4& getTransformMatrix();
+		glm::mat4 transform{ glm::identity<glm::mat4>() };
+		bool transformUpdated{ true };
 
 		glm::vec3 color;
 

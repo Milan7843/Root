@@ -15,6 +15,37 @@ RootGUIComponent::Rectangle::Rectangle(
 {
 }
 
+glm::mat4& RootGUIComponent::Rectangle::getTransformMatrix()
+{
+	// Recalculating the transform matrix if the transform data was updated
+	if (transformUpdated)
+	{
+		// Calculating important information
+		float aspectRatio{ (float)RootGUIInternal::getWindowWidth() / (float)RootGUIInternal::getWindowHeight() };
+		glm::vec3 screenAnchorPoint{ glm::vec3(getHorizontalScreenAnchor(), getVerticalScreenAnchor(), 0.0f) };
+
+		// Resetting the transform
+		transform = glm::identity<glm::mat4>();
+
+		transform = glm::translate(transform, screenAnchorPoint);
+
+		if (scaleReference == ScaleReference::Height)
+		{
+			transform = glm::scale(transform, glm::vec3(1.0f / aspectRatio, 1.0f, 1.0f));
+		}
+		else
+		{
+			transform = glm::scale(transform, glm::vec3(1.0f, aspectRatio, 1.0f));
+		}
+
+		transform = glm::translate(transform, glm::vec3(position.x, position.y, 0.0f));
+
+		transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+	}
+
+	return transform;
+}
+
 RectanglePointer RootGUIComponent::Rectangle::create(
 	glm::vec2 position,
 	glm::vec2 size,
@@ -46,21 +77,12 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	glUniform3f(glGetUniformLocation(guiShader, "baseColor"), color.x, color.y, color.z);
 	glm::vec2 screenPosition{ getPosition() };
 
-	glUniform2f(glGetUniformLocation(guiShader, "position"), screenPosition.x, screenPosition.y);
-
-	glUniform1f(glGetUniformLocation(guiShader, "aspectRatio"),
-		(float)RootGUIInternal::getWindowWidth() / (float)RootGUIInternal::getWindowHeight());
-
-	glUniform1f(glGetUniformLocation(guiShader, "scaleWithHeight"),
-		scaleReference == ScaleReference::Height);
-
-	glUniform2f(glGetUniformLocation(guiShader, "size"), size.x, size.y);
-
-	glUniform2f(glGetUniformLocation(guiShader, "screenAnchorPoint"),
-		getHorizontalScreenAnchor(),
-		getVerticalScreenAnchor());
-
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 0); // Don't use the texture
+
+	// Setting the transform matrix
+	glUniformMatrix4fv(glGetUniformLocation(guiShader, "transform"),
+		1, GL_FALSE,
+		glm::value_ptr(getTransformMatrix()));
 
 	glBindVertexArray(RootGUI::getQuadVAO());
 

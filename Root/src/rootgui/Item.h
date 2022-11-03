@@ -48,9 +48,12 @@ namespace RootGUIComponent
 
 		bool enabled{ true };
 
+		// Position on the screen
+		glm::vec2 position;
+
 		// Where on the screen this rectangle should be placed relative to
-		VerticalAnchorPoint verticalAnchorPoint{ VerticalAnchorPoint::Bottom };
-		HorizontalAnchorPoint horizontalAnchorPoint{ HorizontalAnchorPoint::Right };
+		VerticalAnchorPoint verticalAnchorPoint{ VerticalAnchorPoint::Middle };
+		HorizontalAnchorPoint horizontalAnchorPoint{ HorizontalAnchorPoint::Middle };
 
 	private:
 
@@ -58,8 +61,5 @@ namespace RootGUIComponent
 		unsigned int previousWindowWidth{ 0 };
 
 		float widthToHeightRatio;
-
-		// Position on the screen
-		glm::vec2 position;
 	};
 };

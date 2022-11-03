@@ -28,6 +28,8 @@ void RootGUIComponent::Text::setColor(glm::vec3 color)
 
 void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textShader)
 {
+    RootGUIComponent::Rectangle::render(guiShader, textShader);
+
     unsigned int shader{ RootGUIInternal::getTextShader() };
 
     glUseProgram(shader);
@@ -43,11 +45,10 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     glUniform3f(glGetUniformLocation(shader, "textColor"), 
         color.x, color.y, color.z);
 
-    glUniformMatrix4fv(
-        glGetUniformLocation(shader, "projection"),
-            1,
-            GL_FALSE,
-            glm::value_ptr(RootGUIInternal::getProjectionMatrix()));
+    // Setting the transform matrix
+    glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
+        1, GL_FALSE,
+        glm::value_ptr(getTransformMatrix()));
 
     glUniform1f(glGetUniformLocation(shader, "size"), textSize);
 
@@ -69,7 +70,8 @@ RootGUIComponent::Text::Text(
     glm::vec2 position,
     glm::vec2 size,
     glm::vec2 scale)
-    : text(text)
+    : RootGUIComponent::Rectangle(position, size, scale)
+    , text(text)
     , fontTag(fontTag)
     , textSize(textSize)
 {
@@ -93,7 +95,7 @@ float getWordLength(const char* c, Font* font)
             c++;
         }
 
-        length += ch->size.x + font->characterSpacing;
+        length += ch->size.x + font->characterSpacing * 0.01f;
         c++;
     }
 
@@ -102,7 +104,8 @@ float getWordLength(const char* c, Font* font)
 
 void RootGUIComponent::Text::updateVAO(const std::string& text)
 {
-    float wrapWidth{ 100.0f };
+    glm::vec2 padding{ 0.02f, 0.02f };
+    float wrapWidth{ size.x - padding.x * 2 };
 
     Font* font{ TextEngine::getFont(fontTag) };
     if (font == nullptr)
@@ -119,11 +122,19 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
 
     unsigned int characterIndex{ 0 };
 
+    // Start at top-left
+    float xOrigin{ -size.x / 2.0f + padding.x };
+    float yOrigin{ -font->lineHeight + size.y / 2.0f - padding.y };
+
     float xOffset{ 0.0f };
     float yOffset{ 0.0f };
 
     // Iterator through the string
     const char* c = &text[0];
+
+    bool encounteredOverflowingWordLastIteration{ false };
+
+    float wordLength{ 0.0f };
 
     while (*c != '\0') // Go on until hitting delimitter
     {
@@ -140,8 +151,8 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         }
 
         // Calculating the top-left position of this character
-        float xPos{ xOffset + ch->offset.x };
-        float yPos{ yOffset + ch->offset.y };
+        float xPos{ xOrigin + xOffset + ch->offset.x };
+        float yPos{ yOrigin + yOffset + ch->offset.y };
 
         // Reference index for the vertex
         unsigned int vertexStartIndex{ characterIndex * offsetPerCharacter };
@@ -189,15 +200,25 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
         
         // Moving to the next character in the input string
         characterIndex++;
-        xOffset += ch->size.x + font->characterSpacing;
+        xOffset += ch->size.x + font->characterSpacing * 0.01f;
+
+        // Calculate the word length when encountering a space, or if it hadn't been done yet
+        if (*c == ' ' || wordLength == 0.0f)
+            wordLength = getWordLength(c, font);
 
         // Checking for word wrapping
-        // TODO: optimise word checking: only needs to be redone when hitting a space
-        float wordLength{ getWordLength(c, font) };
-        if (xOffset + wordLength > wrapWidth && wordLength < wrapWidth)
+        if (xOffset + wordLength > wrapWidth && wordLength < wrapWidth && !encounteredOverflowingWordLastIteration)
         {
             xOffset = 0.0f;
             yOffset -= font->lineHeight;
+        }
+        else if (wordLength > wrapWidth)
+        {
+            encounteredOverflowingWordLastIteration = true;
+        }
+        else
+        {
+            encounteredOverflowingWordLastIteration = false;
         }
 
         c++;

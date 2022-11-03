@@ -125,8 +125,8 @@ namespace TextEngine
 
             // Calculating inmportant character data
             Character character{
-                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 10.0f, // Size: width, height
-                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 10.0f, // Offset from top left
+                glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 0.1f, // Size: width, height
+                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
                 glm::vec2(widthOffset / (float)textureWidth, 1.0f - (bitmap->rows / (float)textureHeight)), // UV
                 glm::vec2(bitmap->width / (float)textureWidth, bitmap->rows / (float)textureHeight) // Texture space size
             };
@@ -174,7 +174,7 @@ namespace TextEngine
         std::cout << std::endl;
         */
 
-        fonts.emplace(tag, Font{ textureID, characterSpacing, 10.0f } );
+        fonts.emplace(tag, Font{ textureID, characterSpacing, 0.1f } );
 
         // Destroying freetype after using it to extract all data
         FT_Done_Face(face);
