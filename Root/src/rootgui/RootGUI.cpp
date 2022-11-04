@@ -5,6 +5,8 @@
 
 namespace RootGUI
 {
+
+
     unsigned int getQuadVAO()
     {
         return RootGUIInternal::getQuadVAO();

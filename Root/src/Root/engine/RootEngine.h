@@ -4,6 +4,7 @@
 #include "Root/components/Script.h"
 
 #include "Root/engine/InputEngine.h"
+#include "Root/Input.h"
 #include "Root/engine/PhysicsEngine.h"
 #include "Root/engine/TransformEngine.h"
 #include "Root/engine/ComponentEngine.h"

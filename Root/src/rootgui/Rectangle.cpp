@@ -15,35 +15,72 @@ RootGUIComponent::Rectangle::Rectangle(
 {
 }
 
+void RootGUIComponent::Rectangle::updateTransformMatrices()
+{
+	// Calculating important information
+	float aspectRatio{ (float)RootGUIInternal::getWindowWidth() / (float)RootGUIInternal::getWindowHeight() };
+	glm::vec3 screenAnchorPoint{ glm::vec3(getHorizontalScreenAnchor(), getVerticalScreenAnchor(), 0.0f) };
+
+	// Resetting the transform
+	inverseTransform = glm::identity<glm::mat4>();
+
+	inverseTransform = glm::translate(inverseTransform, screenAnchorPoint);
+
+	if (scaleReference == ScaleReference::Height)
+	{
+		inverseTransform = glm::scale(inverseTransform, glm::vec3(1.0f / aspectRatio, 1.0f, 1.0f));
+	}
+	else
+	{
+		inverseTransform = glm::scale(inverseTransform, glm::vec3(1.0f, aspectRatio, 1.0f));
+	}
+
+	inverseTransform = glm::translate(inverseTransform, glm::vec3(position.x, position.y, 0.0f));
+
+	//inverseTransform = glm::scale(inverseTransform, glm::vec3(size.x, size.y, 1.0f));
+
+
+	// Resetting the inverse transform
+	transform = glm::identity<glm::mat4>();
+
+	// Scale must not be zero for this step
+	//if (size.x != 0.0f && size.y != 0.0f)
+	//	transform = glm::scale(transform, glm::vec3(1.0f / size.x, 1.0f / size.y, 1.0f));
+
+	transform = glm::translate(transform, glm::vec3(-position.x, -position.y, 0.0f));
+
+	if (scaleReference == ScaleReference::Height)
+	{
+		transform = glm::scale(transform, glm::vec3(aspectRatio, 1.0f, 1.0f));
+	}
+	else
+	{
+		transform = glm::scale(transform, glm::vec3(1.0f, 1.0f / aspectRatio, 1.0f));
+	}
+
+	transform = glm::translate(transform, -screenAnchorPoint);
+}
+
 glm::mat4& RootGUIComponent::Rectangle::getTransformMatrix()
 {
-	// Recalculating the transform matrix if the transform data was updated
+	// Recalculating the transform matrices if the transform data was updated
 	if (transformUpdated)
 	{
-		// Calculating important information
-		float aspectRatio{ (float)RootGUIInternal::getWindowWidth() / (float)RootGUIInternal::getWindowHeight() };
-		glm::vec3 screenAnchorPoint{ glm::vec3(getHorizontalScreenAnchor(), getVerticalScreenAnchor(), 0.0f) };
-
-		// Resetting the transform
-		transform = glm::identity<glm::mat4>();
-
-		transform = glm::translate(transform, screenAnchorPoint);
-
-		if (scaleReference == ScaleReference::Height)
-		{
-			transform = glm::scale(transform, glm::vec3(1.0f / aspectRatio, 1.0f, 1.0f));
-		}
-		else
-		{
-			transform = glm::scale(transform, glm::vec3(1.0f, aspectRatio, 1.0f));
-		}
-
-		transform = glm::translate(transform, glm::vec3(position.x, position.y, 0.0f));
-
-		transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+		updateTransformMatrices();
 	}
 
 	return transform;
+}
+
+glm::mat4& RootGUIComponent::Rectangle::getInverseTransformMatrix()
+{
+	// Recalculating the transform matrices if the transform data was updated
+	if (transformUpdated)
+	{
+		updateTransformMatrices();
+	}
+
+	return inverseTransform;
 }
 
 RectanglePointer RootGUIComponent::Rectangle::create(
@@ -75,6 +112,8 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 
 	// Setting the color uniform
 	glUniform3f(glGetUniformLocation(guiShader, "baseColor"), color.x, color.y, color.z);
+
+	glUniform2f(glGetUniformLocation(guiShader, "size"), size.x, size.y);
 	glm::vec2 screenPosition{ getPosition() };
 
 	glUniform1i(glGetUniformLocation(guiShader, "useTexture"), 0); // Don't use the texture
@@ -82,7 +121,7 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	// Setting the transform matrix
 	glUniformMatrix4fv(glGetUniformLocation(guiShader, "transform"),
 		1, GL_FALSE,
-		glm::value_ptr(getTransformMatrix()));
+		glm::value_ptr(getInverseTransformMatrix()));
 
 	glBindVertexArray(RootGUI::getQuadVAO());
 
@@ -91,12 +130,129 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	glBindVertexArray(0);
 }
 
-void RootGUIComponent::Rectangle::setInternalAnchor(glm::vec2 anchor)
-{
-	this->anchor = anchor;
-}
-
 void RootGUIComponent::Rectangle::setScaleReference(ScaleReference scaleReference)
 {
 	this->scaleReference = scaleReference;
+}
+
+void RootGUIComponent::Rectangle::updateInteractionFlags(glm::vec2 mousePosition, bool mouseDown)
+{
+	glm::vec2 localPosition(getTransformMatrix() * glm::vec4(mousePosition.x, mousePosition.y, 0.0f, 1.0f));
+
+	if (localPosition.x >= -size.x / 2.0f && localPosition.x <= size.x / 2.0f &&
+		localPosition.y >= -size.y / 2.0f && localPosition.y <= size.y / 2.0f)
+	{
+		// Local mouse position is within the bounds
+		if (mouseDown)
+		{
+			// If this is the first time the rectangle was pressed
+			if (!pressed)
+			{
+				// Calling the on begin press callback
+				callOnBeginPressCallback();
+			}
+
+			pressed = true;
+			hovered = true;
+		}
+		else
+		{
+			if (pressed)
+			{
+				// Rectangle was pressed last update, but not now
+				callOnEndPressCallback();
+			}
+
+			// If this is the first time the rectangle was hovered
+			if (!hovered)
+			{
+				// Calling the on begin press callback
+				callOnBeginHoverCallback();
+			}
+
+			hovered = true;
+			pressed = false;
+		}
+	}
+	else // Rectangle is not being hovered
+	{
+		if (pressed)
+		{
+			// Rectangle was pressed last update, but not now
+			callOnEndPressCallback();
+		}
+
+		if (hovered)
+		{
+			// Rectangle was hovered last update, but not now
+			callOnEndHoverCallback();
+		}
+
+		// Rectangle is not pressed nor hovered
+		pressed = false;
+		hovered = false;
+	}
+}
+
+void RootGUIComponent::Rectangle::setOnBeginHoverCallback(VoidFunction callback)
+{
+	onBeginHoverCallback = callback;
+}
+
+void RootGUIComponent::Rectangle::setOnEndHoverCallback(VoidFunction callback)
+{
+	onEndHoverCallback = callback;
+}
+
+void RootGUIComponent::Rectangle::setOnBeginPressCallback(VoidFunction callback)
+{
+	onBeginPressCallback = callback;
+}
+
+void RootGUIComponent::Rectangle::setOnEndPressCallback(VoidFunction callback)
+{
+	onEndPressCallback = callback;
+}
+
+void RootGUIComponent::Rectangle::callOnBeginHoverCallback()
+{
+	if (onBeginHoverCallback != nullptr)
+	{
+		onBeginHoverCallback();
+	}
+}
+
+void RootGUIComponent::Rectangle::callOnEndHoverCallback()
+{
+	if (onEndHoverCallback != nullptr)
+	{
+		onEndHoverCallback();
+	}
+}
+
+void RootGUIComponent::Rectangle::callOnBeginPressCallback()
+{
+	if (onBeginPressCallback != nullptr)
+	{
+		onBeginPressCallback();
+	}
+}
+
+void RootGUIComponent::Rectangle::callOnEndPressCallback()
+{
+	if (onEndPressCallback != nullptr)
+	{
+		onEndPressCallback();
+	}
+}
+
+
+bool RootGUIComponent::Rectangle::isPressed()
+{
+	return pressed;
+}
+
+bool RootGUIComponent::Rectangle::isHovered()
+{
+	return hovered;
 }

@@ -101,5 +101,12 @@ namespace InputEngine
 	 * \return the world location of the mouse.
 	 */
 	glm::vec2 getMouseWorldPosition();
+
+	/**
+	 * Get the current location of the mouse relative to the screen (x in [-1, -1], y in [-1, 1]).
+	 *
+	 * \return the normalized screen location of the mouse (x in [-1, -1], y in [-1, 1]).
+	 */
+	glm::vec2 getMouseNormalizedScreenPosition();
 };
 

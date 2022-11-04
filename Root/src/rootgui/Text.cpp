@@ -48,7 +48,7 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
         1, GL_FALSE,
-        glm::value_ptr(getTransformMatrix()));
+        glm::value_ptr(getInverseTransformMatrix()));
 
     // Binding the sprite
     glActiveTexture(GL_TEXTURE0);

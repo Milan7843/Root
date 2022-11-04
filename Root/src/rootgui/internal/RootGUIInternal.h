@@ -14,6 +14,11 @@ namespace RootGUIInternal
 {
 	void initialise(unsigned int windowWidth, unsigned int windowHeight);
 
+	/**
+	 * Update the GUI. Necessary for GUI interaction.
+	 */
+	void update(glm::vec2 mousePosition, bool mouseDown);
+
 	void terminate();
 
 	// Render the GUI with the given width and height

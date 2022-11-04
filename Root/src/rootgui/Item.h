@@ -39,6 +39,8 @@ namespace RootGUIComponent
 		void setVerticalScreenAnchorPoint(VerticalAnchorPoint newVerticalScreenAnchorPoint);
 		void setHorizontalScreenAnchorPoint(HorizontalAnchorPoint newHorizontalScreenAnchorPoint);
 
+		virtual void updateInteractionFlags(glm::vec2 mousePosition, bool mouseDown) {};
+
 	protected:
 
 		Item(glm::vec2 position = glm::vec2(0.1f));

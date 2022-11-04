@@ -28,10 +28,11 @@ namespace RootGUIInternal
                 "out vec2 TexCoords;\n"
                 "\n"
                 "uniform mat4 transform;\n"
+                "uniform vec2 size;\n"
                 "\n"
                 "void main()\n"
                 "{\n"
-                "    vec2 relativePos = (transform * vec4(vertexPos, 0.0f, 1.0f)).xy;\n"
+                "    vec2 relativePos = (transform * vec4(vertexPos * size, 0.0f, 1.0f)).xy;\n"
                 "    gl_Position = vec4(relativePos, 0.0, 1.0);\n"
                 "    TexCoords = vertexPos + vec2(0.5);\n"
                 "}\0"
@@ -240,6 +241,14 @@ namespace RootGUIInternal
         TextEngine::terminate();
 
         std::cout << "RootGUI terminated." << std::endl;
+    }
+
+    void update(glm::vec2 mousePosition, bool mouseDown)
+    {
+        for (std::shared_ptr<RootGUIComponent::Item>& item : renderQueue)
+        {
+            item->updateInteractionFlags(mousePosition, mouseDown);
+        }
     }
 
     void render()

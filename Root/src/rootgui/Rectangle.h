@@ -6,6 +6,8 @@
 
 #define RectanglePointer RootGUIComponent::Rectangle*
 
+typedef void(*VoidFunction)();
+
 enum class ScaleReference
 {
 	Width,
@@ -36,9 +38,57 @@ namespace RootGUIComponent
 		// Render this GUI rectangle
 		void render(unsigned int guiShader, unsigned int textShader);
 
-		void setInternalAnchor(glm::vec2 anchor);
-
+		/**
+		 * Set the scale reference of this rectangle,
+		 * this determines what the rectangle sizes with:
+		 * - Width: scale with width
+		 * - Height: scale with height
+		 */
 		void setScaleReference(ScaleReference scaleReference);
+
+		void updateInteractionFlags(glm::vec2 mousePosition, bool mouseDown) override;
+
+		/**
+		 * Get whether this rectangle is currently pressed.
+		 */
+		bool isPressed();
+
+		/**
+		 * Get whether this rectangle is currently hovered by the mouse.
+		 */
+		bool isHovered();
+
+		/**
+		 * Set the callback to be called when the rectangle is hovered.
+		 * Called when the rectangle was not hovered on the previous frame but is now.
+		 * 
+		 * \param callback: the callback to be called.
+		 */
+		void setOnBeginHoverCallback(VoidFunction callback);
+
+		/**
+		 * Set the callback to be called when the rectangle is unhovered.
+		 * Called when the rectangle was hovered on the previous frame but isn't now.
+		 * 
+		 * \param callback: the callback to be called.
+		 */
+		void setOnEndHoverCallback(VoidFunction callback);
+
+		/**
+		 * Set the callback to be called when the rectangle is pressed.
+		 * Called when the rectangle was not pressed on the previous frame but is now.
+		 * 
+		 * \param callback: the callback to be called.
+		 */
+		void setOnBeginPressCallback(VoidFunction callback);
+
+		/**
+		 * Set the callback to be called when the rectangle is unpressed.
+		 * Called when the rectangle was pressed on the previous frame but isn't now.
+		 * 
+		 * \param callback: the callback to be called.
+		 */
+		void setOnEndPressCallback(VoidFunction callback);
 
 	protected:
 
@@ -47,8 +97,13 @@ namespace RootGUIComponent
 			glm::vec2 size,
 			glm::vec2 scale);
 
+		void updateTransformMatrices();
+		// The transform matrix is for transforming a point from screen space to local space
 		glm::mat4& getTransformMatrix();
+		// The inverse transform matrix is for transforming a point from local space to screen space
+		glm::mat4& getInverseTransformMatrix();
 		glm::mat4 transform{ glm::identity<glm::mat4>() };
+		glm::mat4 inverseTransform{ glm::identity<glm::mat4>() };
 		bool transformUpdated{ true };
 
 		glm::vec3 color;
@@ -59,8 +114,22 @@ namespace RootGUIComponent
 		// Size of this item
 		glm::vec2 size;
 
-		//glm::mat4 modelMatrix{};
-		glm::vec2 anchor{ glm::vec2(0.5f) };
+		bool hovered;
+		bool pressed;
+
+		// Callbacks
+		// For hover
+		VoidFunction onBeginHoverCallback{ nullptr };
+		VoidFunction onEndHoverCallback{ nullptr };
+
+		// For press
+		VoidFunction onBeginPressCallback{ nullptr };
+		VoidFunction onEndPressCallback{ nullptr };
+
+		virtual void callOnBeginHoverCallback();
+		virtual void callOnEndHoverCallback();
+		virtual void callOnBeginPressCallback();
+		virtual void callOnEndPressCallback();
 
 		ScaleReference scaleReference{ ScaleReference::Height };
 	};

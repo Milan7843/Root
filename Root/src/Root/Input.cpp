@@ -47,4 +47,9 @@ namespace Input
 	{
 		return InputEngine::getMouseWorldPosition();
 	}
+
+	glm::vec2 getMouseNormalizedScreenPosition()
+	{
+		return InputEngine::getMouseNormalizedScreenPosition();
+	}
 };
