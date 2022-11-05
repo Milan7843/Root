@@ -34,9 +34,9 @@ namespace TextEngine
         float spaceWidth,
         unsigned int resolution)
     {
-        if (resolution <= 0)
+        if (resolution < 12)
         {
-            std::cout << "ERROR: font resolution cannot be less than 1" << std::endl;
+            std::cout << "ERROR: font resolution cannot be less than 12" << std::endl;
             return;
         }
 
@@ -130,7 +130,8 @@ namespace TextEngine
             // Calculating inmportant character data
             Character character{
                 glm::vec2(bitmap->width, bitmap->rows) / (float)textureHeight * 0.1f, // Size: width, height
-                glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
+                //glm::vec2(face->glyph->bitmap_left, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
+                glm::vec2(0.0f, face->glyph->bitmap_top) / (float)textureHeight * 0.1f, // Offset from top left
                 glm::vec2(widthOffset / (float)textureWidth, 1.0f - (bitmap->rows / (float)textureHeight)), // UV
                 glm::vec2(bitmap->width / (float)textureWidth, bitmap->rows / (float)textureHeight) // Texture space size
             };
