@@ -1749,6 +1749,9 @@
     <ClInclude Include="src\simpletext\SimpleText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\InterpolatedValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">

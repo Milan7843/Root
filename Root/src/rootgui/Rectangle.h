@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Item.h"
+#include <rootgui/Item.h>
+
+#include <Root/InterpolatedValue.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -12,6 +15,13 @@ enum class ScaleReference
 {
 	Width,
 	Height
+};
+
+enum class InteractionStatus
+{
+	None,
+	Hovered,
+	Pressed
 };
 
 namespace RootGUIComponent
@@ -53,6 +63,34 @@ namespace RootGUIComponent
 		void setColor(glm::vec3 color);
 
 		/**
+		 * Set the color of the rectangle on hover.
+		 *
+		 * \param color: the color with alpha for transparency.
+		 */
+		void setColorOnHover(glm::vec4 color);
+
+		/**
+		 * Set the color of the rectangle on hover.
+		 *
+		 * \param color: the color.
+		 */
+		void setColorOnHover(glm::vec3 color);
+
+		/**
+		 * Set the color of the rectangle on press.
+		 *
+		 * \param color: the color with alpha for transparency.
+		 */
+		void setColorOnPress(glm::vec4 color);
+
+		/**
+		 * Set the color of the rectangle on press.
+		 *
+		 * \param color: the color.
+		 */
+		void setColorOnPress(glm::vec3 color);
+
+		/**
 		 * Set the scale reference of this rectangle,
 		 * this determines what the rectangle sizes with:
 		 * - Width: scale with width
@@ -71,6 +109,11 @@ namespace RootGUIComponent
 		 * Get whether this rectangle is currently hovered by the mouse.
 		 */
 		bool isHovered();
+
+		/**
+		 * Get the current interaction status.
+		 */
+		InteractionStatus getInteractionStatus();
 
 		/**
 		 * Set the callback to be called when the rectangle is hovered.
@@ -103,6 +146,23 @@ namespace RootGUIComponent
 		 * \param callback: the callback to be called.
 		 */
 		void setOnEndPressCallback(VoidFunction callback);
+
+		/**
+		 * Set the scale of the rectangle on hover.
+		 */
+		void setScaleOnHover(glm::vec2 scale);
+
+		/**
+		 * Set the scale of the rectangle on press.
+		 */
+		void setScaleOnPress(glm::vec2 scale);
+
+		/**
+		 * Set the transition duration for scale and color transition.
+		 *
+		 * \param transitionDuration: the new transition duration.
+		 */
+		virtual void setTransitionDuration(float transitionDuration);
 
 	protected:
 
@@ -145,7 +205,12 @@ namespace RootGUIComponent
 		virtual void callOnBeginPressCallback();
 		virtual void callOnEndPressCallback();
 
+		virtual void setInteractionStatus(InteractionStatus status);
+
 		ScaleReference scaleReference{ ScaleReference::Height };
+
+		InterpolatedValue<InteractionStatus, glm::vec2> scaleDifferenceOnInteract{ 0.2f };
+		InterpolatedValue<InteractionStatus, glm::vec4> colorDifferenceOnInteract{ 0.2f };
 	};
 };
 

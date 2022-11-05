@@ -13,6 +13,8 @@ RootGUIComponent::Rectangle::Rectangle(
 	, size(size)
 	, scale(scale)
 {
+	scaleDifferenceOnInteract.addValue(InteractionStatus::None, glm::vec2(1.0f));
+	colorDifferenceOnInteract.addValue(InteractionStatus::None, glm::vec4(1.0f));
 }
 
 void RootGUIComponent::Rectangle::updateTransformMatrices()
@@ -82,6 +84,26 @@ void RootGUIComponent::Rectangle::setColor(glm::vec3 color)
 	this->color = glm::vec4(color, 1.0f);
 }
 
+void RootGUIComponent::Rectangle::setColorOnHover(glm::vec4 color)
+{
+	colorDifferenceOnInteract.addValue(InteractionStatus::Hovered, color);
+}
+
+void RootGUIComponent::Rectangle::setColorOnHover(glm::vec3 color)
+{
+	colorDifferenceOnInteract.addValue(InteractionStatus::Hovered, glm::vec4(color, 1.0f));
+}
+
+void RootGUIComponent::Rectangle::setColorOnPress(glm::vec4 color)
+{
+	colorDifferenceOnInteract.addValue(InteractionStatus::Pressed, color);
+}
+
+void RootGUIComponent::Rectangle::setColorOnPress(glm::vec3 color)
+{
+	colorDifferenceOnInteract.addValue(InteractionStatus::Pressed, glm::vec4(color, 1.0f));
+}
+
 glm::mat4& RootGUIComponent::Rectangle::getInverseTransformMatrix()
 {
 	// Recalculating the transform matrices if the transform data was updated
@@ -118,10 +140,18 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 {
 	Item::render(guiShader, textShader);
 
+	glm::vec2 scaleDifferenceByInteract{ scaleDifferenceOnInteract.sample() };
+
 	glUseProgram(guiShader);
 
+	glUniform2f(glGetUniformLocation(guiShader, "additionalScale"),
+		scaleDifferenceByInteract.x, scaleDifferenceByInteract.y);
+
 	// Setting the color uniform
-	glUniform4f(glGetUniformLocation(guiShader, "baseColor"), color.r, color.g, color.b, color.a);
+	glm::vec4 colorDifferenceByInteract{ colorDifferenceOnInteract.sample() };
+	glm::vec4 colorUsing{ color * colorDifferenceByInteract };
+	glUniform4f(glGetUniformLocation(guiShader, "baseColor"),
+		colorUsing.r, colorUsing.g, colorUsing.b, colorUsing.a);
 
 	glUniform2f(glGetUniformLocation(guiShader, "size"), size.x, size.y);
 	glm::vec2 screenPosition{ getPosition() };
@@ -164,6 +194,7 @@ void RootGUIComponent::Rectangle::updateInteractionFlags(glm::vec2 mousePosition
 
 			pressed = true;
 			hovered = true;
+			setInteractionStatus(InteractionStatus::Pressed);
 		}
 		else
 		{
@@ -182,6 +213,7 @@ void RootGUIComponent::Rectangle::updateInteractionFlags(glm::vec2 mousePosition
 
 			hovered = true;
 			pressed = false;
+			setInteractionStatus(InteractionStatus::Hovered);
 		}
 	}
 	else // Rectangle is not being hovered
@@ -201,6 +233,7 @@ void RootGUIComponent::Rectangle::updateInteractionFlags(glm::vec2 mousePosition
 		// Rectangle is not pressed nor hovered
 		pressed = false;
 		hovered = false;
+		setInteractionStatus(InteractionStatus::None);
 	}
 }
 
@@ -256,6 +289,28 @@ void RootGUIComponent::Rectangle::callOnEndPressCallback()
 	}
 }
 
+void RootGUIComponent::Rectangle::setInteractionStatus(InteractionStatus status)
+{
+	scaleDifferenceOnInteract.setActiveValue(status);
+	colorDifferenceOnInteract.setActiveValue(status);
+}
+
+void RootGUIComponent::Rectangle::setScaleOnHover(glm::vec2 scale)
+{
+	scaleDifferenceOnInteract.addValue(InteractionStatus::Hovered, scale);
+}
+
+
+void RootGUIComponent::Rectangle::setScaleOnPress(glm::vec2 scale)
+{
+	scaleDifferenceOnInteract.addValue(InteractionStatus::Pressed, scale);
+}
+
+void RootGUIComponent::Rectangle::setTransitionDuration(float transitionDuration)
+{
+	scaleDifferenceOnInteract.setTransitionDuration(transitionDuration);
+	colorDifferenceOnInteract.setTransitionDuration(transitionDuration);
+}
 
 bool RootGUIComponent::Rectangle::isPressed()
 {
@@ -265,4 +320,17 @@ bool RootGUIComponent::Rectangle::isPressed()
 bool RootGUIComponent::Rectangle::isHovered()
 {
 	return hovered;
+}
+
+InteractionStatus RootGUIComponent::Rectangle::getInteractionStatus()
+{
+	if (pressed)
+	{
+		return InteractionStatus::Pressed;
+	}
+	if (hovered)
+	{
+		return InteractionStatus::Hovered;
+	}
+	return InteractionStatus::None;
 }

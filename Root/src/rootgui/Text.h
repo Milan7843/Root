@@ -49,6 +49,34 @@ namespace RootGUIComponent
 		 */
 		void setTextColor(glm::vec3 color);
 
+		/**
+		 * Set the text color on hover.
+		 *
+		 * \param color: the color with alpha for transparency.
+		 */
+		void setTextColorOnHover(glm::vec4 color);
+
+		/**
+		 * Set the text color on hover.
+		 *
+		 * \param color: the color.
+		 */
+		void setTextColorOnHover(glm::vec3 color);
+
+		/**
+		 * Set the text color on press.
+		 *
+		 * \param color: the color with alpha for transparency.
+		 */
+		void setTextColorOnPress(glm::vec4 color);
+
+		/**
+		 * Set the text color on press.
+		 *
+		 * \param color: the color.
+		 */
+		void setTextColorOnPress(glm::vec3 color);
+
 		// Render this GUI text
 		void render(unsigned int guiShader, unsigned int textShader);
 
@@ -65,6 +93,13 @@ namespace RootGUIComponent
 		 * \param centerHorizontally: true to center this text horizontally.
 		 */
 		void setCenterHorizontally(bool centerHorizontally);
+
+		/**
+		 * Set the transition duration for scale and color transition.
+		 *
+		 * \param transitionDuration: the new transition duration.
+		 */
+		void setTransitionDuration(float transitionDuration) override;
 
 	protected:
 
@@ -92,6 +127,8 @@ namespace RootGUIComponent
 
 		void renderDebugView();
 
+		void setInteractionStatus(InteractionStatus status) override;
+
 		std::string text;
 		std::string fontTag;
 
@@ -103,6 +140,8 @@ namespace RootGUIComponent
 		glm::vec4 textColor{ glm::vec4(1.0f) };
 
 		unsigned int textVAO;
+
+		InterpolatedValue<InteractionStatus, glm::vec4> textColorDifferenceOnInteract{ 0.2f };
 	};
 };
 

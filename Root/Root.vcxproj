@@ -698,6 +698,7 @@
     <ClInclude Include="src\Root\engine\TransformEngine.h" />
     <ClInclude Include="src\Root\Gradient.h" />
     <ClInclude Include="src\Root\Input.h" />
+    <ClInclude Include="src\Root\InterpolatedValue.h" />
     <ClInclude Include="src\Root\Logger.h" />
     <ClInclude Include="src\Root\Math.h" />
     <ClInclude Include="src\Root\Physics.h" />

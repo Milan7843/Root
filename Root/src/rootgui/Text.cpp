@@ -23,12 +23,39 @@ RootGUIComponent::Text::~Text()
 
 void RootGUIComponent::Text::setTextColor(glm::vec4 color)
 {
-    this->color = color;
+    this->textColor = color;
 }
 
 void RootGUIComponent::Text::setTextColor(glm::vec3 color)
 {
-    this->color = glm::vec4(color, 1.0f);
+    this->textColor = glm::vec4(color, 1.0f);
+}
+
+void RootGUIComponent::Text::setTextColorOnHover(glm::vec4 color)
+{
+    textColorDifferenceOnInteract.addValue(InteractionStatus::Hovered, color);
+}
+
+void RootGUIComponent::Text::setTextColorOnHover(glm::vec3 color)
+{
+    textColorDifferenceOnInteract.addValue(InteractionStatus::Hovered, glm::vec4(color, 1.0f));
+}
+
+void RootGUIComponent::Text::setTextColorOnPress(glm::vec4 color)
+{
+    textColorDifferenceOnInteract.addValue(InteractionStatus::Pressed, color);
+}
+
+void RootGUIComponent::Text::setTextColorOnPress(glm::vec3 color)
+{
+    textColorDifferenceOnInteract.addValue(InteractionStatus::Pressed, glm::vec4(color, 1.0f));
+}
+
+void RootGUIComponent::Text::setTransitionDuration(float transitionDuration)
+{
+    RootGUIComponent::Rectangle::setTransitionDuration(transitionDuration);
+
+    colorDifferenceOnInteract.setTransitionDuration(transitionDuration);
 }
 
 void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textShader)
@@ -37,7 +64,13 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
 
     unsigned int shader{ RootGUIInternal::getTextShader() };
 
+    glm::vec2 scaleDifferenceByInteract{ scaleDifferenceOnInteract.sample() };
+    glm::vec4 textColorDifferenceByInteract{ textColorDifferenceOnInteract.sample() };
+
     glUseProgram(shader);
+
+    glUniform2f(glGetUniformLocation(shader, "additionalScale"),
+        scaleDifferenceByInteract.x, scaleDifferenceByInteract.y);
 
     Font* font{ TextEngine::getFont(fontTag) };
     if (font == nullptr)
@@ -46,9 +79,11 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
         return;
     }
 
+    glm::vec4 textColorUsing{ textColor * textColorDifferenceByInteract };
+
     glUniform1i(glGetUniformLocation(shader, "text"), 0);
     glUniform4f(glGetUniformLocation(shader, "textColor"), 
-        color.r, color.g, color.b, color.a);
+        textColorUsing.r, textColorUsing.g, textColorUsing.b, textColorUsing.a);
 
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
@@ -79,7 +114,12 @@ void RootGUIComponent::Text::renderDebugView()
 
     unsigned int shader{ RootGUIInternal::getTextDebugShader() };
 
+    glm::vec2 scaleDifferenceByInteract{ scaleDifferenceOnInteract.sample() };
+
     glUseProgram(shader);
+
+    glUniform2f(glGetUniformLocation(shader, "additionalScale"),
+        scaleDifferenceByInteract.x, scaleDifferenceByInteract.y);
 
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
@@ -95,6 +135,13 @@ void RootGUIComponent::Text::renderDebugView()
 
     // Switching back to regular render mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void RootGUIComponent::Text::setInteractionStatus(InteractionStatus status)
+{
+    RootGUIComponent::Rectangle::setInteractionStatus(status);
+
+    textColorDifferenceOnInteract.setActiveValue(status);
 }
 
 void RootGUIComponent::Text::setCenterVertically(bool centerVertically)
@@ -122,6 +169,7 @@ RootGUIComponent::Text::Text(
     , textSize(textSize)
 {
     updateVAO(this->text);
+    textColorDifferenceOnInteract.addValue(InteractionStatus::None, glm::vec4(1.0f));
 }
 
 float RootGUIComponent::Text::getWordLength(const char* c, Font* font)
