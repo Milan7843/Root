@@ -58,6 +58,12 @@ void RootGUIComponent::Text::setTransitionDuration(float transitionDuration)
     colorDifferenceOnInteract.setTransitionDuration(transitionDuration);
 }
 
+void RootGUIComponent::Text::setTextPadding(glm::vec2 padding)
+{
+    this->padding = padding;
+    updateVAO(text);
+}
+
 void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textShader)
 {
     RootGUIComponent::Rectangle::render(guiShader, textShader);
@@ -238,7 +244,6 @@ void RootGUIComponent::Text::centerLine(
 
 void RootGUIComponent::Text::updateVAO(const std::string& text)
 {
-    glm::vec2 padding{ 0.02f, 0.02f };
     float wrapWidth{ size.x - padding.x * 2 };
 
     Font* font{ TextEngine::getFont(fontTag) };
@@ -355,7 +360,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
                 if (centerHorizontally)
                 {
                     centerLine(xOrigin,
-                        xOffset - (xSize + font->characterSpacing * 0.01f),
+                        xOffset - (font->characterSpacing * 0.01f),
                         c,
                         vertexStartIndex,
                         firstCharacterOfCurrentLine,
@@ -380,7 +385,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
             if (centerHorizontally)
             {
                 centerLine(xOrigin,
-                    xOffset - (xSize + font->characterSpacing * 0.01f),
+                    xOffset - (font->characterSpacing * 0.01f),
                     c,
                     vertexStartIndex,
                     firstCharacterOfCurrentLine,

@@ -101,6 +101,13 @@ namespace RootGUIComponent
 		 */
 		void setTransitionDuration(float transitionDuration) override;
 
+		/**
+		 * Set the padding for the text in the rectangle.
+		 * 
+		 * \param padding: the new padding.
+		 */
+		void setTextPadding(glm::vec2 padding);
+
 	protected:
 
 		Text(
@@ -133,6 +140,8 @@ namespace RootGUIComponent
 		std::string fontTag;
 
 		float textSize;
+
+		glm::vec2 padding{ glm::vec2(0.02f) };
 
 		bool centerVertically{ false };
 		bool centerHorizontally{ false };
