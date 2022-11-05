@@ -10,6 +10,7 @@ namespace RootGUIInternal
 
         unsigned int guiShader{ 0 };
         unsigned int textShader{ 0 };
+        unsigned int textDebugShader{ 0 };
 
         unsigned int windowWidthUsing{ 0 };
         unsigned int windowHeightUsing{ 0 };
@@ -17,6 +18,7 @@ namespace RootGUIInternal
         unsigned int quadVAO{ 0 };
         unsigned int quadVBO{ 0 };
         unsigned int quadEBO{ 0 };
+        bool inDebugMode;
 
         void createShaderPrograms()
         {
@@ -43,7 +45,7 @@ namespace RootGUIInternal
                 "out vec4 FragColor;\n"
                 "\n"
                 "uniform sampler2D textureSampler;\n"
-                "uniform vec3 baseColor;\n"
+                "uniform vec4 baseColor;\n"
                 "uniform bool useTexture;\n"
                 "\n"
                 "void main()\n"
@@ -53,7 +55,7 @@ namespace RootGUIInternal
                 "       FragColor = texture(textureSampler, TexCoords);\n"
                 "    }\n"
                 "    else {\n"
-                "       FragColor = vec4(baseColor, 1.0);\n"
+                "       FragColor = baseColor;\n"
                 "    }\n"
                 "}\0"
             };
@@ -177,6 +179,68 @@ namespace RootGUIInternal
             // Deleting the shaders as they're linked into our program now and no longer necessary
             glDeleteShader(textVertex);
             glDeleteShader(textFragment);
+
+
+            /* TEXT DEBUG SHADER */
+
+            const char* textDebugVertexShaderCode{
+                "#version 460 core\n"
+                "layout(location = 0) in vec2 pos;\n"
+                "layout(location = 1) in vec2 uv;\n"
+                "\n"
+                "uniform mat4 transform;\n"
+                "\n"
+                "void main()\n"
+                "{\n"
+                "    vec2 relativePos = (transform * vec4(pos, 0.0f, 1.0f)).xy;\n"
+                "    gl_Position = vec4(relativePos, 0.0, 1.0);\n"
+                "}\0"
+            };
+            const char* textDebugFragmentShaderCode{
+                "#version 460 core\n"
+                "out vec4 color;\n"
+                "\n"
+                "void main()\n"
+                "{\n"
+                "    color = vec4(0.0, 1.0, 0.0, 1.0);\n"
+                "}\0"
+            };
+
+            unsigned int textDebugVertex, textDebugFragment;
+            textDebugVertex = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(textDebugVertex, 1, &textDebugVertexShaderCode, NULL);
+            glCompileShader(textDebugVertex);
+
+            // Vertex shader compilation error check
+            glGetShaderiv(textDebugVertex, GL_COMPILE_STATUS, &success);
+            if (!success)
+            {
+                glGetShaderInfoLog(textDebugVertex, 512, NULL, infoLog);
+                std::cout << "Internal text debug vertex shader compilation failed: " << infoLog << std::endl;
+            }
+
+            textDebugFragment = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(textDebugFragment, 1, &textDebugFragmentShaderCode, NULL);
+            glCompileShader(textDebugFragment);
+
+            // Fragment shader compilation error check
+            glGetShaderiv(textDebugFragment, GL_COMPILE_STATUS, &success);
+            if (!success)
+            {
+                glGetShaderInfoLog(textDebugFragment, 512, NULL, infoLog);
+                std::cout << "Internal text debug fragment shader compilation failed: " << infoLog << std::endl;
+            }
+
+            /* Creating the shader program */
+            textDebugShader = glCreateProgram();
+            glAttachShader(textDebugShader, textDebugVertex);
+            glAttachShader(textDebugShader, textDebugFragment);
+
+            glLinkProgram(textDebugShader);
+
+            // Deleting the shaders as they're linked into our program now and no longer necessary
+            glDeleteShader(textDebugVertex);
+            glDeleteShader(textDebugFragment);
         }
     }
 
@@ -267,6 +331,11 @@ namespace RootGUIInternal
         return textShader;
     }
 
+    unsigned int getTextDebugShader()
+    {
+        return textDebugShader;
+    }
+
     unsigned int getQuadVAO()
     {
         return quadVAO;
@@ -300,6 +369,21 @@ namespace RootGUIInternal
     unsigned int getWindowHeight()
     {
         return windowHeightUsing;
+    }
+
+    void enableDebugMode()
+    {
+        inDebugMode = true;
+    }
+
+    void disableDebugMode()
+    {
+        inDebugMode = false;
+    }
+
+    bool isInDebugMode()
+    {
+        return inDebugMode;
     }
 };
 

@@ -38,9 +38,16 @@ namespace RootGUIComponent
 		/**
 		 * Set the text color.
 		 * 
+		 * \param color: the text color for alpha for transparency.
+		 */
+		void setTextColor(glm::vec4 color);
+
+		/**
+		 * Set the text color.
+		 *
 		 * \param color: the text color.
 		 */
-		void setColor(glm::vec3 color);
+		void setTextColor(glm::vec3 color);
 
 		// Render this GUI text
 		void render(unsigned int guiShader, unsigned int textShader);
@@ -83,6 +90,8 @@ namespace RootGUIComponent
 			unsigned int indexOffsetPerCharacter,
 			const char* begin);
 
+		void renderDebugView();
+
 		std::string text;
 		std::string fontTag;
 
@@ -91,7 +100,7 @@ namespace RootGUIComponent
 		bool centerVertically{ false };
 		bool centerHorizontally{ false };
 
-		glm::vec3 color{ glm::vec3(1.0f) };
+		glm::vec4 textColor{ glm::vec4(1.0f) };
 
 		unsigned int textVAO;
 	};

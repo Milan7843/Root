@@ -39,6 +39,20 @@ namespace RootGUIComponent
 		void render(unsigned int guiShader, unsigned int textShader);
 
 		/**
+		 * Set the color of the rectangle.
+		 * 
+		 * \param color: the color with alpha for transparency.
+		 */
+		void setColor(glm::vec4 color);
+
+		/**
+		 * Set the color of the rectangle.
+		 *
+		 * \param color: the color.
+		 */
+		void setColor(glm::vec3 color);
+
+		/**
 		 * Set the scale reference of this rectangle,
 		 * this determines what the rectangle sizes with:
 		 * - Width: scale with width
@@ -106,7 +120,7 @@ namespace RootGUIComponent
 		glm::mat4 inverseTransform{ glm::identity<glm::mat4>() };
 		bool transformUpdated{ true };
 
-		glm::vec3 color;
+		glm::vec4 color;
 
 		// Scale of this item: applied after everything else
 		glm::vec2 scale;

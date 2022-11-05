@@ -40,6 +40,16 @@ namespace RootGUI
 	unsigned int getWindowHeight();
 
 	/**
+	 * Enable the debug view mode.
+	 */
+	void enableDebugMode();
+
+	/**
+	 * Disable the debug view mode.
+	 */
+	void disableDebugMode();
+
+	/**
 	 * Load the data for a font.
 	 * 
 	 * \param fontPath: the path to the font.

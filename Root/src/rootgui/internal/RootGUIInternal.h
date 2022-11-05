@@ -27,6 +27,8 @@ namespace RootGUIInternal
 
 	unsigned int getTextShader();
 
+	unsigned int getTextDebugShader();
+
 	/**
 	 * Get the index of a Vertex Array Object which defines a quad.
 	 *
@@ -64,5 +66,22 @@ namespace RootGUIInternal
 	 * \returns the current height of the window.
 	 */
 	unsigned int getWindowHeight();
+
+	/**
+	 * Enable the debug view mode.
+	 */
+	void enableDebugMode();
+
+	/**
+	 * Disable the debug view mode.
+	 */
+	void disableDebugMode();
+
+	/**
+	 * Get whether the GUI is in debug mode.
+	 */
+	bool isInDebugMode();
 };
+
+
 

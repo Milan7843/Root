@@ -27,6 +27,16 @@ namespace RootGUI
         return 0;
     }
 
+    void enableDebugMode()
+    {
+        RootGUIInternal::enableDebugMode();
+    }
+
+    void disableDebugMode()
+    {
+        RootGUIInternal::disableDebugMode();
+    }
+
     void loadFont(const std::string& fontPath,
         const std::string& tag,
         float characterSpacing,

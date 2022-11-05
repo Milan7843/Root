@@ -21,9 +21,14 @@ RootGUIComponent::Text::~Text()
 {
 }
 
-void RootGUIComponent::Text::setColor(glm::vec3 color)
+void RootGUIComponent::Text::setTextColor(glm::vec4 color)
 {
     this->color = color;
+}
+
+void RootGUIComponent::Text::setTextColor(glm::vec3 color)
+{
+    this->color = glm::vec4(color, 1.0f);
 }
 
 void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textShader)
@@ -42,23 +47,54 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     }
 
     glUniform1i(glGetUniformLocation(shader, "text"), 0);
-    glUniform3f(glGetUniformLocation(shader, "textColor"), 
-        color.x, color.y, color.z);
+    glUniform4f(glGetUniformLocation(shader, "textColor"), 
+        color.r, color.g, color.b, color.a);
 
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
         1, GL_FALSE,
         glm::value_ptr(getInverseTransformMatrix()));
 
-    // Binding the sprite
+    // Binding the texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, font->textureID);
 
+    // Binding the vertex data
     glBindVertexArray(textVAO);
 
     glDrawArrays(GL_TRIANGLES, 0, 6 * text.length());
 
     glBindVertexArray(0);
+
+    renderDebugView();
+}
+
+void RootGUIComponent::Text::renderDebugView()
+{
+    if (!RootGUIInternal::isInDebugMode())
+        return;
+
+    // Switching to wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    unsigned int shader{ RootGUIInternal::getTextDebugShader() };
+
+    glUseProgram(shader);
+
+    // Setting the transform matrix
+    glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
+        1, GL_FALSE,
+        glm::value_ptr(getInverseTransformMatrix()));
+
+    // Binding the vertex data
+    glBindVertexArray(textVAO);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6 * text.length());
+
+    glBindVertexArray(0);
+
+    // Switching back to regular render mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void RootGUIComponent::Text::setCenterVertically(bool centerVertically)

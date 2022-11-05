@@ -9,7 +9,7 @@ RootGUIComponent::Rectangle::Rectangle(
 	glm::vec2 size,
 	glm::vec2 scale)
 	: RootGUIComponent::Item(position)
-	, color(glm::vec3(1.0f, 0.0f, 1.0f))
+	, color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0))
 	, size(size)
 	, scale(scale)
 {
@@ -72,6 +72,16 @@ glm::mat4& RootGUIComponent::Rectangle::getTransformMatrix()
 	return transform;
 }
 
+void RootGUIComponent::Rectangle::setColor(glm::vec4 color)
+{
+	this->color = color;
+}
+
+void RootGUIComponent::Rectangle::setColor(glm::vec3 color)
+{
+	this->color = glm::vec4(color, 1.0f);
+}
+
 glm::mat4& RootGUIComponent::Rectangle::getInverseTransformMatrix()
 {
 	// Recalculating the transform matrices if the transform data was updated
@@ -111,7 +121,7 @@ void RootGUIComponent::Rectangle::render(unsigned int guiShader,
 	glUseProgram(guiShader);
 
 	// Setting the color uniform
-	glUniform3f(glGetUniformLocation(guiShader, "baseColor"), color.x, color.y, color.z);
+	glUniform4f(glGetUniformLocation(guiShader, "baseColor"), color.r, color.g, color.b, color.a);
 
 	glUniform2f(glGetUniformLocation(guiShader, "size"), size.x, size.y);
 	glm::vec2 screenPosition{ getPosition() };
