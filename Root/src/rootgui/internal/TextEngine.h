@@ -25,13 +25,16 @@ struct Font
     unsigned int textureID;  // ID of the character texture atlas
     float characterSpacing; // Spacing between each character
     float lineHeight;
+
+    // The mapping from a character to a specific texture and its data
+    std::map<char, Character> characters;
 };
 
 namespace TextEngine
 {
     void terminate();
 
-    Character* getCharacter(char c);
+    Character* getCharacter(Font* font, char c);
 
     void loadFont(const std::string& fontPath,
         const std::string& tag,

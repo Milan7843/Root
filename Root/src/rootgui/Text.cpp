@@ -96,7 +96,7 @@ float RootGUIComponent::Text::getWordLength(const char* c, Font* font)
 
     while (*c != ' ' && *c != '\0') // Go on until hitting space or delimitter
     {
-        Character* ch = TextEngine::getCharacter(*c);
+        Character* ch = TextEngine::getCharacter(font, *c);
 
         if (ch == nullptr)
         {
@@ -192,7 +192,7 @@ void RootGUIComponent::Text::updateVAO(const std::string& text)
 
     while (*c != '\0') // Go on until hitting delimitter
     {
-        Character* ch = TextEngine::getCharacter(*c);
+        Character* ch = TextEngine::getCharacter(font, *c);
 
         if (ch == nullptr)
         {

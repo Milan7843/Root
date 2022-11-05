@@ -5,9 +5,6 @@ namespace TextEngine
     namespace
     {
         std::map<std::string, Font> fonts;
-
-        // The mapping from a character to a specific texture and its data
-        std::map<char, Character> characters;
     }
 
     void terminate()
@@ -19,12 +16,12 @@ namespace TextEngine
         }
     }
 
-    Character* getCharacter(char c)
+    Character* getCharacter(Font* font, char c)
     {
-        std::map<char, Character>::iterator iterator = characters.find(c);
+        std::map<char, Character>::iterator iterator = font->characters.find(c);
 
         // Found the character
-        if (iterator != characters.end())
+        if (iterator != font->characters.end())
             return &iterator->second;
 
         // Did not find the character
@@ -100,6 +97,9 @@ namespace TextEngine
 
         // The total number of pixel travelled along the texture
         unsigned int widthOffset{ 0 };
+
+        // The mapping from a character to a specific texture and its data
+        std::map<char, Character> characters;
 
         // If we got here, the font was successfully loaded
         // Then we go and load the first 128 characters of the ASCII set
@@ -181,7 +181,7 @@ namespace TextEngine
         // Modifying the width of the space
         characters[' '].size.x = spaceWidth * 0.02f;
 
-        fonts.emplace(tag, Font{ textureID, characterSpacing, 0.1f } );
+        fonts.emplace(tag, Font{ textureID, characterSpacing, 0.1f, characters } );
 
         // Destroying freetype after using it to extract all data
         FT_Done_Face(face);
