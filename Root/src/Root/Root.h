@@ -9,7 +9,6 @@
 #include "Time.h"
 #include "rendering/Renderer.h"
 
-#include <simpletext/SimpleText.h>
 #include <rootgui/RootGUI.h>
 
 #include <glad/glad.h>

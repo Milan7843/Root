@@ -1653,9 +1653,6 @@
     <ClInclude Include="src\simpleprofiler\Profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\simpletext\SimpleText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\stb_image\stbi_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1741,6 +1738,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Root\Audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rootgui\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rootgui\internal\TextEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\simpletext\SimpleText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\InterpolatedValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\base\TransformBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2308,9 +2320,6 @@
     <ClCompile Include="src\simpleprofiler\Profiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\simpletext\SimpleText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stbi_utility\TextureData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2369,6 +2378,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\Audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rootgui\Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rootgui\internal\TextEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simpletext\SimpleText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\base\TransformBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

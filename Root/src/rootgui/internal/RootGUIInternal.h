@@ -1,6 +1,6 @@
 #pragma once
 
-#include "simpletext/SimpleText.h"
+#include <rootgui/internal/TextEngine.h>
 #include "rootgui/Item.h"
 #include "rootgui/Rectangle.h"
 #include "rootgui/Image.h"
@@ -14,10 +14,20 @@ namespace RootGUIInternal
 {
 	void initialise(unsigned int windowWidth, unsigned int windowHeight);
 
+	/**
+	 * Update the GUI. Necessary for GUI interaction.
+	 */
+	void update(glm::vec2 mousePosition, bool mouseDown);
+
 	void terminate();
 
 	// Render the GUI with the given width and height
 	void render();
+
+
+	unsigned int getTextShader();
+
+	unsigned int getTextDebugShader();
 
 	/**
 	 * Get the index of a Vertex Array Object which defines a quad.
@@ -25,6 +35,8 @@ namespace RootGUIInternal
 	 * \returns the index of a Vertex Array Object which defines a quad.
 	 */
 	unsigned int getQuadVAO();
+
+	glm::mat4& getProjectionMatrix();
 
 	/**
 	 * Add a new item to the render queue.
@@ -54,5 +66,22 @@ namespace RootGUIInternal
 	 * \returns the current height of the window.
 	 */
 	unsigned int getWindowHeight();
+
+	/**
+	 * Enable the debug view mode.
+	 */
+	void enableDebugMode();
+
+	/**
+	 * Disable the debug view mode.
+	 */
+	void disableDebugMode();
+
+	/**
+	 * Get whether the GUI is in debug mode.
+	 */
+	bool isInDebugMode();
 };
+
+
 

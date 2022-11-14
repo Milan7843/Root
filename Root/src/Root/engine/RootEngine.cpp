@@ -108,7 +108,6 @@ namespace RootEngine
 
         unsigned int frame = 0;
 
-        SimpleText simpleText("src/fonts/arial.ttf");
         RootGUIInternal::initialise(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
         //std::thread physicsSimulation(PhysicsEngine::simulate);
@@ -125,11 +124,13 @@ namespace RootEngine
             RendererEngine::setTextureSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
             RootGUIInternal::setWindowSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
+            // Setting viewport size
+            glViewport(0, 0, WINDOW_SIZE_X, WINDOW_SIZE_Y);
+
             // Updating the input engine
             InputEngine::update();
 
-            // Setting viewport size
-            glViewport(0, 0, WINDOW_SIZE_X, WINDOW_SIZE_Y);
+            RootGUIInternal::update(InputEngine::getMouseNormalizedScreenPosition(), InputEngine::getMouseButton(MOUSE_LEFT));
 
             // Calling all component and script start() and update() functions
             ComponentEngine::updateScripts();

@@ -3,10 +3,9 @@
 #include "internal/RootGUIInternal.h"
 
 RootGUIComponent::Item::Item(
-	glm::vec2 position, glm::vec2 size, glm::vec2 scale)
-	: position(position)
-	, size(glm::vec2(size.x / RootGUIInternal::getWindowWidth(), size.y / RootGUIInternal::getWindowHeight()))
-	, scale(scale)
+	glm::vec2 position,
+	float rotation)
+	: TransformBase(position, rotation, glm::vec2(1.0f))
 	, previousWindowHeight(RootGUIInternal::getWindowHeight())
 	, previousWindowWidth(RootGUIInternal::getWindowWidth())
 {
@@ -17,54 +16,49 @@ RootGUIComponent::Item::~Item()
 	std::cout << "Item destroyed." << std::endl;
 }
 
-void RootGUIComponent::Item::setVerticalAnchorPoint(VerticalAnchorPoint newVerticalAnchorPoint)
+void RootGUIComponent::Item::setVerticalScreenAnchorPoint(VerticalAnchorPoint newVerticalScreenAnchorPoint)
 {
-	this->verticalAnchorPoint = newVerticalAnchorPoint;
+	this->verticalAnchorPoint = newVerticalScreenAnchorPoint;
 }
 
-void RootGUIComponent::Item::setHorizontalAnchorPoint(HorizontalAnchorPoint newHorizontalAnchorPoint)
+void RootGUIComponent::Item::setHorizontalScreenAnchorPoint(HorizontalAnchorPoint newHorizontalScreenAnchorPoint)
 {
-	this->horizontalAnchorPoint = newHorizontalAnchorPoint;
+	this->horizontalAnchorPoint = newHorizontalScreenAnchorPoint;
+}
+
+float RootGUIComponent::Item::getVerticalScreenAnchor()
+{
+	switch (verticalAnchorPoint)
+	{
+		case VerticalAnchorPoint::Bottom:
+			return -1.0f;
+
+		case VerticalAnchorPoint::Middle:
+			return 0.0f;
+
+		case VerticalAnchorPoint::Top:
+			return 1.0f;
+	}
+	return 0.0f;
+}
+
+float RootGUIComponent::Item::getHorizontalScreenAnchor()
+{
+	switch (horizontalAnchorPoint)
+	{
+		case HorizontalAnchorPoint::Left:
+			return -1.0f;
+
+		case HorizontalAnchorPoint::Middle:
+			return 0.0f;
+
+		case HorizontalAnchorPoint::Right:
+			return 1.0f;
+	}
+	return 0.0f;
 }
 
 glm::vec2 RootGUIComponent::Item::getPosition()
 {
-	float verticalAnchor;
-	float horizontalAnchor;
-
-	switch (verticalAnchorPoint) {
-	case VerticalAnchorPoint::Bottom:
-		verticalAnchor = 0.0f;
-		break;
-	case VerticalAnchorPoint::Middle:
-		verticalAnchor = 0.5f;
-		break;
-	case VerticalAnchorPoint::Top:
-		verticalAnchor = 1.0f;
-		break;
-	}
-
-	switch (horizontalAnchorPoint) {
-	case HorizontalAnchorPoint::Left:
-		horizontalAnchor = 0.0f;
-		break;
-	case HorizontalAnchorPoint::Middle:
-		horizontalAnchor = 0.5f;
-		break;
-	case HorizontalAnchorPoint::Right:
-		horizontalAnchor = 1.0f;
-		break;
-	}
-
-	glm::vec2 realSize{ getSize() };
-	return glm::vec2(position.x - realSize.x * horizontalAnchor, position.y - realSize.y * verticalAnchor);
-}
-
-glm::vec2 RootGUIComponent::Item::getSize()
-{
-	return glm::vec2(size.x
-		* ((float)previousWindowWidth / (float)RootGUIInternal::getWindowWidth())
-		/ ((float)previousWindowHeight / (float)RootGUIInternal::getWindowHeight()),
-		size.y);
-		//size.y * (float)previousWindowHeight / (float)windowHeight);
+	return position;
 }

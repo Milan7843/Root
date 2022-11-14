@@ -3,6 +3,7 @@
 #include "Root/Logger.h"
 #include "Root/Root.h"
 #include "Root/Components.h"
+#include "Root/base/TransformBase.h"
 
 #include <glm/glm.hpp>
 #include <glm/trigonometric.hpp>
@@ -17,7 +18,7 @@
 /**
  * Class which holds values for a 2D transformation.
  */
-class Transform
+class Transform : public TransformBase
 {
 public:
 
@@ -48,7 +49,7 @@ public:
 	 * Will also destroy all children, but not the parent.
 	 * Any attached components without a reference will also be destroyed.
 	 */
-	void destroy();
+	void destroy() override;
 
 	/**
 	 * Render this Transform.
@@ -64,7 +65,7 @@ public:
 	 *
 	 * \returns this Transform in a human-readable format.
 	 */
-	std::string toString();
+	std::string toString() override;
 
 	/**
 	 * Set the parent transform of this transform.
@@ -75,41 +76,9 @@ public:
 	 * and therefore does not have to be called manually.
 	 *
 	 * \param parent: a shared_ptr to the transform that will be the parent.
-	 * If this is NULL, the transform will have no parent
+	 * If this is NULL, the transform will have no parent.
 	 */
 	void setParent(Transform* parent, bool alsoAddChild = true);
-
-	/**
-	 * Set this transform's name.
-	 * Any transform's name starts out as empty ("").
-	 * 
-	 * \param name: the new name.
-	 */
-	void setName(std::string name);
-
-	/**
-	 * Get this transform's name.
-	 * Any transform's name starts out as empty ("").
-	 *
-	 * \returns name: the name.
-	 */
-	std::string getName();
-
-	/**
-	 * Set this transform's tag.
-	 * Any transform's tag starts out as empty ("").
-	 *
-	 * \param tag: the new tag.
-	 */
-	void setTag(std::string tag);
-
-	/**
-	 * Get this transform's tag.
-	 * Any transform's tag starts out as empty ("").
-	 *
-	 * \returns tag: the tag.
-	 */
-	std::string getTag();
 
 	/**
 	 * Get the parent of this transform.
@@ -137,11 +106,6 @@ public:
 	 * \returns whether a child was removed succesfully.
 	 */
 	bool removeChild(Transform* childToRemove);
-
-	/**
-	 * Remove all children from this transform with the given shared_ptr.
-	 */
-	void removeAllChildren();
 
 	/**
 	 * Set this transform's render depth.
@@ -180,89 +144,6 @@ public:
 	 * \returns the attached rigidbody or nullptr if no rigidbody is attached.
 	 */
 	RigidbodyPointer getAttachedRigidbody();
-
-	/**
-	 * Get a normalized vector which points up.
-	 *
-	 * \returns the up vector.
-	 */
-	glm::vec2 getLocalUpVector();
-
-	/**
-	 * Get a normalized vector which points right.
-	 *
-	 * \returns the right vector.
-	 */
-	glm::vec2 getLocalRightVector();
-
-	/**
-	 * Get a matrix which correctly transforms world space points to local space.
-	 * 
-	 * \returns the model matrix.
-	 */
-	glm::mat4 getModelMatrix();
-
-	/**
-	 * Get a matrix which correctly transforms world space points to local space,
-	 * except for scaling.
-	 *
-	 * \returns the non-scaled model matrix.
-	 */
-	glm::mat4 getModelMatrixWithoutScale();
-
-	/**
-	 * Get a matrix which correctly transforms parent space points to local space.
-	 *
-	 * \returns the transform matrix.
-	 */
-	glm::mat4 getTransformMatrix();
-
-	/**
-	 * Get a matrix which correctly transforms parent space points to local space,
-	 * except for scaling.
-	 *
-	 * \returns the non-scaled transform matrix.
-	 */
-	glm::mat4 getTransformMatrixWithoutScale();
-
-	/**
-	 * Get a matrix which correctly transforms local space points to parent space.
-	 *
-	 * \returns the inverse transform matrix.
-	 */
-	glm::mat4 getInverseTransformMatrix();
-
-	/**
-	 * Get a matrix which correctly transforms local space points to parent space,
-	 * except for scaling.
-	 *
-	 * \returns the non-scaled inverse transform matrix.
-	 */
-	glm::mat4 getInverseTransformMatrixWithoutScale();
-
-	/**
-	 * Transform a point from world space into local space.
-	 * 
-	 * \param point: the world point to get the local position for.
-	 * \return the local position that corresponds to the given world point.
-	 */
-	glm::vec2 worldPointToLocalPoint(glm::vec2 point);
-
-	/**
-	 * Transform a point from world space into the parent's local space.
-	 *
-	 * \param point: the world point to get the parent's local position for.
-	 * \return the parent's local position that corresponds to the given world point.
-	 */
-	glm::vec2 worldPointToParentLocalPoint(glm::vec2 point);
-
-	/**
-	 * Transform a point from local space into world space.
-	 *
-	 * \param point: the local point to get the world position for.
-	 * \return the world position that corresponds to the given local point.
-	 */
-	glm::vec2 localPointToWorldPoint(glm::vec2 point);
 
 	/**
 	 * Get a component on this transform of type T.
@@ -338,138 +219,46 @@ public:
 		return ptr;
 	}*/
 
-	/**
-	 * Get the angle required for this transform to look at a point.
-	 * Will NOT set the angle, only calculate it.
-	 * Example of using this function to make an object look at the mouse:
-	 * \code{.cpp}
-	 * transform->rotation = transform->lookAt(Input::getMouseWorldPosition());
-	 * \endcode
-	 * 
-	 * \param point: the point to look at.
-	 * \returns the angle at which this transform would look at the point.
-	 */
-	float lookAt(glm::vec2 point);
-
 
 
 
 	/* GETTERS AND SETTERS */
 
-
-	/**
-	 * Get this transform's world position (relative to origin).
-	 * 
-	 * \returns the position of this transform.
-	 */
-	glm::vec2 getPosition();
-	/**
-	 * Get this transform's position.
-	 *
-	 * \returns the position of this transform.
-	 */
-	glm::vec2 getLocalPosition();
 	/**
 	 * Set this transform's world position.
 	 *
 	 * \param position: the new world position of this transform.
 	 */
-	void setPosition(glm::vec2 position);
+	void setPosition(glm::vec2 position) override;
 	/**
 	 * Set this transform's local position (relative to parent).
 	 *
 	 * \param position: the new position of this transform.
 	 */
-	void setLocalPosition(glm::vec2 position);
+	void setLocalPosition(glm::vec2 position) override;
 	/**
 	 * Move this transform in world space. Adds the offset to the world position.
 	 *
 	 * \param offset: the offset to add to the world position.
 	 */
-	void movePosition(glm::vec2 offset);
+	void movePosition(glm::vec2 offset) override;
 	/**
 	 * Move this transform. Adds the offset to the local position (relative to parent).
 	 *
 	 * \param offset: the offset to add to the local position.
 	 */
-	void moveLocalPosition(glm::vec2 offset);
+	void moveLocalPosition(glm::vec2 offset) override;
 
-
-	/**
-	 * Get this transform's world rotation (relative to origin).
-	 *
-	 * \returns the rotation of this transform.
-	 */
-	float getRotation();
-	/**
-	 * Get this transform's local rotation (relative to parent).
-	 *
-	 * \returns the rotation of this transform.
-	 */
-	float getLocalRotation();
-	/**
-	 * Set this transform's world rotation (relative to origin).
-	 *
-	 * \param rotation: the new rotation of this transform.
-	 */
-	void setRotation(float rotation);
-	/**
-	 * Set this transform's local rotation (relative to parent).
-	 *
-	 * \param rotation: the new rotation of this transform.
-	 */
-	void setLocalRotation(float rotation);
-	/**
-	 * Rotate this transform. Adds the angle to the rotation.
-	 *
-	 * \param angle: the angle to add to the rotation.
-	 */
-	void rotate(float angle);
-
-	/**
-	 * Get this transform's scale.
-	 *
-	 * \returns the scale of this transform.
-	 */
-	glm::vec2 getScale();
-	/**
-	 * Set this transform's scale.
-	 *
-	 * \param scale: the new scale of this transform.
-	 */
-	void setScale(glm::vec2 scale);
-	/**
-	 * Set this transform's scale.
-	 *
-	 * \param scale: the new scale of this transform (scale, scale).
-	 */
-	void setScale(float scale);
 
 private:
 
-	glm::vec2 position;
-	float rotation;
-	glm::vec2 scale;
-
-	std::string name{};
-	std::string tag{};
-
 	float renderDepth{ -1.0f };
 
-	// Flag that when set, causes the transform matrices to be updated
-	bool transformUpdated{ true };
-	glm::mat4 transform{ glm::identity<glm::mat4>() };
-	glm::mat4 transformWithoutScale{ glm::identity<glm::mat4>() };
-	glm::mat4 inverseTransform{ glm::identity<glm::mat4>() };
-	glm::mat4 inverseTransformWithoutScale{ glm::identity<glm::mat4>() };
-
 	Transform(glm::vec2 position, float rotation, glm::vec2 scale, float renderDepth);
-
-	void updateTransformMatrices();
 
 	std::vector<std::shared_ptr<Component>> components;
 	RigidbodyPointer attachedRigidbody{ nullptr };
 
-	Transform* parent = nullptr;
-	std::vector<Transform*> children;
+	Transform* derivedParent = nullptr;
+	std::vector<Transform*> derivedChildren;
 };

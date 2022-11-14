@@ -4,6 +4,7 @@
 #include "Root/components/Script.h"
 
 #include "Root/engine/InputEngine.h"
+#include "Root/Input.h"
 #include "Root/engine/PhysicsEngine.h"
 #include "Root/engine/TransformEngine.h"
 #include "Root/engine/ComponentEngine.h"
@@ -15,7 +16,6 @@
 #include "Root/engine/RendererEngine.h"
 #include "simpleprofiler/Profiler.h"
 
-#include <simpletext/SimpleText.h>
 #include <rootgui/internal/RootGUIInternal.h>
 
 #include <glad/glad.h>

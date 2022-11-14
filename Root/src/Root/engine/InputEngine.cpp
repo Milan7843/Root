@@ -240,4 +240,16 @@ namespace InputEngine
 		glm::vec2 screenPos = mousePosition;
 		return RootEngine::getActiveCamera()->screenToWorldPosition(screenPos);
 	}
+
+	glm::vec2 getMouseNormalizedScreenPosition()
+	{
+		glm::vec2 screenPosition = mousePosition;
+
+		screenPosition = glm::vec2(
+			(screenPosition.x / (float)RootEngine::getScreenWidth()) * 2.0f - 1.0f,
+			(screenPosition.y / (float)RootEngine::getScreenHeight()) * 2.0f - 1.0f
+		);
+
+		return screenPosition;
+	}
 };

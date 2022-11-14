@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="src\Root\Audio.h" />
     <ClInclude Include="src\Root\AudioSource.h" />
+    <ClInclude Include="src\Root\base\TransformBase.h" />
     <ClInclude Include="src\Root\engine\AudioEngine.h" />
     <ClInclude Include="src\AL\al.h" />
     <ClInclude Include="src\AL\alc.h" />
@@ -698,6 +699,7 @@
     <ClInclude Include="src\Root\engine\TransformEngine.h" />
     <ClInclude Include="src\Root\Gradient.h" />
     <ClInclude Include="src\Root\Input.h" />
+    <ClInclude Include="src\Root\InterpolatedValue.h" />
     <ClInclude Include="src\Root\Logger.h" />
     <ClInclude Include="src\Root\Math.h" />
     <ClInclude Include="src\Root\Physics.h" />
@@ -723,6 +725,8 @@
     <ClInclude Include="src\Root\animation\ValueAnimation.h" />
     <ClInclude Include="src\Root\animation\ValueAnimationInterface.h" />
     <ClInclude Include="src\Root\engine\TextureEngine.h" />
+    <ClInclude Include="src\rootgui\Text.h" />
+    <ClInclude Include="src\rootgui\internal\TextEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl" />
@@ -873,6 +877,7 @@
   <ItemGroup>
     <ClCompile Include="src\Root\Audio.cpp" />
     <ClCompile Include="src\Root\AudioSource.cpp" />
+    <ClCompile Include="src\Root\base\TransformBase.cpp" />
     <ClCompile Include="src\Root\colliders\BoxCollider.cpp" />
     <ClCompile Include="src\Root\colliders\ChainCollider.cpp" />
     <ClCompile Include="src\Root\colliders\CircleCollider.cpp" />
@@ -935,6 +940,8 @@
     <ClCompile Include="src\Root\animation\ValueAnimation.cpp" />
     <ClCompile Include="src\Root\animation\ValueAnimationInterface.cpp" />
     <ClCompile Include="src\Root\engine\TextureEngine.cpp" />
+    <ClCompile Include="src\rootgui\Text.cpp" />
+    <ClCompile Include="src\rootgui\internal\TextEngine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
