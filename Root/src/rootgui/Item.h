@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Root/base/TransformBase.h>
+
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
@@ -24,7 +26,7 @@ enum class HorizontalAnchorPoint
 
 namespace RootGUIComponent
 {
-	class Item
+	class Item : public TransformBase
 	{
 	public:
 		~Item();
@@ -43,15 +45,13 @@ namespace RootGUIComponent
 
 	protected:
 
-		Item(glm::vec2 position = glm::vec2(0.1f));
+		Item(glm::vec2 position,
+			float rotation);
 
 		float getVerticalScreenAnchor();
 		float getHorizontalScreenAnchor();
 
 		bool enabled{ true };
-
-		// Position on the screen
-		glm::vec2 position;
 
 		// Where on the screen this rectangle should be placed relative to
 		VerticalAnchorPoint verticalAnchorPoint{ VerticalAnchorPoint::Middle };

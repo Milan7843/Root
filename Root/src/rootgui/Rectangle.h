@@ -2,6 +2,7 @@
 
 #include <rootgui/Item.h>
 
+#include <Root/base/TransformBase.h>
 #include <Root/InterpolatedValue.h>
 
 #include <glm/glm.hpp>
@@ -34,14 +35,14 @@ namespace RootGUIComponent
 		 * Create a new rectangle.
 		 * 
 		 * \param position: the position of the rectangle (default = [0, 0]).
-		 * \param size: the size of the rectangle (default = [100, 100]).
-		 * \param scale: the position of the rectangle (default = [1, 1]).
+		 * \param size: the size of the rectangle (default = [1, 1]).
+		 * \parma rotation: rotation in degrees (default = 0).
 		 * \returns a pointer to the new rectangle.
 		 */
 		static RectanglePointer create(
 			glm::vec2 position = glm::vec2(0.95f, 0.05f),
-			glm::vec2 size = glm::vec2(100.0f),
-			glm::vec2 scale = glm::vec2(1.0f));
+			glm::vec2 size = glm::vec2(1.0f),
+			float rotation = 0.0f);
 
 		~Rectangle();
 
@@ -164,14 +165,56 @@ namespace RootGUIComponent
 		 */
 		virtual void setTransitionDuration(float transitionDuration);
 
+		/**
+		 * Get the parent of this GUI item.
+		 *
+		 * \returns the parent of this GUI item, or nullptr if it does not have one.
+		 */
+		Rectangle* getParent();
+
+		/**
+		 * Set the parent transform of this transform.
+		 * Having a parent will make the child transform's data in local space.
+		 * This will also add this transform as a child to the parent.
+		 * Note that adding a child to a transform via Transform::addChild()
+		 * will also set the child's parent using setParent(),
+		 * and therefore does not have to be called manually.
+		 *
+		 * \param parent: a pointer to the transform that will be the parent.
+		 * If this is NULL, the transform will have no parent.
+		 */
+		void setParent(Rectangle* parent, bool alsoAddChild = true);
+
+		/**
+		 * Add a child to this transform.
+		 * This will also set the child's parent pointer to this transform.
+		 * Note that setting a transform's parent via Transform::setParent()
+		 * will also set the parent's child using addChild(),
+		 * and therefore does not have to be called manually.
+		 *
+		 * \param child: a pointer to the child.
+		 */
+		void addChild(Rectangle* child, bool alsoSetParent = true);
+
+		/**
+		 * Remove a child from this transform with the given shared_ptr.
+		 * This will also set the child's parent pointer to NULL, indicating no parent.
+		 *
+		 * \param childToRemove: a TransformPointer to the child that should be removed.
+		 * \returns whether a child was removed succesfully.
+		 */
+		bool removeChild(Rectangle* childToRemove);
+
 	protected:
 
 		Rectangle(
 			glm::vec2 position,
 			glm::vec2 size,
-			glm::vec2 scale);
+			float rotation);
 
-		void updateTransformMatrices();
+		void updateTransformMatrices() override;
+
+		/*
 		// The transform matrix is for transforming a point from screen space to local space
 		glm::mat4& getTransformMatrix();
 		// The inverse transform matrix is for transforming a point from local space to screen space
@@ -179,13 +222,14 @@ namespace RootGUIComponent
 		glm::mat4 transform{ glm::identity<glm::mat4>() };
 		glm::mat4 inverseTransform{ glm::identity<glm::mat4>() };
 		bool transformUpdated{ true };
+		*/
 
 		glm::vec4 color;
 
 		// Scale of this item: applied after everything else
-		glm::vec2 scale;
+		//glm::vec2 scale;
+		//glm::vec2 scale;
 
-		// Size of this item
 		glm::vec2 size;
 
 		bool hovered;
@@ -211,6 +255,9 @@ namespace RootGUIComponent
 
 		InterpolatedValue<InteractionStatus, glm::vec2> scaleDifferenceOnInteract{ 0.2f };
 		InterpolatedValue<InteractionStatus, glm::vec4> colorDifferenceOnInteract{ 0.2f };
+
+		Rectangle* derivedParent = nullptr;
+		std::vector<Rectangle*> derivedChildren;
 	};
 };
 

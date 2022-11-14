@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="src\Root\Audio.h" />
     <ClInclude Include="src\Root\AudioSource.h" />
+    <ClInclude Include="src\Root\base\TransformBase.h" />
     <ClInclude Include="src\Root\engine\AudioEngine.h" />
     <ClInclude Include="src\AL\al.h" />
     <ClInclude Include="src\AL\alc.h" />
@@ -876,6 +877,7 @@
   <ItemGroup>
     <ClCompile Include="src\Root\Audio.cpp" />
     <ClCompile Include="src\Root\AudioSource.cpp" />
+    <ClCompile Include="src\Root\base\TransformBase.cpp" />
     <ClCompile Include="src\Root\colliders\BoxCollider.cpp" />
     <ClCompile Include="src\Root\colliders\ChainCollider.cpp" />
     <ClCompile Include="src\Root\colliders\CircleCollider.cpp" />

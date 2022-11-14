@@ -22,7 +22,7 @@ namespace RootGUIComponent
 		 * \param textSize: the size of the text.
 		 * \param position: the position of the rectangle (default = [0, 0]).
 		 * \param size: the size of the rectangle (default = [1, 1]).
-		 * \param scale: the position of the rectangle (default = [1, 1]).
+		 * \param rotation: the rotation of the text (default = 0).
 		 * \returns a pointer to the new rectangle.
 		 */
 		static TextPointer create(
@@ -31,7 +31,7 @@ namespace RootGUIComponent
 			float textSize,
 			glm::vec2 position = glm::vec2(0.0f),
 			glm::vec2 size = glm::vec2(1.0f),
-			glm::vec2 scale = glm::vec2(1.0f));
+			float rotation = 0.0f);
 
 		~Text();
 
@@ -116,7 +116,7 @@ namespace RootGUIComponent
 			float textSize,
 			glm::vec2 position,
 			glm::vec2 size,
-			glm::vec2 scale);
+			float rotation);
 
 		void updateVAO(const std::string& text);
 

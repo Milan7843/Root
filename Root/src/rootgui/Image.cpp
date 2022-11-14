@@ -4,15 +4,18 @@
 #include "internal/RootGUIInternal.h"
 
 RootGUIComponent::Image::Image(const char* imagePath,
-    glm::vec2 position, glm::vec2 size, glm::vec2 scale)
-    : RootGUIComponent::Rectangle(position, size, scale)
+    glm::vec2 position,
+	glm::vec2 size,
+	float rotation)
+    : RootGUIComponent::Rectangle(position, size, rotation)
 {
 	float aspectRatio{ loadImage(imagePath) };
 }
 
 RootGUIComponent::Image::Image(const char* imagePath,
-	float imageHeight, glm::vec2 position, glm::vec2 scale)
-	: RootGUIComponent::Rectangle(position, glm::vec2(imageHeight), scale)
+	float imageHeight, glm::vec2 position,
+	float rotation)
+	: RootGUIComponent::Rectangle(position, glm::vec2(imageHeight), rotation)
 {
 	float aspectRatio{ loadImage(imagePath) };
 
@@ -24,14 +27,14 @@ RootGUIComponent::Image::Image(const char* imagePath,
 ImagePointer RootGUIComponent::Image::create(const char* imagePath,
 	glm::vec2 position,
 	glm::vec2 size,
-	glm::vec2 scale)
+	float rotation)
 {
 	// Creating a new Image on the heap
 	RootGUIComponent::Image* image = 
 		new RootGUIComponent::Image(imagePath,
 			position,
 			size,
-			scale);
+			rotation);
 
 	// Making a shared pointer from it
 	std::shared_ptr<RootGUIComponent::Image> pointer{ image };
@@ -43,14 +46,14 @@ ImagePointer RootGUIComponent::Image::create(const char* imagePath,
 ImagePointer RootGUIComponent::Image::create(const char* imagePath,
 	float imageHeight,
 	glm::vec2 position,
-	glm::vec2 scale)
+	float rotation)
 {
 	// Creating a new Image on the heap
 	RootGUIComponent::Image* image = 
 		new RootGUIComponent::Image(imagePath,
 			imageHeight,
 			position,
-			scale);
+			rotation);
 
 	// Making a shared pointer from it
 	std::shared_ptr<RootGUIComponent::Image> pointer{ image };

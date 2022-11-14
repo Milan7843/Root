@@ -9,9 +9,9 @@ TextPointer RootGUIComponent::Text::create(
     float textSize,
     glm::vec2 position,
     glm::vec2 size,
-    glm::vec2 scale)
+    float rotation)
 {
-    TextPointer textPtr = new Text(text, fontTag, textSize, position, size, scale);
+    TextPointer textPtr = new Text(text, fontTag, textSize, position, size, rotation);
     std::shared_ptr<Text> pointer(textPtr);
     RootGUI::addItemToRenderQueue(pointer);
     return textPtr;
@@ -94,7 +94,7 @@ void RootGUIComponent::Text::render(unsigned int guiShader, unsigned int textSha
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
         1, GL_FALSE,
-        glm::value_ptr(getInverseTransformMatrix()));
+        glm::value_ptr(getModelMatrixWithoutScale()));
 
     // Binding the texture
     glActiveTexture(GL_TEXTURE0);
@@ -130,7 +130,7 @@ void RootGUIComponent::Text::renderDebugView()
     // Setting the transform matrix
     glUniformMatrix4fv(glGetUniformLocation(shader, "transform"),
         1, GL_FALSE,
-        glm::value_ptr(getInverseTransformMatrix()));
+        glm::value_ptr(getModelMatrixWithoutScale()));
 
     // Binding the vertex data
     glBindVertexArray(textVAO);
@@ -168,8 +168,8 @@ RootGUIComponent::Text::Text(
     float textSize,
     glm::vec2 position,
     glm::vec2 size,
-    glm::vec2 scale)
-    : RootGUIComponent::Rectangle(position, size, scale)
+    float rotation)
+    : RootGUIComponent::Rectangle(position, size, rotation)
     , text(text)
     , fontTag(fontTag)
     , textSize(textSize)

@@ -3,8 +3,9 @@
 #include "internal/RootGUIInternal.h"
 
 RootGUIComponent::Item::Item(
-	glm::vec2 position)
-	: position(position)
+	glm::vec2 position,
+	float rotation)
+	: TransformBase(position, rotation, glm::vec2(1.0f))
 	, previousWindowHeight(RootGUIInternal::getWindowHeight())
 	, previousWindowWidth(RootGUIInternal::getWindowWidth())
 {

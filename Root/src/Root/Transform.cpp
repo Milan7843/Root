@@ -3,72 +3,9 @@
 #include "Root/engine/RootEngine.h"
 
 Transform::Transform(glm::vec2 position, float rotation, glm::vec2 scale, float renderDepth)
-	: position(position)
-	, rotation(rotation)
-	, scale(scale)
+	: TransformBase(position, rotation, scale)
 	, renderDepth(renderDepth)
 {
-}
-
-void Transform::updateTransformMatrices()
-{
-	// Only change the matrices if the values have changed
-	if (!transformUpdated)
-		return;
-
-	// Updating the transform matrix
-	transform = glm::identity<glm::mat4>();
-
-	transform = glm::translate(transform, glm::vec3(position.x, position.y, 0.0f));
-
-	//model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
-	transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0, 0, 1));
-	//model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
-
-	transformWithoutScale = glm::mat4{ transform };
-
-	transform = glm::scale(transform, glm::vec3(scale.x, scale.y, 1.0f));
-
-	//glm::vec3 newTranslation = glm::mat3(transform) * glm::vec3(position.x, position.y, 0.0f);
-
-	/* Could this be done more efficiently, with this method?:
-	// http://www.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche0053.html
-	inverseTransform = glm::mat4 {
-		transform[0][0] / scale.x, transform[1][0] / scale.x, transform[2][0] / scale.x, 0.0f,
-		transform[0][1] / scale.y, transform[1][1] / scale.y, transform[2][1] / scale.y, 0.0f,
-		transform[0][2], transform[1][2], transform[2][2], 0.0f,
-		-newTranslation.x, -newTranslation.y, -newTranslation.z, 1.0f,
-	};*/
-	
-	// Updating the inverse transform matrix
-	
-	inverseTransform = glm::identity<glm::mat4>();
-
-	inverseTransformWithoutScale = glm::identity<glm::mat4>();
-	
-	// Scale must not be zero for this step
-	if (scale.x != 0.0f && scale.y != 0.0f)
-		inverseTransform = glm::scale(inverseTransform, glm::vec3(1.0f / scale.x, 1.0f / scale.y, 1.0f));
-
-	//model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
-	inverseTransform = glm::rotate(inverseTransform, glm::radians(-rotation), glm::vec3(0, 0, 1));
-
-	inverseTransformWithoutScale
-		= glm::rotate(inverseTransformWithoutScale, glm::radians(-rotation), glm::vec3(0, 0, 1));
-
-	//model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
-
-	inverseTransform = glm::translate(inverseTransform, glm::vec3(-position.x, -position.y, 0.0f));
-
-	inverseTransformWithoutScale
-		= glm::translate(inverseTransformWithoutScale, glm::vec3(-position.x, -position.y, 0.0f));
-
-	//inverseTransform = glm::inverse(transform);
-	
-	//std::cout << "Transforms updated" << std::endl;
-
-	// Disabling the transform changed flag
-	transformUpdated = false;
 }
 
 Transform::~Transform()
@@ -87,7 +24,7 @@ TransformPointer Transform::create(glm::vec2 position, float rotation, glm::vec2
 void Transform::destroy()
 {
 	// First removing each child
-	for (Transform* child : children)
+	for (Transform* child : derivedChildren)
 	{
 		child->destroy();
 	}
@@ -111,7 +48,7 @@ void Transform::render(float parentRenderDepth, float renderDepthOffset)
 		component->render(usedRenderDepth + renderDepthOffset);
 	}
 	// Then rendering each child
-	for (Transform* child : children)
+	for (Transform* child : derivedChildren)
 	{
 		renderDepthOffset -= 0.001f;
 		child->render(usedRenderDepth, renderDepthOffset);
@@ -136,7 +73,7 @@ std::string Transform::toString()
 
 	stream << "\n > children: [\n";
 
-	for (Transform* child : children)
+	for (Transform* child : derivedChildren)
 	{
 		stream << " >" << child->toString() << "\n";
 	}
@@ -156,67 +93,49 @@ void Transform::setParent(Transform* parent, bool alsoAddChild)
 
 	// Setting new parent
 	this->parent = parent;
+	// Setting new derived parent
+	this->derivedParent = parent;
 
 	// Possibly adding child to new parent
 	if (alsoAddChild && parent != NULL)
 		parent->addChild(this, false);
 }
 
-void Transform::setName(std::string name)
-{
-	this->name = name;
-}
-
-std::string Transform::getName()
-{
-	return name;
-}
-
-void Transform::setTag(std::string tag)
-{
-	this->tag = tag;
-}
-
-std::string Transform::getTag()
-{
-	return tag;
-}
-
 Transform* Transform::getParent()
 {
-	return parent;
+	return derivedParent; 
 }
 
 void Transform::addChild(Transform* child, bool alsoSetParent)
 {
 	children.push_back(child);
+	derivedChildren.push_back(child);
+
 	if (alsoSetParent)
 		child->setParent(this, false);
 }
 
 bool Transform::removeChild(Transform* childToRemove)
 {
+	TransformBase::removeChild(childToRemove);
+
 	for (unsigned int i{ 0 }; i < children.size(); i++)
 	{
 		// Comparing each current child to find one that matches
-		if (children[i] == childToRemove)
+		if (derivedChildren[i] == childToRemove)
 		{
 			// If it does, unset its parent reference,
-			children[i]->parent = NULL;
+			derivedChildren[i]->parent = NULL;
 
 			// remove it,
 			children.erase(children.begin() + i);
+			derivedChildren.erase(derivedChildren.begin() + i);
 
 			// and return true to indicate a child was removed
 			return true;
 		}
 	}
 	return false;
-}
-
-void Transform::removeAllChildren()
-{
-	children.clear();
 }
 
 void Transform::setRenderDepth(float renderDepth)
@@ -235,109 +154,12 @@ float Transform::getRenderDepth()
 
 std::vector<Transform*>& Transform::getChildren()
 {
-	return children;
+	return derivedChildren;
 }
 
 std::vector<std::shared_ptr<Component>>& Transform::getComponents()
 {
 	return components;
-}
-
-glm::vec2 Transform::getLocalUpVector()
-{
-	return glm::vec2(glm::cos(glm::radians(this->rotation + 90.0f)),
-		glm::sin(glm::radians(this->rotation + 90.0f)));
-}
-
-glm::vec2 Transform::getLocalRightVector()
-{
-	return glm::vec2(glm::cos(glm::radians(this->rotation)),
-		glm::sin(glm::radians(this->rotation)));
-}
-
-glm::mat4 Transform::getModelMatrix()
-{
-	glm::mat4 model{ glm::mat4(1.0f) };
-
-	if (parent != NULL) {
-		model = model * parent->getModelMatrix();
-	}
-	
-	model = model * getTransformMatrix();
-
-	return model;
-}
-
-glm::mat4 Transform::getModelMatrixWithoutScale()
-{
-	glm::mat4 model{ glm::mat4(1.0f) };
-
-	if (parent != NULL)
-	{
-		model = model * parent->getModelMatrix();
-	}
-
-	model = model * getTransformMatrixWithoutScale();
-
-	return model;
-}
-
-glm::mat4 Transform::getTransformMatrix()
-{
-	updateTransformMatrices();
-
-	return transform;
-}
-
-glm::mat4 Transform::getTransformMatrixWithoutScale()
-{
-	updateTransformMatrices();
-
-	return transformWithoutScale;
-}
-
-glm::mat4 Transform::getInverseTransformMatrix()
-{
-	updateTransformMatrices();
-
-	return inverseTransform;
-}
-
-glm::mat4 Transform::getInverseTransformMatrixWithoutScale()
-{
-	updateTransformMatrices();
-
-	return inverseTransformWithoutScale;
-}
-
-glm::vec2 Transform::worldPointToLocalPoint(glm::vec2 point)
-{
-	if (this->parent != NULL)
-		point = this->parent->worldPointToLocalPoint(point);
-
-	glm::vec4 transformedPoint =  this->getInverseTransformMatrix() * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-	glm::vec2 transformedPoint2D = glm::vec2(transformedPoint);
-
-	return transformedPoint2D;
-}
-
-glm::vec2 Transform::worldPointToParentLocalPoint(glm::vec2 point)
-{
-	if (this->parent != NULL)
-		point = this->parent->worldPointToLocalPoint(point);
-
-	return point;
-}
-
-glm::vec2 Transform::localPointToWorldPoint(glm::vec2 point)
-{
-	glm::vec4 transformedPoint = this->getTransformMatrix() * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-	glm::vec2 transformedPoint2D = glm::vec2(transformedPoint);
-
-	if (this->parent != NULL)
-		transformedPoint2D = this->parent->localPointToWorldPoint(transformedPoint2D);
-
-	return transformedPoint2D;
 }
 
 void Transform::addComponent(std::shared_ptr<Component> component)
@@ -393,28 +215,6 @@ RigidbodyPointer Transform::getAttachedRigidbody()
 	return attachedRigidbody;
 }
 
-float Transform::lookAt(glm::vec2 point)
-{
-	if (this == nullptr)
-		Logger::logError("Transform is NULL. Check if it gets initialized.");
-
-	glm::vec2 offset{ point - this->position };
-
-	// Both zero are invalid atan2 inputs
-	if (offset.x == 0.0f && offset.y == 0.0f)
-		return 0.0f;
-
-	return glm::degrees(glm::atan(offset.y, offset.x));
-}
-
-glm::vec2 Transform::getPosition()
-{
-	return localPointToWorldPoint(glm::vec2(0.0f));
-}
-glm::vec2 Transform::getLocalPosition()
-{
-	return position;
-}
 void Transform::setPosition(glm::vec2 position)
 {
 	// Converting world position back to local
@@ -433,6 +233,7 @@ void Transform::setPosition(glm::vec2 position)
 		attachedRigidbody->setPosition(position, false);
 	}
 }
+
 void Transform::setLocalPosition(glm::vec2 position)
 {
 	// Update position and set updated flag if the position changed
@@ -448,6 +249,7 @@ void Transform::setLocalPosition(glm::vec2 position)
 		attachedRigidbody->setPosition(getPosition(), false);
 	}
 }
+
 void Transform::movePosition(glm::vec2 offset)
 {
 	// Getting world position
@@ -481,68 +283,10 @@ void Transform::moveLocalPosition(glm::vec2 offset)
 		this->position += offset;
 		transformUpdated = true;
 	}
-}
 
-float Transform::getRotation()
-{
-	float total{ rotation };
-	if (this->parent != NULL)
-		total += this->parent->getRotation();
-
-	return total;
-}
-float Transform::getLocalRotation()
-{
-	return rotation;
-}
-void Transform::setRotation(float rotation)
-{
-	// Update rotation and set updated flag if the rotation changed
-	if (this->rotation != rotation)
+	// Setting the rigidbody position to the current world position
+	if (attachedRigidbody != nullptr)
 	{
-		this->rotation = rotation;
-		transformUpdated = true;
-	}
-}
-void Transform::setLocalRotation(float rotation)
-{
-	// Update rotation and set updated flag if the rotation changed
-	if (this->rotation != rotation)
-	{
-		this->rotation = rotation;
-		transformUpdated = true;
-	}
-}
-void Transform::rotate(float angle)
-{
-	// Update rotation and set updated flag if the rotation changed
-	if (angle != 0.0f)
-	{
-		this->rotation += angle;
-		transformUpdated = true;
-	}
-}
-
-glm::vec2 Transform::getScale()
-{
-	return scale;
-}
-void Transform::setScale(glm::vec2 scale)
-{
-	// Update scale and set updated flag if the scale changed
-	if (this->scale != scale)
-	{
-		this->scale = scale;
-		transformUpdated = true;
-	}
-}
-
-void Transform::setScale(float scale)
-{
-	// Update scale and set updated flag if the scale changed
-	if (this->scale != glm::vec2(scale))
-	{
-		this->scale = glm::vec2(scale);
-		transformUpdated = true;
+		attachedRigidbody->setPosition(getPosition(), false);
 	}
 }
