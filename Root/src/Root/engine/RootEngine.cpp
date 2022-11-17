@@ -16,6 +16,7 @@ namespace RootEngine
         Shader* spriteRenderShader;
         Shader* particleRenderShader;
         Shader* debugRenderShader;
+        Shader* tileRenderShader;
 
         Camera* activeCamera{ nullptr };
         GLFWwindow* window{ nullptr };
@@ -91,6 +92,11 @@ namespace RootEngine
             "include/Root/default_shader_source/particleVertex.shader",
             "include/Root/default_shader_source/particleFragment.shader",
             "include/Root/default_shader_source/particleGeometry.shader");
+
+        tileRenderShader = new Shader(
+            "include/Root/default_shader_source/tileVertex.shader",
+            "include/Root/default_shader_source/tileFragment.shader",
+            "include/Root/default_shader_source/tileGeometry.shader");
 
         // Shader textRenderShader("src/shaders/textVertex.shader", "src/shaders/textFragment.shader");
 
@@ -217,6 +223,11 @@ namespace RootEngine
     Shader* getParticleRenderShader()
     {
         return particleRenderShader;
+    }
+
+    Shader* getTileGridRenderShader()
+    {
+        return tileRenderShader;
     }
 
 

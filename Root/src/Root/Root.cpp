@@ -21,6 +21,11 @@ namespace Root
         return RootEngine::getDebugRenderShader();
     }
 
+    Shader* getTileGridRenderShader()
+    {
+        return RootEngine::getTileGridRenderShader();
+    }
+
     void addScript(std::shared_ptr<Script> script)
     {
         RootEngine::addScript(script);

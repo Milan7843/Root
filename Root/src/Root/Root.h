@@ -67,6 +67,13 @@ namespace Root
 	Shader* getDebugRenderShader();
 
 	/**
+	 * Get a pointer to the shader used for tile grid rendering.
+	 *
+	 * \returns a pointer to the shader used for tile grid rendering.
+	 */
+	Shader* getTileGridRenderShader();
+
+	/**
 	 * Add a script to the scene.
 	 * 
 	 * \param script: the script to add to the scene.

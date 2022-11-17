@@ -1755,6 +1755,15 @@
     <ClInclude Include="src\Root\base\TransformBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\components\TileGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\tilegrids\TileSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\engine\TileGridEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2390,6 +2399,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\base\TransformBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\components\TileGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\tilegrids\TileSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\engine\TileGridEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
