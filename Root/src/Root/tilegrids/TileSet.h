@@ -9,6 +9,13 @@
 #include <iostream>
 #include <fstream>
 
+enum class Phase
+{
+	TAG_READING,
+	TEXTURE_INDEX_READING,
+	TILE_RULE_READING
+};
+
 enum class RulePosition {
 	TOP_RIGHT,
 	MIDDLE_RIGHT,
