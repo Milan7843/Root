@@ -9,13 +9,6 @@
 #include <iostream>
 #include <fstream>
 
-enum class Phase
-{
-	TAG_READING,
-	TEXTURE_INDEX_READING,
-	TILE_RULE_READING
-};
-
 enum class RulePosition {
 	TOP_RIGHT,
 	MIDDLE_RIGHT,
@@ -27,15 +20,15 @@ enum class RulePosition {
 	TOP_MIDDLE
 };
 
-enum class TileRule {
-	PRESENCE,
-	ABSENCE,
-	NONE
-};
-
 struct Tile {
-	glm::ivec2 textureIndex;
-	TileRule rules[8];
+	char tag;
+	std::vector<glm::ivec2> textureIndices;
+	// A '~' means that there is no rule set for that neighbouring grid space.
+	// A '+' means that the rule is satisfied if a tile exists there.
+	// A '-' means that the rule is satisfied if no tile exists there.
+	// A letter means that the rule is satisfied if a tile exists there,
+	// with a tag matching the letter.
+	std::string rules;
 };
 
 class TileSet
@@ -47,9 +40,22 @@ public:
 	static void create(const std::string& path,
 		const std::string& name);
 
+	static void create(std::vector<Tile>& tiles,
+		const std::string& name);
+
+	/**
+	 * Set a tile rule on a specific tile
+	 */
+	void setTileRule(unsigned int tileIndex,
+		RulePosition rulePosition,
+		char rule);
+
 private:
 
-	TileSet();
+	TileSet(std::vector<Tile>& tiles);
+
+	static Tile readTile(std::ifstream& file);
+
 
 	std::vector<Tile> tiles;
 };

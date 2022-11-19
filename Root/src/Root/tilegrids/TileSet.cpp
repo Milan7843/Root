@@ -1,122 +1,275 @@
 #include "TileSet.h"
 
+#include <Root/engine/TileGridEngine.h>
+
 TileSet::~TileSet()
 {
 }
 
-bool isNumber(char c)
-{
-	const std::string numbers{ "0123456789" };
-	return numbers.find(c) != std::string::npos;
-}
-
-unsigned int readNumber(std::ifstream* file, char first)
-{
-	std::string number{ "" };
-
-	// While we keep encountering numbers
-	while (isNumber(file->peek()))
-	{
-		// Add the numbers to the string
-		number.push_back(file->get());
-	}
-
-	int result{ 0 };
-
-	try
-	{
-		result = std::stoi(number);
-	}
-	catch (std::invalid_argument const& ex)
-	{
-		Logger::log(std::string("Could not read number: ") + number + ", " + ex.what());
-	}
-	return result;
-}
-
 void TileSet::create(const std::string& path, const std::string& name)
 {
-	bool enableDebugLogging{ true };
-
 	// Reading in the file
 	std::ifstream file(path);
-	if (file.is_open())
+	if (!file.is_open())
 	{
-		const std::string allowedTags{ "abcdefghijklmnopqrstuvwxyz" };
+		Logger::logError("Cannot read tile set from '" + path + "'; File cannot be opened.");
+		return;
+	}
 
-		// Holds a full line
-		std::string line;
+	std::vector<Tile> tiles;
 
-		// Keeps track of what phase we are at
-		Phase phase{ Phase::TAG_READING };
+	// Keep reading tiles
+	while (true)
+	{
+		try
+		{
+			// Stop if the file is done
+			if (!file.good())
+				break;
 
-		// Stop at the end or on an error
+			// Reading a new tile
+			Tile tile = readTile(file);
+			tiles.push_back(tile);
+		}
+		catch (const char* err)
+		{
+			if (err != "End of file reached.")
+			{
+				Logger::logError(err);
+			}
+			break;
+		}
+	}
+
+	// Creating a tile set from the tiles
+	TileSet* tileSet = new TileSet(tiles);
+	std::shared_ptr<TileSet> pointer = std::shared_ptr<TileSet>(tileSet);
+
+	TileGridEngine::addTileSet(pointer, name);
+}
+
+void TileSet::create(std::vector<Tile>& tiles, const std::string& name)
+{
+	// Creating a tile set from the tiles
+	TileSet* tileSet = new TileSet(tiles);
+	std::shared_ptr<TileSet> pointer = std::shared_ptr<TileSet>(tileSet);
+
+	TileGridEngine::addTileSet(pointer, name);
+}
+
+Tile TileSet::readTile(std::ifstream& file)
+{
+	// Properties
+	char tag{ '-' };
+	std::vector<glm::ivec2> textureCoordinates;
+
+	bool enableDebugLogging{ true };
+
+
+	const std::string allowedTags{ "abcdefghijklmnopqrstuvwxyz" };
+
+	// Holds a full line
+	std::string line;
+
+	unsigned int lineNumber{ 0 };
+
+
+	/* ====== TAG READING ====== */
+
+	// Stop at the end or on an error
+	while (file.good())
+	{
+		// Find the next char
+		char c = file.get();
+
+		// Just go the the next line
+		if (c == '\n')
+		{
+			lineNumber++;
+			continue;
+		}
+
+		// Skip entire line after #
+		if (c == '#')
+		{
+			std::getline(file, line);
+			lineNumber++;
+			continue;
+		}
+
+		// Check whether the character is a valid tag
+		if (allowedTags.find(c) != std::string::npos)
+		{
+			if (enableDebugLogging)
+				Logger::log(std::string("Found tag: ") + c);
+
+			tag = c;
+
+			break;
+		}
+	}
+
+	if (tag == '-')
+	{
+		throw "End of file reached.";
+	}
+
+
+	/* ====== TEXTURE COORDINATES READING ====== */
+
+	glm::ivec2 currentCoordinate{ glm::ivec2(0) };
+
+	bool doneReadingCoordinates{ false };
+
+	bool foundCoordinateInfoThisLine{ true };
+
+	// Stop at the end or on an error
+	while (!doneReadingCoordinates) // Keep reading coordinates
+	{
+		bool readFirstCoordinate{ false };
+
 		while (file.good())
 		{
 			// Find the next char
 			char c = file.get();
 
-			// Just go the the next line
-			if (c == '\n') {
-				continue;
-			}
-			
-			// Skip entire line after #
-			if (c == '#') {
-				std::getline(file, line);
-				continue;
-			}
-			
-			// Actual data: read it
-			switch (phase)
+			// Just go the the next line or continue on certain characters
+			if (c == '\n')
 			{
-				case Phase::TAG_READING:
-					// Check whether the character is a valid tag
-					if (allowedTags.find(c) != std::string::npos)
-					{
-						if (enableDebugLogging)
-							Logger::log(std::string("Found tag: ") + c);
-
-						// Move onto the next phase
-						phase = Phase::TEXTURE_INDEX_READING;
-					}
+				lineNumber++;
+				if (!foundCoordinateInfoThisLine && textureCoordinates.size() != 0)
+				{
+					doneReadingCoordinates = true;
 					break;
+				}
 
-				case Phase::TEXTURE_INDEX_READING:
-					while (file.good())
-					{
-						// Ignore spaces
-						if (c == ' ')
-							break;
+				foundCoordinateInfoThisLine = false;
 
-						// Just go the the next line
-						if (c == '\n')
-						{
-							continue;
-						}
-
-						// Skip entire line after #
-						if (c == '#')
-						{
-							std::getline(file, line);
-							continue;
-						}
-
-						unsigned int coordinate1
-					}
-
-					break;
-
-				case Phase::TILE_RULE_READING:
-					break;
+				continue;
 			}
+			// Just continue on certain characters
+			if (c == ',' || c == '(' || c == ')' || c == ' ')
+			{
+				continue;
+			}
+
+			// Skip entire line after #
+			if (c == '#')
+			{
+				std::getline(file, line);
+				lineNumber++;
+
+				if (!foundCoordinateInfoThisLine && textureCoordinates.size() != 0)
+				{
+					doneReadingCoordinates = true;
+					break;
+				}
+
+				continue;
+			}
+
+			// We must now be at a coordinate number
+			Logger::log(std::string("Attempting to get number at ") + c);
+			unsigned int coordinate{ TileGridEngine::readNumber(&file, c) };
+
+			if (!readFirstCoordinate)
+			{
+				if (enableDebugLogging)
+					Logger::log("Found first coordinate: " + std::to_string(coordinate));
+
+				currentCoordinate.x = coordinate;
+				readFirstCoordinate = true;
+			}
+			else
+			{
+				if (enableDebugLogging)
+					Logger::log("Found second coordinate: " + std::to_string(coordinate));
+
+				currentCoordinate.y = coordinate;
+
+				// Finished reading a full coordinate
+				textureCoordinates.push_back(currentCoordinate);
+				break;
+			}
+
+			foundCoordinateInfoThisLine = true;
+		}
+
+		if (!file.good())
+		{
+			doneReadingCoordinates = true;
 		}
 	}
-	else {
-		Logger::logError("Cannot read tile set from '" + path + "'; File cannot be opened.");
+
+	if (!file.good())
+	{
+		throw "End of file reached before finding tile rules.";
 	}
+
+
+	/* ====== TILE RULES READING ====== */
+	unsigned int currentTileRuleIndex{ 0 }; // 0 to 7
+
+	char rules[8];
+
+	while (file.good())
+	{
+		// Find the next char
+		char c = file.get();
+
+		// Just go the the next line or continue on space
+		if (c == '\n')
+		{
+			lineNumber++;
+			continue;
+		}
+		if (c == ' ')
+		{
+			continue;
+		}
+
+		// Skip entire line after #
+		if (c == '#')
+		{
+			std::getline(file, line);
+			lineNumber++;
+			continue;
+		}
+
+		// Reading the tile rule now
+		// The rule must be one of the allowed values or a tag
+		if (c == '~' || c == '-' || c == '+' || allowedTags.find(c) != std::string::npos)
+		{
+			if (enableDebugLogging)
+				Logger::log(std::string("Found rule: ") + c);
+			rules[currentTileRuleIndex] = c;
+
+			if (currentTileRuleIndex == 7)
+			{
+				break;
+			}
+
+			currentTileRuleIndex++;
+		}
+		else
+		{
+			continue;
+		}
+	}
+
+	if (currentTileRuleIndex != 7)
+	{
+		// Something must have gone wrong
+		throw "Did not find all tile rules.";
+	}
+
+	return Tile{ tag, textureCoordinates, rules };
 }
 
-TileSet::TileSet()
+void TileSet::setTileRule(unsigned int tileIndex, RulePosition rulePosition, char rule)
+{
+}
+
+TileSet::TileSet(std::vector<Tile>& tiles)
 {
 }

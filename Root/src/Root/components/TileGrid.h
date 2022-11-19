@@ -3,9 +3,27 @@
 #include <Root/components/Component.h>
 #include <Root/Transform.h>
 
-#include <vector>
+#include <glm/glm.hpp>
+
 #include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
 #include <memory>
+
+enum class GridSpaceType
+{
+	EMPTY,
+	INDEX,
+	TAG
+};
+
+struct GridSpace
+{
+	GridSpaceType type;
+	unsigned int index; // For index grid spaces
+	char tag; // For tag grid spaces
+};
 
 class TileGrid : public Component
 {
@@ -18,12 +36,10 @@ public:
 	 * 
 	 * \param transform: the transform to add this tile grid to.
 	 * \param texture: the index of the texture to use.
-	 * \param gridSize: the size of the grid (y rows by x columns).
 	 * \param data: the path to the tile grid data.
 	 */
 	static TileGrid* create(Transform* transform,
 		unsigned int texture,
-		glm::ivec2 gridSize,
 		const std::string& dataPath);
 
 	void render(float renderDepth) override;
@@ -39,26 +55,24 @@ public:
 
 	void setTileTextureIndex(unsigned int tileIndex, glm::ivec2 textureIndex);
 
-	/**
-	 * Set a tile rule on a specific tile
-	 */
-	void setTileRule(unsigned int tileIndex,
-		RulePosition rulePosition,
-		TileRule rule);
-
 private:
 
 	TileGrid(unsigned int texture,
-		glm::ivec2 gridSize,
 		const std::string& dataPath);
 
 	void readData(const std::string& dataPath);
 
-	glm::ivec2 gridSize;
 	float tileSize{ 1.0f };
 
+	std::string tileSet{ "" };
+
 	std::vector<unsigned int> tileIndices;
-	std::vector<Tile> tiles;
+
+	glm::ivec2 tileGridSize{ glm::ivec2(0) };
+
+	unsigned int layerCount{ 0 };
+	
+	GridSpace* gridSpaces;
 
 	unsigned int textureID{ 0 };
 	unsigned int tileMapVAO{ 0 };
