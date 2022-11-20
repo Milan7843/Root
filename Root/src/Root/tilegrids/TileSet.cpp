@@ -270,6 +270,12 @@ void TileSet::setTileRule(unsigned int tileIndex, RulePosition rulePosition, cha
 {
 }
 
+std::vector<Tile>& TileSet::getTiles()
+{
+	return tiles;
+}
+
 TileSet::TileSet(std::vector<Tile>& tiles)
+	: tiles(tiles)
 {
 }

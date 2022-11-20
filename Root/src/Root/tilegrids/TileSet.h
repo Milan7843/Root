@@ -10,14 +10,14 @@
 #include <fstream>
 
 enum class RulePosition {
-	TOP_RIGHT,
-	MIDDLE_RIGHT,
-	BOTTOM_RIGHT,
-	BOTTOM_MIDDLE,
-	BOTTOM_LEFT,
-	MIDDLE_LEFT,
-	TOP_LEFT,
-	TOP_MIDDLE
+	TOP_RIGHT = 0,
+	MIDDLE_RIGHT = 1,
+	BOTTOM_RIGHT = 2,
+	BOTTOM_MIDDLE = 3,
+	BOTTOM_LEFT = 4,
+	MIDDLE_LEFT = 5,
+	TOP_LEFT = 6,
+	TOP_MIDDLE = 7
 };
 
 struct Tile {
@@ -49,6 +49,13 @@ public:
 	void setTileRule(unsigned int tileIndex,
 		RulePosition rulePosition,
 		char rule);
+
+	/**
+	 * Get the tiles.
+	 * 
+	 * \return all tiles in this tile set.
+	 */
+	std::vector<Tile>& getTiles();
 
 private:
 

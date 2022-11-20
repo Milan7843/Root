@@ -12,6 +12,17 @@ namespace TileGridEngine
         tileSets.emplace(name, tileSet);
     }
 
+	TileSet* getTileSet(const std::string& name)
+	{
+		std::map<std::string, std::shared_ptr<TileSet>>::iterator it = tileSets.find(name);
+
+		if (it != tileSets.end())
+		{
+			return it->second.get();
+		}
+		return nullptr;
+	}
+
 	bool isNumber(char c)
 	{
 		const std::string numbers{ "0123456789" };

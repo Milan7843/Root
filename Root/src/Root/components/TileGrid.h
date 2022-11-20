@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Root/tilegrids/TileSet.h>
+
 #include <Root/components/Component.h>
 #include <Root/Transform.h>
 
@@ -14,8 +16,10 @@
 enum class GridSpaceType
 {
 	EMPTY,
+	FILL_IN,
 	INDEX,
-	TAG
+	TAG,
+	OUT_OF_BOUNDS
 };
 
 struct GridSpace
@@ -35,12 +39,16 @@ public:
 	 * Create a new tile grid.
 	 * 
 	 * \param transform: the transform to add this tile grid to.
-	 * \param texture: the index of the texture to use.
+	 * \param texture: the path to the texture to use.
+	 * \param pixelPerfect: whether the texture should be pixel perfect.
 	 * \param data: the path to the tile grid data.
+	 * \param tileSetName: the name of the tile set to use.
 	 */
 	static TileGrid* create(Transform* transform,
-		unsigned int texture,
-		const std::string& dataPath);
+		const std::string& texturePath,
+		bool pixelPerfect,
+		const std::string& dataPath,
+		const std::string& tileSetName);
 
 	void render(float renderDepth) override;
 
@@ -55,18 +63,41 @@ public:
 
 	void setTileTextureIndex(unsigned int tileIndex, glm::ivec2 textureIndex);
 
+	/**
+	 * Set the size for each single tile.
+	 * 
+	 * \param tileSize: the new tile size.
+	 */
+	void setTileSize(float tileSize);
+
 private:
 
 	TileGrid(unsigned int texture,
-		const std::string& dataPath);
+		GridSpace* data,
+		glm::ivec2 tileGridSize,
+		unsigned int layerCount,
+		std::string tileSet);
 
-	void readData(const std::string& dataPath);
+	static TileGrid* readData(const std::string& texturePath,
+		bool pixelPerfect,
+		const std::string& dataPath,
+		const std::string& tileSetName);
+
+	void generateTileIndices();
+
+	GridSpace getGridSpaceAtIndex(unsigned int x, unsigned int y, unsigned int layer);
+
+	void autoFillGridSpace(TileSet* tileSet,
+		unsigned int x,
+		unsigned int y,
+		unsigned int layer,
+		char requiredTag);
 
 	float tileSize{ 1.0f };
 
-	std::string tileSet{ "" };
+	std::string tileSetName{ "" };
 
-	std::vector<unsigned int> tileIndices;
+	int* tileIndices{ nullptr };
 
 	glm::ivec2 tileGridSize{ glm::ivec2(0) };
 
