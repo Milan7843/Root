@@ -30,6 +30,8 @@ public:
 	void setInt(const std::string& name, int value) const;
 	void setVector2(const std::string& name, float v1, float v2) const;
 	void setVector2(const std::string& name, glm::vec2 v) const;
+	void setIVector2(const std::string& name, int v1, int v2) const;
+	void setIVector2(const std::string& name, glm::ivec2 v) const;
 	void setVector3(const std::string& name, float v1, float v2, float v3) const;
 	void setVector3(const std::string& name, glm::vec3 v) const;
 	void setVector3(const std::string& name, glm::ivec3 v) const;

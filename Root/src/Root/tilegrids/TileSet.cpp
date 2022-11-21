@@ -266,6 +266,27 @@ Tile TileSet::readTile(std::ifstream& file)
 	return Tile{ tag, textureCoordinates, rules };
 }
 
+void TileSet::generateSSBO()
+{
+	// Create a new buffer if none exists
+	if (tileSSBO == 0)
+		glGenBuffers(1, &tileSSBO);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileSSBO);
+
+	std::vector<glm::ivec2> textureIndices(tiles.size());
+
+	for (Tile& tile : tiles)
+	{
+		textureIndices.push_back(tile.textureIndices[0]);
+	}
+
+	// Loading the UV data into the new buffer
+	glBufferData(GL_SHADER_STORAGE_BUFFER, tiles.size() * sizeof(glm::ivec2), 0, GL_DYNAMIC_COPY);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
+
 void TileSet::setTileRule(unsigned int tileIndex, RulePosition rulePosition, char rule)
 {
 }
@@ -275,7 +296,14 @@ std::vector<Tile>& TileSet::getTiles()
 	return tiles;
 }
 
+void TileSet::bindSSBO()
+{
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileSSBO);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
+}
+
 TileSet::TileSet(std::vector<Tile>& tiles)
 	: tiles(tiles)
 {
+	generateSSBO();
 }

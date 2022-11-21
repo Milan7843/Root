@@ -14,10 +14,11 @@ TileGrid::~TileGrid()
 TileGrid* TileGrid::create(Transform* transform,
 	const std::string& texturePath,
 	bool pixelPerfect,
+	glm::ivec2 textureGridSize,
 	const std::string& dataPath,
 	const std::string& tileSetName)
 {
-	TileGrid* tileGrid = readData(texturePath, pixelPerfect, dataPath, tileSetName);
+	TileGrid* tileGrid = readData(texturePath, pixelPerfect, textureGridSize, dataPath, tileSetName);
 
 	if (tileGrid == nullptr)
 	{
@@ -32,7 +33,14 @@ TileGrid* TileGrid::create(Transform* transform,
 
 void TileGrid::render(float renderDepth)
 {
-	/*
+	// Retrieving the tile set
+	TileSet* tileSet = TileGridEngine::getTileSet(tileSetName);
+
+	if (tileSet == nullptr)
+		return;
+
+	tileSet->bindSSBO();
+
 	// Getting the shader
 	Shader* spriteRenderShader{ Root::getTileGridRenderShader() };
 
@@ -44,8 +52,8 @@ void TileGrid::render(float renderDepth)
 	spriteRenderShader->setMat4("projection", Root::getActiveCamera()->getProjectionMatrix());
 	spriteRenderShader->setInt("sprite", 0);
 	spriteRenderShader->setFloat("renderDepth", renderDepth / 10000.0f);
-	spriteRenderShader->setInt("columnCount", tileGridSize.x);
-	spriteRenderShader->setInt("rowCount", tileGridSize.y);
+	spriteRenderShader->setIVector2("tileGridSize", tileGridSize);
+	spriteRenderShader->setFloat("tileSize", tileSize);
 
 	// Binding the sprite
 	glActiveTexture(GL_TEXTURE0);
@@ -53,10 +61,10 @@ void TileGrid::render(float renderDepth)
 	
 	glBindVertexArray(tileMapVAO);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_POINTS, 0, tileGridSize.x * tileGridSize.y);
 
 	glBindVertexArray(0);
-	*/
 }
 
 unsigned int TileGrid::addTile(glm::ivec2 textureIndex)
@@ -74,20 +82,27 @@ void TileGrid::setTileSize(float tileSize)
 }
 
 TileGrid::TileGrid(unsigned int texture,
+	glm::ivec2 textureGridSize,
 	GridSpace* data,
 	glm::ivec2 tileGridSize,
 	unsigned int layerCount,
 	std::string tileSet)
 	: textureID(texture)
+	, textureGridSize(textureGridSize)
 	, gridSpaces(data)
 	, tileGridSize(tileGridSize)
 	, layerCount(layerCount)
 	, tileSetName(tileSet)
 {
+	std::cout << "HEREHRHEHREHRHER1" << std::endl;
 	generateTileIndices();
 }
 
-TileGrid* TileGrid::readData(const std::string& texturePath, bool pixelPerfect, const std::string& dataPath, const std::string& tileSetName)
+TileGrid* TileGrid::readData(const std::string& texturePath,
+	bool pixelPerfect,
+	glm::ivec2 textureGridSize,
+	const std::string& dataPath,
+	const std::string& tileSetName)
 {
 	bool enableDebugLogging{ true };
 
@@ -326,7 +341,7 @@ TileGrid* TileGrid::readData(const std::string& texturePath, bool pixelPerfect, 
 	// Loading the texture
 	unsigned int textureID = TextureEngine::loadTexture(texturePath, pixelPerfect);
 
-	TileGrid* tileGrid = new TileGrid(textureID, gridSpaces, tileGridSize, layerCount, tileSetName);
+	TileGrid* tileGrid = new TileGrid(textureID, textureGridSize, gridSpaces, tileGridSize, layerCount, tileSetName);
 	return tileGrid;
 }
 
@@ -471,6 +486,32 @@ void TileGrid::autoFillGridSpace(TileSet* tileSet,
 	}
 }
 
+void TileGrid::generateVAO()
+{
+	if (tileIndices == nullptr)
+	{
+		return;
+	}
+
+	unsigned int VBO{ 0 };
+
+	glGenVertexArrays(1, &tileMapVAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(tileMapVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(int) * tileGridSize.x * tileGridSize.y * layerCount, tileIndices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 1, GL_INT, GL_FALSE, sizeof(int), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	//glObjectLabel(GL_VERTEX_ARRAY, tileMapVAO, 13, "Tile map VAO");
+}
+
 void TileGrid::generateTileIndices()
 {
 	if (tileIndices != nullptr)
@@ -526,4 +567,7 @@ void TileGrid::generateTileIndices()
 		}
 		std::cout << "\n";
 	}
+
+	// Putting the new indices into the VAO
+	generateVAO();
 }

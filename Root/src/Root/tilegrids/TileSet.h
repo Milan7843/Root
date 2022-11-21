@@ -4,6 +4,9 @@
 
 #include <glm/glm.hpp>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -57,12 +60,20 @@ public:
 	 */
 	std::vector<Tile>& getTiles();
 
+	/**
+	 * Bind the shader buffer.
+	 */
+	void bindSSBO();
+
 private:
 
 	TileSet(std::vector<Tile>& tiles);
 
 	static Tile readTile(std::ifstream& file);
 
+	void generateSSBO();
+
+	unsigned int tileSSBO{ 0 };
 
 	std::vector<Tile> tiles;
 };

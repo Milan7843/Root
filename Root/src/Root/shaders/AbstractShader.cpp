@@ -34,6 +34,14 @@ void AbstractShader::setVector2(const std::string& name, glm::vec2 v) const
 {
 	glUniform2f(glGetUniformLocation(ID, name.c_str()), v.x, v.y);
 }
+void AbstractShader::setIVector2(const std::string& name, int v1, int v2) const
+{
+	glUniform2i(glGetUniformLocation(ID, name.c_str()), v1, v2);
+}
+void AbstractShader::setIVector2(const std::string& name, glm::ivec2 v) const
+{
+	glUniform2i(glGetUniformLocation(ID, name.c_str()), v.x, v.y);
+}
 void AbstractShader::setVector3(const std::string& name, float v1, float v2, float v3) const
 {
 	glUniform3f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3);

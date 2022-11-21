@@ -41,12 +41,14 @@ public:
 	 * \param transform: the transform to add this tile grid to.
 	 * \param texture: the path to the texture to use.
 	 * \param pixelPerfect: whether the texture should be pixel perfect.
+	 * \param textureGridSize: the amount of columns, rows in the texture.
 	 * \param data: the path to the tile grid data.
 	 * \param tileSetName: the name of the tile set to use.
 	 */
 	static TileGrid* create(Transform* transform,
 		const std::string& texturePath,
 		bool pixelPerfect,
+		glm::ivec2 textureGridSize,
 		const std::string& dataPath,
 		const std::string& tileSetName);
 
@@ -73,6 +75,7 @@ public:
 private:
 
 	TileGrid(unsigned int texture,
+		glm::ivec2 textureGridSize,
 		GridSpace* data,
 		glm::ivec2 tileGridSize,
 		unsigned int layerCount,
@@ -80,6 +83,7 @@ private:
 
 	static TileGrid* readData(const std::string& texturePath,
 		bool pixelPerfect,
+		glm::ivec2 textureGridSize,
 		const std::string& dataPath,
 		const std::string& tileSetName);
 
@@ -93,6 +97,8 @@ private:
 		unsigned int layer,
 		char requiredTag);
 
+	void generateVAO();
+
 	float tileSize{ 1.0f };
 
 	std::string tileSetName{ "" };
@@ -100,6 +106,9 @@ private:
 	int* tileIndices{ nullptr };
 
 	glm::ivec2 tileGridSize{ glm::ivec2(0) };
+
+	// The number of columns, rows in the texture
+	glm::ivec2 textureGridSize{ glm::ivec2(0) };
 
 	unsigned int layerCount{ 0 };
 	
