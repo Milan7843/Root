@@ -13,6 +13,16 @@
 #include <iostream>
 #include <fstream>
 
+#define NO_RULE '~'
+#define EXISTS '+'
+#define NOT_EXISTS '-'
+
+enum class MultipleTextureIndexUsage
+{
+	ANIMATION,
+	RANDOM_OF
+};
+
 enum class RulePosition {
 	TOP_RIGHT = 0,
 	MIDDLE_RIGHT = 1,
@@ -24,16 +34,26 @@ enum class RulePosition {
 	TOP_MIDDLE = 7
 };
 
-struct Tile {
+struct Tile
+{
 	char tag;
+
+	MultipleTextureIndexUsage multipleTextureIndexUsage;
 	std::vector<glm::ivec2> textureIndices;
 	unsigned int textureIndex;
+
 	// A '~' means that there is no rule set for that neighbouring grid space.
 	// A '+' means that the rule is satisfied if a tile exists there.
 	// A '-' means that the rule is satisfied if no tile exists there.
 	// A letter means that the rule is satisfied if a tile exists there,
 	// with a tag matching the letter.
 	std::string rules;
+
+	// Whether to offset each tile individually to a random texture index in the animation
+	bool randomAnimationOffset;
+
+	float animationSpeed;
+	float timeSinceAnimationChange{ 0.0f };
 };
 
 class TileSet
@@ -42,11 +62,40 @@ public:
 
 	~TileSet();
 
+	/*
 	static void create(const std::string& path,
 		const std::string& name);
+	*/
 
 	static void create(std::vector<Tile>& tiles,
-		const std::string& name);
+		const std::string& name,
+		float animationSpeed = 1.0f);
+
+	static Tile createTile(char tag,
+		std::vector<glm::ivec2> textureIndices,
+		char topLeftRule,
+		char topMiddleRule,
+		char topRightRule,
+		char middleLeftRule,
+		char middleRightRule,
+		char bottomLeftRule,
+		char bottomMiddleRule,
+		char bottomRightRule,
+		unsigned int textureStartIndex = 0,
+		MultipleTextureIndexUsage multipleTextureIndexUsage = MultipleTextureIndexUsage::ANIMATION,
+		float animationSpeed = 1.0f,
+		bool randomAnimationOffset = false);
+
+	static Tile createTile(char tag,
+		glm::ivec2 textureIndex,
+		char topLeftRule,
+		char topMiddleRule,
+		char topRightRule,
+		char middleLeftRule,
+		char middleRightRule,
+		char bottomLeftRule,
+		char bottomMiddleRule,
+		char bottomRightRule);
 
 	void update();
 
@@ -71,16 +120,16 @@ public:
 
 private:
 
-	TileSet(std::vector<Tile>& tiles);
+	TileSet(std::vector<Tile>& tiles,
+		float animationSpeed);
 
-	static Tile readTile(std::ifstream& file);
+	//static Tile readTile(std::ifstream& file);
 
 	void generateSSBO();
 
 	unsigned int tileSSBO{ 0 };
 	
 	float animationSpeed{ 1.0f };
-	float timeSinceAnimationUpdate{ 0.0f };
 
 	std::vector<Tile> tiles;
 };

@@ -6,6 +6,7 @@ TileSet::~TileSet()
 {
 }
 
+/*
 void TileSet::create(const std::string& path, const std::string& name)
 {
 	// Reading in the file
@@ -17,6 +18,47 @@ void TileSet::create(const std::string& path, const std::string& name)
 	}
 
 	std::vector<Tile> tiles;
+
+
+	// ====== ANIMATION SPEED READING ====== //
+
+	// Holds a full line
+	std::string line;
+	float animationSpeed = 0.0f;
+
+	// Stop at the end or on an error
+	while (file.good())
+	{
+		// Find the next char
+		char c = file.get();
+
+		// Just go the the next line
+		if (c == '\n')
+		{
+			continue;
+		}
+
+		// Skip entire line after #
+		if (c == '#')
+		{
+			std::getline(file, line);
+			continue;
+		}
+
+		// Check whether the character is a valid number
+		if (TileGridEngine::isNumber(c))
+		{
+			animationSpeed = TileGridEngine::readFloat(&file, c);
+
+			if (animationSpeed <= 0.0f)
+			{
+				Logger::logError("Tile grid animation speed cannot be less than or equal to 0; was " + std::to_string(animationSpeed));
+				return;
+			}
+
+			break;
+		}
+	}
 
 	// Keep reading tiles
 	while (true)
@@ -36,51 +78,142 @@ void TileSet::create(const std::string& path, const std::string& name)
 			if (err != "End of file reached.")
 			{
 				Logger::logError(err);
+				return;
 			}
 			break;
 		}
 	}
 
 	// Creating a tile set from the tiles
-	TileSet* tileSet = new TileSet(tiles);
+	TileSet* tileSet = new TileSet(tiles, animationSpeed);
+	std::shared_ptr<TileSet> pointer = std::shared_ptr<TileSet>(tileSet);
+
+	TileGridEngine::addTileSet(pointer, name);
+}
+*/
+
+void TileSet::create(std::vector<Tile>& tiles,
+	const std::string& name,
+	float animationSpeed)
+{
+	if (animationSpeed <= 0.0f)
+	{
+		Logger::logError("Tile grid animation speed cannot be less than or equal to 0; was " + std::to_string(animationSpeed));
+		return;
+	}
+
+	// Creating a tile set from the tiles
+	TileSet* tileSet = new TileSet(tiles, animationSpeed);
 	std::shared_ptr<TileSet> pointer = std::shared_ptr<TileSet>(tileSet);
 
 	TileGridEngine::addTileSet(pointer, name);
 }
 
-void TileSet::create(std::vector<Tile>& tiles, const std::string& name)
+Tile TileSet::createTile(char tag,
+	std::vector<glm::ivec2> textureIndices,
+	char topLeftRule,
+	char topMiddleRule,
+	char topRightRule,
+	char middleLeftRule,
+	char middleRightRule,
+	char bottomLeftRule,
+	char bottomMiddleRule,
+	char bottomRightRule,
+	unsigned int textureStartIndex,
+	MultipleTextureIndexUsage multipleTextureIndexUsage,
+	float animationSpeed,
+	bool randomAnimationOffset)
 {
-	// Creating a tile set from the tiles
-	TileSet* tileSet = new TileSet(tiles);
-	std::shared_ptr<TileSet> pointer = std::shared_ptr<TileSet>(tileSet);
+	std::string rules{ "        " };
+	rules[0] = topLeftRule;
+	rules[1] = topMiddleRule;
+	rules[2] = topRightRule;
+	rules[3] = middleLeftRule;
+	rules[4] = middleRightRule;
+	rules[5] = bottomLeftRule;
+	rules[6] = bottomMiddleRule;
+	rules[7] = bottomRightRule;
 
-	TileGridEngine::addTileSet(pointer, name);
+	return Tile{ tag,
+		multipleTextureIndexUsage,
+		textureIndices,
+		textureStartIndex,
+		rules,
+		randomAnimationOffset,
+		animationSpeed
+	};
+}
+
+Tile TileSet::createTile(char tag,
+	glm::ivec2 textureIndex,
+	char topLeftRule,
+	char topMiddleRule,
+	char topRightRule,
+	char middleLeftRule,
+	char middleRightRule,
+	char bottomLeftRule,
+	char bottomMiddleRule,
+	char bottomRightRule)
+{
+	std::string rules{ "        " };
+	rules[0] = topLeftRule;
+	rules[1] = topMiddleRule;
+	rules[2] = topRightRule;
+	rules[3] = middleLeftRule;
+	rules[4] = middleRightRule;
+	rules[5] = bottomLeftRule;
+	rules[6] = bottomMiddleRule;
+	rules[7] = bottomRightRule;
+
+	return Tile{ tag,
+		MultipleTextureIndexUsage::ANIMATION,
+		std::vector<glm::ivec2>{ textureIndex },
+		0,
+		rules,
+		false,
+		1.0f
+	};
 }
 
 void TileSet::update()
 {
 	bool anyTileUpdated{ false };
 
-	if (timeSinceAnimationUpdate > 1.0f / animationSpeed)
-	{
-		// Updating every tile
-		for (Tile& tile : tiles) {
-			// Must have at least 2 texture indices to animate
-			if (tile.textureIndices.size() <= 1) {
-				continue;
+	// Updating every tile
+	for (Tile& tile : tiles) {
+		// Must have at least 2 texture indices to animate
+		if (tile.textureIndices.size() <= 1) {
+			continue;
+		}
+
+		if (tile.multipleTextureIndexUsage == MultipleTextureIndexUsage::ANIMATION)
+		{
+			// Check if an update is timely
+			if (tile.timeSinceAnimationChange > 1.0f / tile.animationSpeed)
+			{
+				// Moving to the next texture index
+				if (tile.textureIndex >= tile.textureIndices.size() - 1)
+					tile.textureIndex = 0;
+				else
+					tile.textureIndex++;
+
+				// At least one tile was updated
+				anyTileUpdated = true;
+
+				// Reset update timer
+				tile.timeSinceAnimationChange = 0.0f;
 			}
 
-			// Moving to the next texture index
-			if (tile.textureIndex >= tile.textureIndices.size() - 1)
-				tile.textureIndex = 0;
-			else
-				tile.textureIndex++;
+			tile.timeSinceAnimationChange += Time::getDeltaTime() * animationSpeed;
 		}
 	}
 
-	timeSinceAnimationUpdate += Time::getDeltaTime();
+	// Updating the SSBO
+	if (anyTileUpdated)
+		generateSSBO();
 }
 
+/*
 Tile TileSet::readTile(std::ifstream& file)
 {
 	// Properties
@@ -98,7 +231,7 @@ Tile TileSet::readTile(std::ifstream& file)
 	unsigned int lineNumber{ 0 };
 
 
-	/* ====== TAG READING ====== */
+	// ====== TAG READING ====== //
 
 	// Stop at the end or on an error
 	while (file.good())
@@ -139,7 +272,7 @@ Tile TileSet::readTile(std::ifstream& file)
 	}
 
 
-	/* ====== TEXTURE COORDINATES READING ====== */
+	// ====== TEXTURE COORDINATES READING ====== //
 
 	glm::ivec2 currentCoordinate{ glm::ivec2(0) };
 
@@ -231,7 +364,7 @@ Tile TileSet::readTile(std::ifstream& file)
 	}
 
 
-	/* ====== TILE RULES READING ====== */
+	// ====== TILE RULES READING ====== //
 	unsigned int currentTileRuleIndex{ 0 }; // 0 to 7
 
 	std::string rules{ "        " };
@@ -289,6 +422,7 @@ Tile TileSet::readTile(std::ifstream& file)
 
 	return Tile{ tag, textureCoordinates, 0, rules };
 }
+*/
 
 void TileSet::generateSSBO()
 {
@@ -303,7 +437,7 @@ void TileSet::generateSSBO()
 	unsigned int index{ 0 };
 	for (Tile& tile : tiles)
 	{
-		textureIndices[index++] = tile.textureIndices[0];
+		textureIndices[index++] = tile.textureIndices[tile.textureIndex];
 	}
 
 	unsigned int usingTextureIndexSize = textureIndices.size();
@@ -336,8 +470,10 @@ void TileSet::bindSSBO()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
 }
 
-TileSet::TileSet(std::vector<Tile>& tiles)
+TileSet::TileSet(std::vector<Tile>& tiles,
+	float animationSpeed)
 	: tiles(tiles)
+	, animationSpeed(animationSpeed)
 {
 	generateSSBO();
 }

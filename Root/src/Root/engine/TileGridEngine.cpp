@@ -19,10 +19,6 @@ namespace TileGridEngine
 			// Increment the Iterator to point to next entry
 			it++;
 		}
-
-		for (std::shared_ptr<TileSet> tileSet : tileSets.) {
-
-		}
 	}
 
     void addTileSet(std::shared_ptr<TileSet> tileSet, const std::string& name)
@@ -62,6 +58,7 @@ namespace TileGridEngine
 
 		int result{ 0 };
 
+		// Try turning the string into a number
 		try
 		{
 			result = std::stoi(number);
@@ -69,6 +66,35 @@ namespace TileGridEngine
 		catch (std::invalid_argument const& ex)
 		{
 			Logger::logError(std::string("Could not read number: ") + number + ", " + ex.what());
+			return 0;
+		}
+		return result;
+	}
+
+	float readFloat(std::ifstream* file, char first)
+	{
+		std::string number{ "" };
+
+		number.push_back(first);
+
+		// While we keep encountering numbers
+		while (file->good() && (isNumber(file->peek()) || file->peek() == '.'))
+		{
+			// Add the numbers to the string
+			number.push_back(file->get());
+		}
+
+		float result{ 0 };
+
+		// Try turning the string into a number
+		try
+		{
+			result = std::stof(number);
+		}
+		catch (std::invalid_argument const& ex)
+		{
+			Logger::logError(std::string("Could not read decimal number: ") + number + ", " + ex.what());
+			return 0.0f;
 		}
 		return result;
 	}

@@ -149,6 +149,8 @@ namespace RootEngine
 
             ComponentEngine::updateRigidbodiesTransforms();
 
+            TileGridEngine::update();
+
             // Input
             //processInput(window);
 

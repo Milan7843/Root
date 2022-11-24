@@ -17,5 +17,7 @@ namespace TileGridEngine
 	bool isNumber(char c);
 
 	unsigned int readNumber(std::ifstream* file, char first);
+
+	float readFloat(std::ifstream* file, char first);
 };
 

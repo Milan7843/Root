@@ -10,6 +10,7 @@
 #include "Root/engine/ComponentEngine.h"
 #include "Root/engine/AnimationHandlerEngine.h"
 #include "Root/engine/AudioEngine.h"
+#include "Root/engine/TileGridEngine.h"
 #include "Root/shaders/Shader.h"
 
 #include "Root/Time.h"
