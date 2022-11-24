@@ -210,7 +210,7 @@ Tile TileSet::readTile(std::ifstream& file)
 	/* ====== TILE RULES READING ====== */
 	unsigned int currentTileRuleIndex{ 0 }; // 0 to 7
 
-	char rules[8];
+	std::string rules{ "        " };
 
 	while (file.good())
 	{
@@ -276,13 +276,23 @@ void TileSet::generateSSBO()
 
 	std::vector<glm::ivec2> textureIndices(tiles.size());
 
+	unsigned int index{ 0 };
 	for (Tile& tile : tiles)
 	{
-		textureIndices.push_back(tile.textureIndices[0]);
+		textureIndices[index++] = tile.textureIndices[0];
+	}
+
+	unsigned int usingTextureIndexSize = textureIndices.size();
+
+	if (usingTextureIndexSize % 2 == 1)
+	{
+		// Must have an even amount of 2D indices
+		textureIndices.push_back(glm::ivec2(0, 0));
+		usingTextureIndexSize++;
 	}
 
 	// Loading the UV data into the new buffer
-	glBufferData(GL_SHADER_STORAGE_BUFFER, tiles.size() * sizeof(glm::ivec2), 0, GL_DYNAMIC_COPY);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, usingTextureIndexSize * sizeof(glm::ivec2), textureIndices.data(), GL_STATIC_DRAW);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }

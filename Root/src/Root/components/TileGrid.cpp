@@ -8,7 +8,7 @@ TileGrid::~TileGrid()
 	delete gridSpaces;
 
 	if (tileIndices != nullptr)
-		delete tileIndices;
+		free(tileIndices);
 }
 
 TileGrid* TileGrid::create(Transform* transform,
@@ -53,6 +53,7 @@ void TileGrid::render(float renderDepth)
 	spriteRenderShader->setInt("sprite", 0);
 	spriteRenderShader->setFloat("renderDepth", renderDepth / 10000.0f);
 	spriteRenderShader->setIVector2("tileGridSize", tileGridSize);
+	spriteRenderShader->setIVector2("textureGridSize", textureGridSize);
 	spriteRenderShader->setFloat("tileSize", tileSize);
 
 	// Binding the sprite
@@ -254,7 +255,7 @@ TileGrid* TileGrid::readData(const std::string& texturePath,
 			else
 			{
 				// Read a char (tag or empty)
-				if (c == ' ' || c == '~')
+				if (c == ' ' || c == '-')
 				{
 					// Empty
 					gridSpace.type = GridSpaceType::EMPTY;
@@ -389,14 +390,14 @@ void TileGrid::autoFillGridSpace(TileSet* tileSet,
 		x;
 
 	glm::ivec2 offsets[] = {
-		glm::ivec2(1, -1),
-		glm::ivec2(1, 0),
-		glm::ivec2(1, 1),
-		glm::ivec2(0, 1),
-		glm::ivec2(-1, 1),
-		glm::ivec2(-1, 0),
 		glm::ivec2(-1, -1),
 		glm::ivec2(0, -1),
+		glm::ivec2(1, -1),
+		glm::ivec2(-1, 0),
+		glm::ivec2(1, 0),
+		glm::ivec2(-1, 1),
+		glm::ivec2(0, 1),
+		glm::ivec2(1, 1),
 	};
 
 	bool tileFound{ false };
@@ -413,6 +414,7 @@ void TileGrid::autoFillGridSpace(TileSet* tileSet,
 		}
 
 		bool ruleBroken{ false };
+
 		// Checking all rules for this tile:
 		for (unsigned int i{ 0 }; i < 8; i++)
 		{
@@ -503,19 +505,17 @@ void TileGrid::generateVAO()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(int) * tileGridSize.x * tileGridSize.y * layerCount, tileIndices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 1, GL_INT, GL_FALSE, sizeof(int), (void*)0);
+	glVertexAttribIPointer(0, 1, GL_INT, sizeof(int), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	//glObjectLabel(GL_VERTEX_ARRAY, tileMapVAO, 13, "Tile map VAO");
 }
 
 void TileGrid::generateTileIndices()
 {
 	if (tileIndices != nullptr)
-		delete tileIndices;
+		free(tileIndices);
 
 	// Creating space for the tile indices
 	tileIndices = (int*)malloc(tileGridSize.x * tileGridSize.y * layerCount * sizeof(int));
@@ -559,8 +559,7 @@ void TileGrid::generateTileIndices()
 						tileIndices[index] = gridSpace.index;
 						break;
 				}
-
-				std::cout << tileIndices[index] << " ";
+				std::cout << (tileIndices[index] == -1 ? "-" : std::to_string(tileIndices[index])) << " ";
 			}
 
 			std::cout << "\n";
