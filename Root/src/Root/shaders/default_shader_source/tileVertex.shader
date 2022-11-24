@@ -13,6 +13,7 @@ uniform ivec2 tileGridSize;
 uniform float tileSize;
 
 out int GeoIn_TileIndex;
+out int GeoIn_LayerIndex;
 
 void main()
 {
@@ -21,7 +22,7 @@ void main()
     int layer = int(gl_VertexID / (tileGridSize.x * tileGridSize.y));
     int layerIndex = int(mod(gl_VertexID, tileGridSize.x * tileGridSize.y));
     int x = int(mod(gl_VertexID,tileGridSize.x));
-    int y = int(gl_VertexID / tileGridSize.x);
+    int y = int(mod(int(gl_VertexID / tileGridSize.x), tileGridSize.y));
 
     position += vec2(x, y);
 

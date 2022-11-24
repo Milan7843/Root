@@ -63,7 +63,7 @@ void TileGrid::render(float renderDepth)
 	glBindVertexArray(tileMapVAO);
 
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glDrawArrays(GL_POINTS, 0, tileGridSize.x * tileGridSize.y);
+	glDrawArrays(GL_POINTS, 0, tileGridSize.x * tileGridSize.y * layerCount);
 
 	glBindVertexArray(0);
 }
