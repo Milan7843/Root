@@ -8,6 +8,8 @@
 
 namespace TileGridEngine
 {
+	void update();
+
 	void addTileSet(std::shared_ptr<TileSet> tileSet, const std::string& name);
 
 	TileSet* getTileSet(const std::string& name);

@@ -57,6 +57,30 @@ void TileSet::create(std::vector<Tile>& tiles, const std::string& name)
 	TileGridEngine::addTileSet(pointer, name);
 }
 
+void TileSet::update()
+{
+	bool anyTileUpdated{ false };
+
+	if (timeSinceAnimationUpdate > 1.0f / animationSpeed)
+	{
+		// Updating every tile
+		for (Tile& tile : tiles) {
+			// Must have at least 2 texture indices to animate
+			if (tile.textureIndices.size() <= 1) {
+				continue;
+			}
+
+			// Moving to the next texture index
+			if (tile.textureIndex >= tile.textureIndices.size() - 1)
+				tile.textureIndex = 0;
+			else
+				tile.textureIndex++;
+		}
+	}
+
+	timeSinceAnimationUpdate += Time::getDeltaTime();
+}
+
 Tile TileSet::readTile(std::ifstream& file)
 {
 	// Properties
@@ -263,7 +287,7 @@ Tile TileSet::readTile(std::ifstream& file)
 		throw "Did not find all tile rules.";
 	}
 
-	return Tile{ tag, textureCoordinates, rules };
+	return Tile{ tag, textureCoordinates, 0, rules };
 }
 
 void TileSet::generateSSBO()

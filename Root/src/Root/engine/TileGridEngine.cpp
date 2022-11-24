@@ -7,6 +7,24 @@ namespace TileGridEngine
         std::map<std::string, std::shared_ptr<TileSet>> tileSets;
     }
 
+	void update()
+	{
+		// Create a map iterator and point to beginning of map
+		std::map<std::string, std::shared_ptr<TileSet>>::iterator it = tileSets.begin();
+
+		// Iterate over the map using Iterator till end
+		while (it != tileSets.end())
+		{
+			it->second->update();
+			// Increment the Iterator to point to next entry
+			it++;
+		}
+
+		for (std::shared_ptr<TileSet> tileSet : tileSets.) {
+
+		}
+	}
+
     void addTileSet(std::shared_ptr<TileSet> tileSet, const std::string& name)
     {
         tileSets.emplace(name, tileSet);
