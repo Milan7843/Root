@@ -32,4 +32,5 @@ void main()
     gl_Position.z = renderDepth;
 
     GeoIn_TileIndex = tileIndex;
+    GeoIn_LayerIndex = layer;
 }

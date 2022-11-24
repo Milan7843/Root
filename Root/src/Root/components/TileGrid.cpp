@@ -410,6 +410,7 @@ void TileGrid::autoFillGridSpace(TileSet* tileSet,
 		if (requiredTag != '-' && tile.tag != requiredTag)
 		{
 			// Skip if it doesn't match
+			tileIndex++;
 			continue;
 		}
 

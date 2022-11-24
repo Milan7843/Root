@@ -52,7 +52,7 @@ void main()
 			+ projection * view * model * vec4(offsets[i] * tileSize, 0.0, 1.0);
 
 		// Depth
-		gl_Position.z = renderDepth + 0.001 * GeoIn_LayerIndex[0];
+		gl_Position.z = renderDepth + 0.00001 * GeoIn_LayerIndex[0];
 
 		EmitVertex();
 		if (i == 2 || i == 5)
