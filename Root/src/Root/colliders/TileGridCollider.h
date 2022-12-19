@@ -64,7 +64,9 @@ private:
 	 */
 	glm::vec2 getPointFromSquare(TileGrid* tileGrid, glm::ivec2 square, Direction directionMoving);
 
-	bool isEmpty(TileGrid* tileGrid, glm::ivec2 sample);
+	bool isEmpty(TileGrid* tileGrid,
+		int layerIndex,
+		glm::ivec2 sample);
 
 	// The loop colliders that make up this tile grid collider
 	std::vector<std::shared_ptr<LoopCollider>> loopColliders;

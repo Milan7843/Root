@@ -16,7 +16,9 @@ TileGridCollider::TileGridCollider(
 	updateWithTileGrid(tileGrid, layerIndex);
 }
 
-bool TileGridCollider::isEmpty(TileGrid* tileGrid, glm::ivec2 sample)
+bool TileGridCollider::isEmpty(TileGrid* tileGrid,
+	int layerIndex,
+	glm::ivec2 sample)
 {
 	if (sample.x >= tileGrid->tileGridSize.x || sample.x < 0 || sample.y >= tileGrid->tileGridSize.y || sample.y < 0)
 	{
@@ -24,7 +26,10 @@ bool TileGridCollider::isEmpty(TileGrid* tileGrid, glm::ivec2 sample)
 	}
 
 	// The 1D index of the square to check
-	unsigned int sampleIndex = sample.x + sample.y * tileGrid->tileGridSize.x;
+	unsigned int sampleIndex
+		= sample.x
+		+ sample.y * tileGrid->tileGridSize.x
+		+ layerIndex * tileGrid->tileGridSize.x * tileGrid->tileGridSize.y;
 
 	return tileGrid->tileIndices[sampleIndex] == -1;
 }
@@ -91,8 +96,8 @@ void TileGridCollider::updateWithTileGrid(
 		for (unsigned int x{ 0 }; x < gridSize.x; x++)
 		{
 			// This space must not be empty and the space above it must be
-			if (!isEmpty(tileGrid, glm::ivec2(x, y)) &&
-				isEmpty(tileGrid, glm::ivec2(x, y+1)))
+			if (!isEmpty(tileGrid, layerIndex, glm::ivec2(x, y)) &&
+				isEmpty(tileGrid, layerIndex, glm::ivec2(x, y+1)))
 			{
 				squaresWithEmptyAbove.push_back(glm::ivec2(x, y));
 			}
@@ -125,8 +130,8 @@ void TileGridCollider::updateWithTileGrid(
 			points.push_back(point);
 
 			// This space must not be empty and the space above it must be to remove it from the list
-			if (!isEmpty(tileGrid, currentSquare) &&
-				isEmpty(tileGrid, currentSquare + glm::ivec2(0, 1)))
+			if (!isEmpty(tileGrid, layerIndex, currentSquare) &&
+				isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(0, 1)))
 			{
 				removeValue(squaresWithEmptyAbove, currentSquare);
 			}
@@ -136,8 +141,8 @@ void TileGridCollider::updateWithTileGrid(
 			{
 				case Direction::UP:
 				{
-					bool upEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(0, 1));
-					bool upLeftEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(-1, 1));
+					bool upEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(0, 1));
+					bool upLeftEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(-1, 1));
 
 					// Check for movable:
 					if (upEmpty)
@@ -162,8 +167,8 @@ void TileGridCollider::updateWithTileGrid(
 
 				case Direction::RIGHT:
 				{
-					bool rightEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(1, 0));
-					bool upRightEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(1, 1));
+					bool rightEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(1, 0));
+					bool upRightEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(1, 1));
 
 					// Check for movable:
 					if (rightEmpty)
@@ -188,8 +193,8 @@ void TileGridCollider::updateWithTileGrid(
 
 				case Direction::DOWN:
 				{
-					bool downEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(0, -1));
-					bool downRightEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(1, -1));
+					bool downEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(0, -1));
+					bool downRightEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(1, -1));
 
 					// Check for movable:
 					if (downEmpty)
@@ -214,8 +219,8 @@ void TileGridCollider::updateWithTileGrid(
 
 				case Direction::LEFT:
 				{
-					bool leftEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(-1, 0));
-					bool downLeftEmpty = isEmpty(tileGrid, currentSquare + glm::ivec2(-1, -1));
+					bool leftEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(-1, 0));
+					bool downLeftEmpty = isEmpty(tileGrid, layerIndex, currentSquare + glm::ivec2(-1, -1));
 
 					// Check for movable:
 					if (leftEmpty)
