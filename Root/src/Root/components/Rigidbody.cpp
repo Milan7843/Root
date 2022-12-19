@@ -87,26 +87,32 @@ Rigidbody::Rigidbody(TransformPointer transform,
 
 	body = PhysicsEngine::addBody(&bodyDef);
 
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = collider->getShape();
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-
-	// Setting the layer masks
-	fixtureDef.filter.categoryBits = selfLayerMask;
-	fixtureDef.filter.maskBits = interactionLayerMask;
-
 	// Creating a fixture data
 	fixtureData = new FixtureData;
 
-	fixture = body->CreateFixture(&fixtureDef);
-
 	// Assigning the user data pointer of the fixture
 	uintptr_t ptr = reinterpret_cast<uintptr_t>(fixtureData);
-	fixture->GetUserDataRef().pointer = ptr;
 
-	fixtureData->mFixture = fixture;
-	fixtureData->rigidbody = this;
+	std::cout << "num. shapes: " << collider->getShapes().size() << std::endl;
+
+	// Adding each shape
+	for (b2Shape* shape : collider->getShapes())
+	{
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.3f;
+
+		// Setting the layer masks
+		fixtureDef.filter.categoryBits = selfLayerMask;
+		fixtureDef.filter.maskBits = interactionLayerMask;
+
+		fixture = body->CreateFixture(&fixtureDef);
+		fixture->GetUserDataRef().pointer = ptr;
+
+		fixtureData->mFixture = fixture;
+		fixtureData->rigidbody = this;
+	}
 }
 
 RigidbodyPointer Rigidbody::create(

@@ -7,6 +7,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <vector>
+
 #define ColliderPointer std::shared_ptr<Collider>
 
 class Collider
@@ -18,7 +20,7 @@ public:
 		glDeleteVertexArrays(1, &debugVAO);
 	}
 
-	virtual b2Shape* getShape() { return nullptr; }
+	const virtual std::vector<b2Shape*> getShapes() { return std::vector<b2Shape*>(); }
 
 	virtual void renderDebugView() { }
 

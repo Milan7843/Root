@@ -21,7 +21,7 @@ public:
 
 	~CircleCollider();
 
-	b2Shape* getShape() override;
+	const virtual std::vector<b2Shape*> getShapes() override;
 
 	void renderDebugView() override;
 

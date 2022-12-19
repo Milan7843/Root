@@ -17,7 +17,7 @@ LoopCollider::~LoopCollider()
 	Logger::destructorMessage("Loop collider");
 }
 
-b2Shape* LoopCollider::getShape()
+const std::vector<b2Shape*> LoopCollider::getShapes()
 {
 	// If the shape hasn't already been set, make it first
 	if (shape == nullptr)
@@ -36,7 +36,8 @@ b2Shape* LoopCollider::getShape()
 		shape = new b2ChainShape;
 		shape->CreateLoop(&b2Points[0], pointCount);
 	}
-	return shape;
+
+	return std::vector<b2Shape*> { shape };
 }
 
 void LoopCollider::renderDebugView()

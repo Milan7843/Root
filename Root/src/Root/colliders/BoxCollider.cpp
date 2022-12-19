@@ -31,7 +31,7 @@ BoxCollider::~BoxCollider()
 	Logger::destructorMessage("Box collider");
 }
 
-b2Shape* BoxCollider::getShape()
+const std::vector<b2Shape*> BoxCollider::getShapes()
 {
 	// If the shape hasn't already been set, make it first
 	if (shape == nullptr)
@@ -41,7 +41,7 @@ b2Shape* BoxCollider::getShape()
 		shape->SetAsBox(width / 2.0f, height / 2.0f);
 	}
 
-	return shape;
+    return std::vector<b2Shape*> { shape };
 }
 
 void BoxCollider::generateDebugVAO()

@@ -18,19 +18,20 @@ EdgeCollider::~EdgeCollider()
 	Logger::destructorMessage("Edge collider");
 }
 
-b2Shape* EdgeCollider::getShape()
+const std::vector<b2Shape*> EdgeCollider::getShapes()
 {
-	// If the shape hasn't already been set, make it first
-	if (shape == nullptr)
-	{
-		b2Vec2 p1{ point1.x, point1.y };
-		b2Vec2 p2{ point2.x, point2.y };
+    // If the shape hasn't already been set, make it first
+    if (shape == nullptr)
+    {
+        b2Vec2 p1{ point1.x, point1.y };
+        b2Vec2 p2{ point2.x, point2.y };
 
-		// Creating the edge shape and setting the vertices
-		shape = new b2EdgeShape;
-		shape->SetTwoSided(p1, p2);
-	}
-	return shape;
+        // Creating the edge shape and setting the vertices
+        shape = new b2EdgeShape;
+        shape->SetTwoSided(p1, p2);
+    }
+
+    return std::vector<b2Shape*> { shape };
 }
 
 void EdgeCollider::renderDebugView()

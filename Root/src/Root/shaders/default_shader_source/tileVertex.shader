@@ -28,7 +28,7 @@ void main()
     position += vec2(x, y);
 
     // Screen position
-    gl_Position = projection * view * model * vec4(position * tileSize, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(position * tileSize * 2, 0.0, 1.0);
     // Depth
     gl_Position.z = renderDepth;
 

@@ -42,15 +42,17 @@ public:
 	 * \param texture: the path to the texture to use.
 	 * \param pixelPerfect: whether the texture should be pixel perfect.
 	 * \param textureGridSize: the amount of columns, rows in the texture.
-	 * \param data: the path to the tile grid data.
+	 * \param data: the path to the tile grid data
 	 * \param tileSetName: the name of the tile set to use.
+	 * \param tileSize: the size of each tile, default = 1.
 	 */
 	static TileGrid* create(Transform* transform,
 		const std::string& texturePath,
 		bool pixelPerfect,
 		glm::ivec2 textureGridSize,
 		const std::string& dataPath,
-		const std::string& tileSetName);
+		const std::string& tileSetName,
+		float tileSize = 1.0f);
 
 	void render(float renderDepth) override;
 
@@ -72,6 +74,21 @@ public:
 	 */
 	void setTileSize(float tileSize);
 
+	/**
+	 * Get the grid size.
+	 * 
+	 * \returns the grid size (#tiles hor., #tiles vert.).
+	 */
+	glm::ivec2 getGridSize();
+
+
+	/**
+	 * Get the tile grid data.
+	 *
+	 * \returns the tile grid data (tile index per grid square).
+	 */
+	int* getData();
+
 private:
 
 	TileGrid(unsigned int texture,
@@ -79,13 +96,15 @@ private:
 		GridSpace* data,
 		glm::ivec2 tileGridSize,
 		unsigned int layerCount,
-		std::string tileSet);
+		std::string tileSet,
+		float tileSize);
 
 	static TileGrid* readData(const std::string& texturePath,
 		bool pixelPerfect,
 		glm::ivec2 textureGridSize,
 		const std::string& dataPath,
-		const std::string& tileSetName);
+		const std::string& tileSetName,
+		float tileSize);
 
 	void generateTileIndices();
 
@@ -116,4 +135,7 @@ private:
 
 	unsigned int textureID{ 0 };
 	unsigned int tileMapVAO{ 0 };
+
+	// Give class TileGridCollider access
+	friend class TileGridCollider;
 };

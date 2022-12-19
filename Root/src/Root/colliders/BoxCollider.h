@@ -4,6 +4,8 @@
 
 #include <box2d/b2_polygon_shape.h>
 
+#include <vector>
+
 class BoxCollider : public Collider
 {
 public:
@@ -18,7 +20,7 @@ public:
 
 	~BoxCollider();
 
-	b2Shape* getShape() override;
+	const virtual std::vector<b2Shape*> getShapes() override;
 
 	void renderDebugView() override;
 

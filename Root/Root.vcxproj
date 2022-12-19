@@ -150,6 +150,7 @@
     <ClInclude Include="src\Root\Audio.h" />
     <ClInclude Include="src\Root\AudioSource.h" />
     <ClInclude Include="src\Root\base\TransformBase.h" />
+    <ClInclude Include="src\Root\colliders\TileGridCollider.h" />
     <ClInclude Include="src\Root\components\TileGrid.h" />
     <ClInclude Include="src\Root\engine\AudioEngine.h" />
     <ClInclude Include="src\AL\al.h" />
@@ -887,6 +888,7 @@
     <ClCompile Include="src\Root\colliders\EdgeCollider.cpp" />
     <ClCompile Include="src\Root\colliders\LoopCollider.cpp" />
     <ClCompile Include="src\Root\colliders\PolygonCollider.cpp" />
+    <ClCompile Include="src\Root\colliders\TileGridCollider.cpp" />
     <ClCompile Include="src\Root\CollisionCallbackHandler.cpp" />
     <ClCompile Include="src\Root\components\Animator.cpp" />
     <ClCompile Include="src\Root\components\TileGrid.cpp" />

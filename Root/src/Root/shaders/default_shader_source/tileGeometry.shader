@@ -38,13 +38,15 @@ uniform int tileIndexRandomisationSeed;
 
 uniform ivec2 textureGridSize;
 
+float epsilon = 0.001;
+
 vec2 offsets[] = {
-	vec2( 0.5, 0.5),
-	vec2( 0.5,-0.5),
-	vec2(-0.5, 0.5),
-	vec2( 0.5,-0.5),
-	vec2(-0.5,-0.5),
-	vec2(-0.5, 0.5)
+	vec2( 0.5, 0.5) + vec2( epsilon,  epsilon),
+	vec2( 0.5,-0.5) + vec2( epsilon, -epsilon),
+	vec2(-0.5, 0.5) + vec2(-epsilon,  epsilon),
+	vec2( 0.5,-0.5) + vec2( epsilon, -epsilon),
+	vec2(-0.5,-0.5) + vec2(-epsilon,- epsilon),
+	vec2(-0.5, 0.5) + vec2(-epsilon,  epsilon)
 };
 
 float rand(int seed)
@@ -88,7 +90,7 @@ void main()
 		basePosition.y = -basePosition.y;
 
 		gl_Position = basePosition
-			+ projection * view * model * vec4(offsets[i] * tileSize, 0.0, 1.0);
+			+ projection * view * model * vec4(offsets[i] * tileSize * 2, 0.0, 1.0);
 
 		// Depth
 		gl_Position.z = renderDepth + 0.00001 * GeoIn_LayerIndex[0];

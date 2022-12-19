@@ -23,7 +23,7 @@ public:
 
 	~LoopCollider();
 
-	b2Shape* getShape() override;
+	const virtual std::vector<b2Shape*> getShapes() override;
 
 	void renderDebugView() override;
 
@@ -44,5 +44,8 @@ private:
 	std::vector<glm::vec2> points;
 
 	b2ChainShape* shape{ nullptr };
+
+	// Give class TileGridCollider access
+	friend class TileGridCollider;
 };
 

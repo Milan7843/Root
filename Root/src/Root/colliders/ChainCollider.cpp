@@ -43,7 +43,7 @@ void ChainCollider::setPoints(std::vector<glm::vec2>& points)
 	this->points = points;
 }
 
-b2Shape* ChainCollider::getShape()
+const std::vector<b2Shape*> ChainCollider::getShapes()
 {
 	// If the shape hasn't already been set, make it first
 	if (shape == nullptr)
@@ -61,9 +61,10 @@ b2Shape* ChainCollider::getShape()
 		// Creating the chain shape and setting the vertices
 		shape = new b2ChainShape;
 		// Accounting for 2 ghost points: one at index 0 and one at the end.
-		shape->CreateChain(&b2Points[1], pointCount - 2, b2Points[0], b2Points[b2Points.size()-1]);
+		shape->CreateChain(&b2Points[1], pointCount - 2, b2Points[0], b2Points[b2Points.size() - 1]);
 	}
-	return shape;
+
+	return std::vector<b2Shape*> { shape };
 }
 
 void ChainCollider::generateDebugVAO()

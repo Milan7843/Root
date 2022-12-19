@@ -16,9 +16,10 @@ TileGrid* TileGrid::create(Transform* transform,
 	bool pixelPerfect,
 	glm::ivec2 textureGridSize,
 	const std::string& dataPath,
-	const std::string& tileSetName)
+	const std::string& tileSetName, 
+	float tileSize)
 {
-	TileGrid* tileGrid = readData(texturePath, pixelPerfect, textureGridSize, dataPath, tileSetName);
+	TileGrid* tileGrid = readData(texturePath, pixelPerfect, textureGridSize, dataPath, tileSetName, tileSize);
 
 	if (tileGrid == nullptr)
 	{
@@ -87,15 +88,16 @@ TileGrid::TileGrid(unsigned int texture,
 	GridSpace* data,
 	glm::ivec2 tileGridSize,
 	unsigned int layerCount,
-	std::string tileSet)
+	std::string tileSet,
+	float tileSize)
 	: textureID(texture)
 	, textureGridSize(textureGridSize)
 	, gridSpaces(data)
 	, tileGridSize(tileGridSize)
 	, layerCount(layerCount)
 	, tileSetName(tileSet)
+	, tileSize(tileSize)
 {
-	std::cout << "HEREHRHEHREHRHER1" << std::endl;
 	generateTileIndices();
 }
 
@@ -103,9 +105,10 @@ TileGrid* TileGrid::readData(const std::string& texturePath,
 	bool pixelPerfect,
 	glm::ivec2 textureGridSize,
 	const std::string& dataPath,
-	const std::string& tileSetName)
+	const std::string& tileSetName,
+	float tileSize)
 {
-	bool enableDebugLogging{ true };
+	bool enableDebugLogging{ false };
 
 	// Additional tile map data
 	glm::ivec2 tileGridSize{ glm::ivec2(0) };
@@ -342,7 +345,7 @@ TileGrid* TileGrid::readData(const std::string& texturePath,
 	// Loading the texture
 	unsigned int textureID = TextureEngine::loadTexture(texturePath, pixelPerfect);
 
-	TileGrid* tileGrid = new TileGrid(textureID, textureGridSize, gridSpaces, tileGridSize, layerCount, tileSetName);
+	TileGrid* tileGrid = new TileGrid(textureID, textureGridSize, gridSpaces, tileGridSize, layerCount, tileSetName, tileSize);
 	return tileGrid;
 }
 
@@ -560,14 +563,20 @@ void TileGrid::generateTileIndices()
 						tileIndices[index] = gridSpace.index;
 						break;
 				}
-				std::cout << (tileIndices[index] == -1 ? "-" : std::to_string(tileIndices[index])) << " ";
 			}
-
-			std::cout << "\n";
 		}
-		std::cout << "\n";
 	}
 
 	// Putting the new indices into the VAO
 	generateVAO();
+}
+
+glm::ivec2 TileGrid::getGridSize()
+{
+	return tileGridSize;
+}
+
+int* TileGrid::getData()
+{
+	return tileIndices;
 }

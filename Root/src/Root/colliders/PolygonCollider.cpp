@@ -30,7 +30,7 @@ void PolygonCollider::setPoints(std::vector<glm::vec2>& points)
 	this->points = points;
 }
 
-b2Shape* PolygonCollider::getShape()
+const std::vector<b2Shape*> PolygonCollider::getShapes()
 {
 	// If the shape hasn't already been set, make it first
 	if (shape == nullptr)
@@ -49,7 +49,8 @@ b2Shape* PolygonCollider::getShape()
 		shape = new b2PolygonShape;
 		shape->Set(&b2Points[0], pointCount);
 	}
-	return shape;
+
+	return std::vector<b2Shape*> { shape };
 }
 
 void PolygonCollider::renderDebugView()

@@ -139,7 +139,7 @@ Tile TileSet::createTile(char tag,
 		textureIndices,
 		textureStartIndex,
 		rules,
-		randomAnimationOffset,
+		randomAnimationOffset || multipleTextureIndexUsage == MultipleTextureIndexUsage::RANDOM_OF,
 		animationSpeed
 	};
 }

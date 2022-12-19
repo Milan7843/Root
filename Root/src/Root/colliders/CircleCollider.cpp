@@ -17,7 +17,7 @@ CircleCollider::~CircleCollider()
 	Logger::destructorMessage("Circle collider");
 }
 
-b2Shape* CircleCollider::getShape()
+const std::vector<b2Shape*> CircleCollider::getShapes()
 {
 	// If the shape hasn't already been set, make it first
 	if (shape == nullptr)
@@ -26,7 +26,7 @@ b2Shape* CircleCollider::getShape()
 		shape->m_radius = 0.5f;
 	}
 
-	return shape;
+	return std::vector<b2Shape*> { shape };
 }
 
 void CircleCollider::renderDebugView()
