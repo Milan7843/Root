@@ -210,7 +210,7 @@ void TileSet::update()
 
 	// Updating the SSBO
 	if (anyTileUpdated)
-		generateSSBO();
+		generateTileInformationSSBO();
 }
 
 /*
@@ -424,34 +424,84 @@ Tile TileSet::readTile(std::ifstream& file)
 }
 */
 
-void TileSet::generateSSBO()
+void TileSet::generateTileIndicesSSBO()
 {
 	// Create a new buffer if none exists
-	if (tileSSBO == 0)
-		glGenBuffers(1, &tileSSBO);
+	if (tileTextureIndicesSSBO == 0)
+		glGenBuffers(1, &tileTextureIndicesSSBO);
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTextureIndicesSSBO);
 
-	std::vector<glm::ivec2> textureIndices(tiles.size());
+	/*
+	* Main idea: have a list of possible texture indices per tile.
+	* Each Grid cell will have an offset of 0-(n-1), which will be added to the base index,
+	* and wrapped if it gets too big.
+	* This way there is control over each tile at once by the base index, and control over tiles separately
+	* by the offset.
+	*/
 
+	std::vector<glm::ivec2> tileTextureIndices;
+
+	// Adding each texture index of each tile to the buffer
 	unsigned int index{ 0 };
 	for (Tile& tile : tiles)
 	{
-		textureIndices[index++] = tile.textureIndices[tile.textureIndex];
-	}
+		for (glm::ivec2& textureIndex : tile.textureIndices)
+		{
+			tileTextureIndices.push_back(glm::ivec2(textureIndex));
 
-	unsigned int usingTextureIndexSize = textureIndices.size();
-
-	if (usingTextureIndexSize % 2 == 1)
-	{
-		// Must have an even amount of 2D indices
-		textureIndices.push_back(glm::ivec2(0, 0));
-		usingTextureIndexSize++;
+			index++;
+		}
 	}
 
 	// Loading the UV data into the new buffer
-	glBufferData(GL_SHADER_STORAGE_BUFFER, usingTextureIndexSize * sizeof(glm::ivec2), textureIndices.data(), GL_STATIC_DRAW);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, tileTextureIndices.size() * sizeof(glm::ivec2), tileTextureIndices.data(), GL_STATIC_DRAW);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, tileTextureIndicesSSBO);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
+
+void TileSet::generateTileInformationSSBO()
+{
+	// Create a new buffer if none exists
+	if (tilesSSBO == 0)
+		glGenBuffers(1, &tilesSSBO);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tilesSSBO);
+
+	/*
+	* Main idea: have a list of possible texture indices per tile.
+	* Each Grid cell will have an offset of 0-(n-1), which will be added to the base index,
+	* and wrapped if it gets too big.
+	* This way there is control over each tile at once by the base index, and control over tiles separately
+	* by the offset.
+	*/
+
+	std::vector<ShaderTile> shaderTiles(tiles.size());
+
+	// Adding each texture index of each tile to the buffer
+	unsigned int index{ 0 };
+	for (unsigned int i = 0; i < tiles.size(); i++)
+	{
+		Tile& tile = tiles[i];
+
+		shaderTiles[i].baseIndex = tile.textureIndex;
+
+		shaderTiles[i].tileTextureIndicesStartIndex = index;
+
+		// The number of different tile indices it has
+		shaderTiles[i].tileTextureIndexCount = tile.textureIndices.size();
+
+		// Whether to use random index offsets
+		shaderTiles[i].randomTileIndexOffset = tile.randomIndexOffset;
+
+		index += tile.textureIndices.size();
+	}
+
+	// Loading the UV data into the new buffer
+	glBufferData(GL_SHADER_STORAGE_BUFFER, shaderTiles.size() * sizeof(ShaderTile), shaderTiles.data(), GL_STATIC_DRAW);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tilesSSBO);
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
@@ -466,8 +516,10 @@ std::vector<Tile>& TileSet::getTiles()
 
 void TileSet::bindSSBO()
 {
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileSSBO);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tileSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tilesSSBO);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, tilesSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tileTextureIndicesSSBO);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, tileTextureIndicesSSBO);
 }
 
 TileSet::TileSet(std::vector<Tile>& tiles,
@@ -475,5 +527,19 @@ TileSet::TileSet(std::vector<Tile>& tiles,
 	: tiles(tiles)
 	, animationSpeed(animationSpeed)
 {
-	generateSSBO();
+	verifyTileStartIndices();
+
+	// Generating all required SSBOs
+	generateTileIndicesSSBO();
+	generateTileInformationSSBO();
+}
+
+void TileSet::verifyTileStartIndices()
+{
+	unsigned int cumulativeIndex{ 0 };
+	for (Tile& tile : tiles)
+	{
+		tile.textureIndicesStartIndex = cumulativeIndex;
+		cumulativeIndex += tile.textureIndices.size();
+	}
 }

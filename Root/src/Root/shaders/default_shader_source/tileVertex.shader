@@ -14,6 +14,7 @@ uniform float tileSize;
 
 out int GeoIn_TileIndex;
 out int GeoIn_LayerIndex;
+out int GeoIn_TileID;
 
 void main()
 {
@@ -33,4 +34,5 @@ void main()
 
     GeoIn_TileIndex = tileIndex;
     GeoIn_LayerIndex = layer;
+    GeoIn_TileID = gl_VertexID;
 }

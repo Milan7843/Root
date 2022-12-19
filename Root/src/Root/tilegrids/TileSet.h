@@ -50,10 +50,19 @@ struct Tile
 	std::string rules;
 
 	// Whether to offset each tile individually to a random texture index in the animation
-	bool randomAnimationOffset;
+	bool randomIndexOffset;
 
 	float animationSpeed;
 	float timeSinceAnimationChange{ 0.0f };
+	unsigned int textureIndicesStartIndex{ 0 }; // What index to start the texture indexing at
+};
+
+struct ShaderTile
+{
+	int baseIndex;
+	int tileTextureIndicesStartIndex;
+	int tileTextureIndexCount;
+	bool randomTileIndexOffset;
 };
 
 class TileSet
@@ -125,9 +134,14 @@ private:
 
 	//static Tile readTile(std::ifstream& file);
 
-	void generateSSBO();
+	void verifyTileStartIndices();
 
-	unsigned int tileSSBO{ 0 };
+	void generateTileIndicesSSBO();
+
+	void generateTileInformationSSBO();
+
+	unsigned int tilesSSBO{ 0 };
+	unsigned int tileTextureIndicesSSBO{ 0 };
 	
 	float animationSpeed{ 1.0f };
 
