@@ -47,7 +47,7 @@ public:
 	 */
 	void updateWithTileGrid(
 		TileGrid* tileGrid,
-		int layerIndex = 0);
+		unsigned int layerIndex = 0);
 
 private:
 
@@ -65,7 +65,7 @@ private:
 	glm::vec2 getPointFromSquare(TileGrid* tileGrid, glm::ivec2 square, Direction directionMoving);
 
 	bool isEmpty(TileGrid* tileGrid,
-		int layerIndex,
+		unsigned int layerIndex,
 		glm::ivec2 sample);
 
 	// The loop colliders that make up this tile grid collider

@@ -17,7 +17,7 @@ TileGridCollider::TileGridCollider(
 }
 
 bool TileGridCollider::isEmpty(TileGrid* tileGrid,
-	int layerIndex,
+	unsigned int layerIndex,
 	glm::ivec2 sample)
 {
 	if (sample.x >= tileGrid->tileGridSize.x || sample.x < 0 || sample.y >= tileGrid->tileGridSize.y || sample.y < 0)
@@ -77,8 +77,16 @@ void removeValue(std::vector<glm::ivec2>& vec, glm::ivec2 v)
 
 void TileGridCollider::updateWithTileGrid(
 	TileGrid* tileGrid,
-	int layerIndex)
+	unsigned int layerIndex)
 {
+	// The layer index must be a valid value
+	if (layerIndex >= tileGrid->layerCount)
+	{
+		Logger::logError("The layer index " + std::to_string(layerIndex)
+			+ "is an invalid value for the tile grid with "
+			+ std::to_string(tileGrid->layerCount) + " layers.");
+	}
+
 	// Clearing any previous data
 	loopColliders.clear();
 
