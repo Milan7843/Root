@@ -1,14 +1,21 @@
 #include "LoopCollider.h"
 
-std::shared_ptr<Collider> LoopCollider::create(std::vector<glm::vec2>& points)
+std::shared_ptr<Collider> LoopCollider::create(std::vector<glm::vec2>& points,
+	bool invertCollision)
 {
-	LoopCollider* collider = new LoopCollider(points);
+	LoopCollider* collider = new LoopCollider(points, invertCollision);
 	std::shared_ptr<LoopCollider> pointer{ collider };
 	return pointer;
 }
 
-LoopCollider::LoopCollider(std::vector<glm::vec2>& points)
+void LoopCollider::setInverted(bool invertCollision)
+{
+	inverted = invertCollision;
+}
+
+LoopCollider::LoopCollider(std::vector<glm::vec2>& points, bool invertCollision)
 	: points(points)
+	, inverted(invertCollision)
 {
 }
 
@@ -30,6 +37,12 @@ const std::vector<b2Shape*> LoopCollider::getShapes()
 		for (unsigned int i{ 0 }; i < pointCount; i++)
 		{
 			b2Points[i] = b2Vec2(points[i].x, points[i].y);
+		}
+
+		// The list must be reversed to invert the collisions
+		if (inverted)
+		{
+			std::reverse(b2Points.begin(), b2Points.end());
 		}
 
 		// Creating the loop shape and setting the vertices

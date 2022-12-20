@@ -19,6 +19,21 @@ enum class Direction
 	LEFT
 };
 
+/**
+ * The collision type.
+ * When the collision type is set to OUTSIDE,
+ * collision will only happen with bodies that are outside of the tiles.
+ * This means that colliding bodies cannot get onto/into the tiles.
+ *
+ * When the collision type is set to INSIDE,
+ * collision will only happen with bodies that are inside of the tiles.
+ * This means that colliding bodies cannot get out of the tiles.
+ */
+enum class CollisionType {
+	OUTSIDE,
+	INSIDE
+};
+
 class TileGridCollider : public Collider
 {
 public:
@@ -27,10 +42,12 @@ public:
 	 * Create a new tile grid collider.
 	 *
 	 * \param tileGrid: the tile grid to create the collider for.
+	 * \param collisionType: the type of the collision (INSIDE or OUTSIDE). Default = OUTSIDE.
 	 * \param layerIndex: the index of the layer to create the collider for. Default = 0.
 	 */
 	static std::shared_ptr<Collider> create(
 		TileGrid* tileGrid,
+		CollisionType collisionType = CollisionType::OUTSIDE,
 		int layerIndex = 0);
 
 	~TileGridCollider();
@@ -43,16 +60,19 @@ public:
 	 * Update this collider's data with a tile grid and layer index.
 	 *
 	 * \param tileGrid: the tile grid to update the collider for.
+	 * \param collisionType: the type of the collision (INSIDE or OUTSIDE). Default = OUTSIDE.
 	 * \param layerIndex: the index of the layer to update the collider for. Default = 0.
 	 */
 	void updateWithTileGrid(
 		TileGrid* tileGrid,
+		CollisionType collisionType = CollisionType::OUTSIDE,
 		unsigned int layerIndex = 0);
 
 private:
 
 	TileGridCollider(
 		TileGrid* tileGrid,
+		CollisionType collisionType,
 		int layerIndex);
 
 	void generateDebugVAO();

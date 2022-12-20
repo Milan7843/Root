@@ -1,15 +1,24 @@
 #include "PolygonCollider.h"
 
-std::shared_ptr<Collider> PolygonCollider::create(std::vector<glm::vec2>& points)
+std::shared_ptr<Collider> PolygonCollider::create(
+	std::vector<glm::vec2>& points,
+	bool invertCollision)
 {
-	PolygonCollider* collider = new PolygonCollider(points);
+	PolygonCollider* collider = new PolygonCollider(points, invertCollision);
 	std::shared_ptr<PolygonCollider> pointer{ collider };
 	return pointer;
 }
 
-PolygonCollider::PolygonCollider(std::vector<glm::vec2>& points)
+PolygonCollider::PolygonCollider(std::vector<glm::vec2>& points,
+	bool invertCollision)
+	: inverted(invertCollision)
 {
 	setPoints(points);
+}
+
+void PolygonCollider::setInverted(bool invertCollision)
+{
+	inverted = invertCollision;
 }
 
 PolygonCollider::~PolygonCollider()
@@ -43,6 +52,12 @@ const std::vector<b2Shape*> PolygonCollider::getShapes()
 		for (unsigned int i{ 0 }; i < pointCount; i++)
 		{
 			b2Points[i] = b2Vec2(points[i].x, points[i].y);
+		}
+
+		// The list must be reversed to invert the collisions
+		if (inverted)
+		{
+			std::reverse(b2Points.begin(), b2Points.end());
 		}
 
 		// Creating the polygon shape and setting the vertices

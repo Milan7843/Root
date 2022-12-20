@@ -2,18 +2,20 @@
 
 std::shared_ptr<Collider> TileGridCollider::create(
 	TileGrid* tileGrid,
+	CollisionType collisionType,
 	int layerIndex)
 {
-	TileGridCollider* collider = new TileGridCollider(tileGrid, layerIndex);
+	TileGridCollider* collider = new TileGridCollider(tileGrid, collisionType, layerIndex);
 	std::shared_ptr<TileGridCollider> pointer{ collider };
 	return pointer;
 }
 
 TileGridCollider::TileGridCollider(
 	TileGrid* tileGrid,
+	CollisionType collisionType,
 	int layerIndex)
 {
-	updateWithTileGrid(tileGrid, layerIndex);
+	updateWithTileGrid(tileGrid, collisionType, layerIndex);
 }
 
 bool TileGridCollider::isEmpty(TileGrid* tileGrid,
@@ -77,6 +79,7 @@ void removeValue(std::vector<glm::ivec2>& vec, glm::ivec2 v)
 
 void TileGridCollider::updateWithTileGrid(
 	TileGrid* tileGrid,
+	CollisionType collisionType,
 	unsigned int layerIndex)
 {
 	// The layer index must be a valid value
@@ -252,8 +255,10 @@ void TileGridCollider::updateWithTileGrid(
 			}
 		}
 
+		// The collision should be inverted when using INSIDE collision mode
 		std::shared_ptr<LoopCollider> loopCollider
-			= std::static_pointer_cast<LoopCollider>(LoopCollider::create(points));
+			= std::static_pointer_cast<LoopCollider>(
+				LoopCollider::create(points, collisionType == CollisionType::INSIDE));
 
 		loopColliders.push_back(loopCollider);
 	}
