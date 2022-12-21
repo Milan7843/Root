@@ -68,7 +68,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	b2BodyType type,
 	bool enabled,
 	float gravityScale)
-	: collider(collider)
+	: colliders(std::vector<std::shared_ptr<Collider>>{ collider })
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -93,8 +93,6 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	// Assigning the user data pointer of the fixture
 	uintptr_t ptr = reinterpret_cast<uintptr_t>(fixtureData);
 
-	std::cout << "num. shapes: " << collider->getShapes().size() << std::endl;
-
 	// Adding each shape
 	for (b2Shape* shape : collider->getShapes())
 	{
@@ -112,6 +110,70 @@ Rigidbody::Rigidbody(TransformPointer transform,
 
 		fixtureData->mFixture = fixture;
 		fixtureData->rigidbody = this;
+	}
+}
+
+Rigidbody::Rigidbody(TransformPointer transform,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
+	std::vector<std::shared_ptr<Collider>>& colliders,
+	float linearDamping,
+	float angularDamping,
+	bool allowSleep,
+	bool awake,
+	bool fixedRotation,
+	bool bullet,
+	b2BodyType type,
+	bool enabled,
+	float gravityScale)
+	: colliders(colliders)
+{
+	glm::vec2 position{ transform->getPosition() };
+
+	b2BodyDef bodyDef;
+	bodyDef.position = b2Vec2(position.x, position.y);
+	bodyDef.angle = glm::radians(transform->getRotation());
+	bodyDef.type = type;
+	bodyDef.linearDamping = linearDamping;
+	bodyDef.angularDamping = angularDamping;
+	bodyDef.allowSleep = allowSleep;
+	bodyDef.awake = awake;
+	bodyDef.fixedRotation = fixedRotation;
+	bodyDef.bullet = bullet;
+	bodyDef.enabled = enabled;
+	bodyDef.gravityScale = gravityScale;
+
+	body = PhysicsEngine::addBody(&bodyDef);
+
+	// There must be at least one collider for the next section
+	if (colliders.size() < 1) return;
+
+	// Creating a fixture data
+	fixtureData = new FixtureData;
+
+	// Assigning the user data pointer of the fixture
+	uintptr_t ptr = reinterpret_cast<uintptr_t>(fixtureData);
+
+	for (std::shared_ptr<Collider> collider : colliders)
+	{
+		// Adding each shape of each collider
+		for (b2Shape* shape : collider->getShapes())
+		{
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = shape;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.3f;
+
+			// Setting the layer masks
+			fixtureDef.filter.categoryBits = selfLayerMask;
+			fixtureDef.filter.maskBits = interactionLayerMask;
+
+			fixture = body->CreateFixture(&fixtureDef);
+			fixture->GetUserDataRef().pointer = ptr;
+
+			fixtureData->mFixture = fixture;
+			fixtureData->rigidbody = this;
+		}
 	}
 }
 
@@ -149,6 +211,27 @@ RigidbodyPointer Rigidbody::create(
 	bool enabled)
 {
 	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
+	std::shared_ptr<Rigidbody> pointer{ rigidbody };
+	transform->addComponent(pointer);
+	return rigidbody;
+}
+
+RigidbodyPointer Rigidbody::create(
+	TransformPointer transform,
+	std::vector<std::shared_ptr<Collider>>& colliders,
+	b2BodyType type,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
+	float gravityScale,
+	bool bullet,
+	bool fixedRotation,
+	bool allowSleep,
+	float linearDamping,
+	float angularDamping,
+	bool awake,
+	bool enabled)
+{
+	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, colliders, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
 	return rigidbody;
