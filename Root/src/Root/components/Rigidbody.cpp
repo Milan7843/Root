@@ -18,7 +18,6 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	b2BodyType type,
 	bool enabled,
 	float gravityScale)
-	: collider(nullptr)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -56,8 +55,6 @@ Rigidbody::Rigidbody(TransformPointer transform,
 }
 
 Rigidbody::Rigidbody(TransformPointer transform,
-	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask,
 	std::shared_ptr<Collider> collider,
 	float linearDamping,
 	float angularDamping,
@@ -102,8 +99,8 @@ Rigidbody::Rigidbody(TransformPointer transform,
 		fixtureDef.friction = 0.3f;
 
 		// Setting the layer masks
-		fixtureDef.filter.categoryBits = selfLayerMask;
-		fixtureDef.filter.maskBits = interactionLayerMask;
+		fixtureDef.filter.categoryBits = collider->getSelfLayerMask();
+		fixtureDef.filter.maskBits = collider->getInteractionLayerMask();
 
 		fixture = body->CreateFixture(&fixtureDef);
 		fixture->GetUserDataRef().pointer = ptr;
@@ -114,8 +111,6 @@ Rigidbody::Rigidbody(TransformPointer transform,
 }
 
 Rigidbody::Rigidbody(TransformPointer transform,
-	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask,
 	std::vector<std::shared_ptr<Collider>>& colliders,
 	float linearDamping,
 	float angularDamping,
@@ -165,8 +160,8 @@ Rigidbody::Rigidbody(TransformPointer transform,
 			fixtureDef.friction = 0.3f;
 
 			// Setting the layer masks
-			fixtureDef.filter.categoryBits = selfLayerMask;
-			fixtureDef.filter.maskBits = interactionLayerMask;
+			fixtureDef.filter.categoryBits = collider->getSelfLayerMask();
+			fixtureDef.filter.maskBits = collider->getInteractionLayerMask();
 
 			fixture = body->CreateFixture(&fixtureDef);
 			fixture->GetUserDataRef().pointer = ptr;
@@ -199,8 +194,6 @@ RigidbodyPointer Rigidbody::create(
 	TransformPointer transform,
 	std::shared_ptr<Collider> collider,
 	b2BodyType type,
-	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask,
 	float gravityScale,
 	bool bullet,
 	bool fixedRotation,
@@ -210,7 +203,7 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
+	Rigidbody* rigidbody = new Rigidbody(transform, collider, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
 	return rigidbody;
@@ -220,8 +213,6 @@ RigidbodyPointer Rigidbody::create(
 	TransformPointer transform,
 	std::vector<std::shared_ptr<Collider>>& colliders,
 	b2BodyType type,
-	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask,
 	float gravityScale,
 	bool bullet,
 	bool fixedRotation,
@@ -231,7 +222,7 @@ RigidbodyPointer Rigidbody::create(
 	bool awake,
 	bool enabled)
 {
-	Rigidbody* rigidbody = new Rigidbody(transform, selfLayerMask, interactionLayerMask, colliders, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
+	Rigidbody* rigidbody = new Rigidbody(transform, colliders, linearDamping, angularDamping, allowSleep, awake, fixedRotation, bullet, type, enabled, gravityScale);
 	std::shared_ptr<Rigidbody> pointer{ rigidbody };
 	transform->addComponent(pointer);
 	return rigidbody;
@@ -482,5 +473,8 @@ void Rigidbody::renderDebugView()
 	debugRenderShader->setMat4("projection", Root::getActiveCamera()->getProjectionMatrix());
 	debugRenderShader->setVector3("lineColor", glm::vec3(0.0f, 1.0f, 0.0f));
 
-	collider->renderDebugView();
+	for (std::shared_ptr<Collider> collider : colliders)
+	{
+		collider->renderDebugView();
+	}
 }

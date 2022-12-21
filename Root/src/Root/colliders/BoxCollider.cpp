@@ -1,14 +1,23 @@
 #include "BoxCollider.h"
 
-std::shared_ptr<Collider> BoxCollider::create(float width, float height)
+std::shared_ptr<Collider> BoxCollider::create(float width, float height,
+    LayerMask selfLayerMask,
+    LayerMask interactionLayerMask)
 {
-	BoxCollider* collider = new BoxCollider(width, height);
+	BoxCollider* collider = new BoxCollider(
+        width, height,
+        selfLayerMask,
+        interactionLayerMask);
+
 	std::shared_ptr<BoxCollider> pointer{ collider };
 	return pointer;
 }
 
-BoxCollider::BoxCollider(float width, float height)
-	: width(width)
+BoxCollider::BoxCollider(float width, float height,
+    LayerMask selfLayerMask,
+    LayerMask interactionLayerMask)
+    : Collider(selfLayerMask, interactionLayerMask)
+	, width(width)
 	, height(height)
 {
 }

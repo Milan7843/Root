@@ -1,13 +1,22 @@
 #include "ChainCollider.h"
 
-std::shared_ptr<Collider> ChainCollider::create(std::vector<glm::vec2>& points)
+std::shared_ptr<Collider> ChainCollider::create(std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask)
 {
-	ChainCollider* collider = new ChainCollider(points);
+	ChainCollider* collider = new ChainCollider(
+		points,
+		selfLayerMask,
+		interactionLayerMask);
+
 	std::shared_ptr<ChainCollider> pointer{ collider };
 	return pointer;
 }
 
-ChainCollider::ChainCollider(std::vector<glm::vec2>& points)
+ChainCollider::ChainCollider(std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask)
+	: Collider(selfLayerMask, interactionLayerMask)
 {
 	setPoints(points);
 }

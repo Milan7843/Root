@@ -13,10 +13,14 @@ public:
 	/**
 	 * Create a new box collider.
 	 *
-	 * \param width: the width of the box collider.
-	 * \param height: the height of the box collider.
+	 * \param width:				the width of the box collider.
+	 * \param height:				the height of the box collider.
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on. Default = LAYER_0.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
 	 */
-	static std::shared_ptr<Collider> create(float width = 1.0f, float height = 1.0f);
+	static std::shared_ptr<Collider> create(float width = 1.0f, float height = 1.0f,
+		LayerMask selfLayerMask = LAYER_0,
+		LayerMask interactionLayerMask = LAYER_ALL);
 
 	~BoxCollider();
 
@@ -29,10 +33,14 @@ private:
 	/**
 	 * Create a new box collider.
 	 *
-	 * \param width: the width of the box collider.
-	 * \param height: the height of the box collider.
+	 * \param width:				the width of the box collider.
+	 * \param height:				the height of the box collider.
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on. Default = LAYER_0.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
 	 */
-	BoxCollider(float width, float height);
+	BoxCollider(float width, float height,
+		LayerMask selfLayerMask,
+		LayerMask interactionLayerMask);
 
 	void generateDebugVAO();
 

@@ -60,9 +60,24 @@ public:
 
 	virtual void renderDebugView() { }
 
+	LayerMask getSelfLayerMask()
+	{
+		return selfLayerMask;
+	}
+
+	LayerMask getInteractionLayerMask()
+	{
+		return interactionLayerMask;
+	}
+
 protected:
 
-	Collider() {}
+	Collider(LayerMask selfLayerMask, LayerMask interactionLayerMask)
+		: selfLayerMask(selfLayerMask)
+		, interactionLayerMask(interactionLayerMask) { }
+
+	LayerMask selfLayerMask;
+	LayerMask interactionLayerMask;
 
 	unsigned int debugVAO{ 0 };
 };

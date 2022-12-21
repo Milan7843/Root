@@ -1,14 +1,19 @@
 #include "CircleCollider.h"
 
-std::shared_ptr<Collider> CircleCollider::create(float radius)
+std::shared_ptr<Collider> CircleCollider::create(float radius,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask)
 {
-	CircleCollider* collider = new CircleCollider(radius);
+	CircleCollider* collider = new CircleCollider(radius, selfLayerMask, interactionLayerMask);
 	std::shared_ptr<CircleCollider> pointer{ collider };
 	return pointer;
 }
 
-CircleCollider::CircleCollider(float radius)
-	: radius(radius)
+CircleCollider::CircleCollider(float radius,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask)
+	: Collider(selfLayerMask, interactionLayerMask)
+	, radius(radius)
 {
 }
 

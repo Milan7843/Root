@@ -41,12 +41,16 @@ public:
 	/**
 	 * Create a new tile grid collider.
 	 *
-	 * \param tileGrid: the tile grid to create the collider for.
-	 * \param collisionType: the type of the collision (INSIDE or OUTSIDE). Default = OUTSIDE.
-	 * \param layerIndex: the index of the layer to create the collider for. Default = 0.
+	 * \param tileGrid:				the tile grid to create the collider for.
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on. Default = LAYER_0.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
+	 * \param collisionType:		the type of the collision (INSIDE or OUTSIDE). Default = OUTSIDE.
+	 * \param layerIndex:			the index of the layer to create the collider for. Default = 0.
 	 */
 	static std::shared_ptr<Collider> create(
 		TileGrid* tileGrid,
+		LayerMask selfLayerMask = LAYER_0,
+		LayerMask interactionLayerMask = LAYER_ALL,
 		CollisionType collisionType = CollisionType::OUTSIDE,
 		int layerIndex = 0);
 
@@ -72,6 +76,8 @@ private:
 
 	TileGridCollider(
 		TileGrid* tileGrid,
+		LayerMask selfLayerMask,
+		LayerMask interactionLayerMask,
 		CollisionType collisionType,
 		int layerIndex);
 

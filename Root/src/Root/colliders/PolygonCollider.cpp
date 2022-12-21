@@ -2,16 +2,24 @@
 
 std::shared_ptr<Collider> PolygonCollider::create(
 	std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	bool invertCollision)
 {
-	PolygonCollider* collider = new PolygonCollider(points, invertCollision);
+	PolygonCollider* collider = new PolygonCollider(points,
+		selfLayerMask,
+		interactionLayerMask,
+		invertCollision);
 	std::shared_ptr<PolygonCollider> pointer{ collider };
 	return pointer;
 }
 
 PolygonCollider::PolygonCollider(std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	bool invertCollision)
-	: inverted(invertCollision)
+	: Collider(selfLayerMask, interactionLayerMask)
+	, inverted(invertCollision)
 {
 	setPoints(points);
 }

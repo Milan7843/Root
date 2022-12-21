@@ -2,18 +2,28 @@
 
 std::shared_ptr<Collider> TileGridCollider::create(
 	TileGrid* tileGrid,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	CollisionType collisionType,
 	int layerIndex)
 {
-	TileGridCollider* collider = new TileGridCollider(tileGrid, collisionType, layerIndex);
+	TileGridCollider* collider = new TileGridCollider(
+		tileGrid,
+		selfLayerMask,
+		interactionLayerMask,
+		collisionType,
+		layerIndex);
 	std::shared_ptr<TileGridCollider> pointer{ collider };
 	return pointer;
 }
 
 TileGridCollider::TileGridCollider(
 	TileGrid* tileGrid,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	CollisionType collisionType,
 	int layerIndex)
+	: Collider(selfLayerMask, interactionLayerMask)
 {
 	updateWithTileGrid(tileGrid, collisionType, layerIndex);
 }

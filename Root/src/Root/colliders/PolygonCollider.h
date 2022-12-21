@@ -15,11 +15,15 @@ public:
 	/**
 	 * Create a new polygon collider.
 	 *
-	 * \param points: the points that will make up the polygon collider.
-	 * Must be in counter-clockwise order.
-	 * \param invertCollision: whether to invert the collisions from outside to inside.
+	 * \param points:				the points that will make up the polygon collider.
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on. Default = LAYER_0.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
+	 *								Must be in counter-clockwise order.
+	 * \param invertCollision:		whether to invert the collisions from outside to inside.
 	 */
 	static std::shared_ptr<Collider> create(std::vector<glm::vec2>& points,
+		LayerMask selfLayerMask = LAYER_0,
+		LayerMask interactionLayerMask = LAYER_ALL,
 		bool invertCollision = false);
 
 	~PolygonCollider();
@@ -40,11 +44,15 @@ private:
 	/**
 	 * Create a new polygon collider.
 	 *
-	 * \param points: the points that will make up the polygon collider.
-	 * Must be in counter-clockwise order.
-	 * \param invertCollision: whether to invert the collisions from outside to inside.
+	 * \param points:				the points that will make up the polygon collider.
+	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on. Default = LAYER_0.
+	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
+	 *								Must be in counter-clockwise order.
+	 * \param invertCollision:		whether to invert the collisions from outside to inside.
 	 */
 	PolygonCollider(std::vector<glm::vec2>& points,
+		LayerMask selfLayerMask,
+		LayerMask interactionLayerMask,
 		bool invertCollision);
 
 	/**

@@ -1,14 +1,22 @@
 #include "EdgeCollider.h"
 
-std::shared_ptr<Collider> EdgeCollider::create(glm::vec2& point1, glm::vec2& point2)
+std::shared_ptr<Collider> EdgeCollider::create(glm::vec2& point1, glm::vec2& point2,
+    LayerMask selfLayerMask,
+    LayerMask interactionLayerMask)
 {
-	EdgeCollider* collider = new EdgeCollider(point1, point2);
+	EdgeCollider* collider = new EdgeCollider(
+        point1, point2,
+        selfLayerMask, interactionLayerMask);
+
 	std::shared_ptr<EdgeCollider> pointer{ collider };
 	return pointer;
 }
 
-EdgeCollider::EdgeCollider(glm::vec2& point1, glm::vec2& point2)
-	: point1(point1)
+EdgeCollider::EdgeCollider(glm::vec2& point1, glm::vec2& point2,
+    LayerMask selfLayerMask,
+    LayerMask interactionLayerMask)
+    : Collider(selfLayerMask, interactionLayerMask)
+	, point1(point1)
 	, point2(point2)
 {
 }

@@ -1,9 +1,15 @@
 #include "LoopCollider.h"
 
 std::shared_ptr<Collider> LoopCollider::create(std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
 	bool invertCollision)
 {
-	LoopCollider* collider = new LoopCollider(points, invertCollision);
+	LoopCollider* collider = new LoopCollider(
+		points,
+		selfLayerMask,
+		interactionLayerMask,
+		invertCollision);
 	std::shared_ptr<LoopCollider> pointer{ collider };
 	return pointer;
 }
@@ -13,8 +19,12 @@ void LoopCollider::setInverted(bool invertCollision)
 	inverted = invertCollision;
 }
 
-LoopCollider::LoopCollider(std::vector<glm::vec2>& points, bool invertCollision)
-	: points(points)
+LoopCollider::LoopCollider(std::vector<glm::vec2>& points,
+	LayerMask selfLayerMask,
+	LayerMask interactionLayerMask,
+	bool invertCollision)
+	: Collider(selfLayerMask, interactionLayerMask)
+	, points(points)
 	, inverted(invertCollision)
 {
 }

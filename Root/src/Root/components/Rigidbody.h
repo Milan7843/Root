@@ -76,8 +76,6 @@ public:
 	 * \param transform:			the transform to add this component to.
 	 * \param collider:				the collider that this rigidbody will get.
 	 * \param type:					the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
-	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on.
-	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with.
 	 * \param gravityScale:			scale the gravity applied to this body.
 	 * \param bullet:				Is this a fast moving body that should be prevented from tunneling through
 	 * 								other moving bodies? Note that all bodies are prevented from tunneling through
@@ -101,8 +99,6 @@ public:
 		TransformPointer transform,
 		std::shared_ptr<Collider> collider,
 		b2BodyType type = b2_staticBody,
-		LayerMask selfLayerMask = LAYER_0,
-		LayerMask interactionLayerMask = LAYER_ALL,
 		float gravityScale = 1.0f,
 		bool bullet = false,
 		bool fixedRotation = false,
@@ -119,8 +115,6 @@ public:
 	 * \param transform:			the transform to add this component to.
 	 * \param colliders:			the colliders that this rigidbody will get.
 	 * \param type:					the body type: static, kinematic, or dynamic (STATIC, KINEMATIC, DYNAMIC).
-	 * \param selfLayerMask:		a layer mask which defines which layers this rigidbody is on.
-	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with.
 	 * \param gravityScale:			scale the gravity applied to this body.
 	 * \param bullet:				Is this a fast moving body that should be prevented from tunneling through
 	 * 								other moving bodies? Note that all bodies are prevented from tunneling through
@@ -144,8 +138,6 @@ public:
 		TransformPointer transform,
 		std::vector<std::shared_ptr<Collider>>& colliders,
 		b2BodyType type = b2_staticBody,
-		LayerMask selfLayerMask = LAYER_0,
-		LayerMask interactionLayerMask = LAYER_ALL,
 		float gravityScale = 1.0f,
 		bool bullet = false,
 		bool fixedRotation = false,
@@ -439,8 +431,6 @@ private:
 		float gravityScale);
 
 	Rigidbody(TransformPointer transform,
-		LayerMask selfLayerMask,
-		LayerMask interactionLayerMask,
 		std::shared_ptr<Collider> collider,
 		float linearDamping,
 		float angularDamping,
@@ -453,8 +443,6 @@ private:
 		float gravityScale);
 
 	Rigidbody(TransformPointer transform,
-		LayerMask selfLayerMask,
-		LayerMask interactionLayerMask,
 		std::vector<std::shared_ptr<Collider>>& colliders,
 		float linearDamping,
 		float angularDamping,
