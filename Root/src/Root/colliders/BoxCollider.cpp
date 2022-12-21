@@ -2,12 +2,16 @@
 
 std::shared_ptr<Collider> BoxCollider::create(float width, float height,
     LayerMask selfLayerMask,
-    LayerMask interactionLayerMask)
+    LayerMask interactionLayerMask,
+    glm::vec2 offset,
+    float rotation)
 {
 	BoxCollider* collider = new BoxCollider(
         width, height,
         selfLayerMask,
-        interactionLayerMask);
+        interactionLayerMask,
+        offset,
+        rotation);
 
 	std::shared_ptr<BoxCollider> pointer{ collider };
 	return pointer;
@@ -15,10 +19,14 @@ std::shared_ptr<Collider> BoxCollider::create(float width, float height,
 
 BoxCollider::BoxCollider(float width, float height,
     LayerMask selfLayerMask,
-    LayerMask interactionLayerMask)
+    LayerMask interactionLayerMask,
+    glm::vec2 offset,
+    float rotation)
     : Collider(selfLayerMask, interactionLayerMask)
 	, width(width)
 	, height(height)
+    , offset(offset)
+    , rotation(rotation)
 {
 }
 
@@ -47,7 +55,7 @@ const std::vector<b2Shape*> BoxCollider::getShapes()
 	{
 		// Creating the polygon shape and setting it to be a box
 		shape = new b2PolygonShape;
-		shape->SetAsBox(width / 2.0f, height / 2.0f);
+		shape->SetAsBox(width / 2.0f, height / 2.0f, b2Vec2(offset.x, offset.y), 0.0f);
 	}
 
     return std::vector<b2Shape*> { shape };
@@ -60,11 +68,16 @@ void BoxCollider::generateDebugVAO()
 
     float vertices[] = {
         // Positions
-         width / 2.0f,  height / 2.0f, // top right
-         width / 2.0f, -height / 2.0f, // bottom right
-        -width / 2.0f, -height / 2.0f, // bottom left
-        -width / 2.0f,  height / 2.0f, // top left 
+        offset.x +  width / 2.0f, offset.y +  height / 2.0f, // top right
+        offset.x +  width / 2.0f, offset.y + -height / 2.0f, // bottom right
+        offset.x + -width / 2.0f, offset.y + -height / 2.0f, // bottom left
+        offset.x + -width / 2.0f, offset.y +  height / 2.0f, // top left 
     };
+
+    if (rotation != 0)
+    {
+        // TODO add debug rotation support
+    }
 
     // Generating the required objects
     glGenVertexArrays(1, &debugVAO);

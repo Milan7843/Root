@@ -2,18 +2,26 @@
 
 std::shared_ptr<Collider> CircleCollider::create(float radius,
 	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask)
+	LayerMask interactionLayerMask,
+	glm::vec2 offset)
 {
-	CircleCollider* collider = new CircleCollider(radius, selfLayerMask, interactionLayerMask);
+	CircleCollider* collider = new CircleCollider(
+		radius,
+		selfLayerMask,
+		interactionLayerMask,
+		offset);
+
 	std::shared_ptr<CircleCollider> pointer{ collider };
 	return pointer;
 }
 
 CircleCollider::CircleCollider(float radius,
 	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask)
+	LayerMask interactionLayerMask,
+	glm::vec2 offset)
 	: Collider(selfLayerMask, interactionLayerMask)
 	, radius(radius)
+	, offset(offset)
 {
 }
 
@@ -29,6 +37,7 @@ const std::vector<b2Shape*> CircleCollider::getShapes()
 	{
 		shape = new b2CircleShape;
 		shape->m_radius = 0.5f;
+		shape->m_p = b2Vec2(offset.x, offset.y);
 	}
 
 	return std::vector<b2Shape*> { shape };
@@ -58,7 +67,7 @@ void CircleCollider::generateDebugVAO()
 	for (unsigned int i{ 0 }; i < debugResolution; i++)
 	{
 		float angle{ ((float)i / (float)debugResolution) * 360.0f };
-		points.push_back(glm::vec2(glm::cos(glm::radians(angle)), glm::sin(glm::radians(angle))) * radius);
+		points.push_back(offset + glm::vec2(glm::cos(glm::radians(angle)), glm::sin(glm::radians(angle))) * radius);
 	}
 
     // Generating the required objects
