@@ -4,6 +4,8 @@
 
 #include <box2d/b2_polygon_shape.h>
 
+#include <glm/gtx/quaternion.hpp>
+
 #include <vector>
 
 class BoxCollider : public Collider
