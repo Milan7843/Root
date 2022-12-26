@@ -67,11 +67,18 @@ public:
 	 */
 	void setSpriteSheetRowIndex(unsigned int row);
 
+	/**
+	 * Set the row and column that are being used from the sprite sheet.
+	 *
+	 * \param index: the 2D index of the sprite sheet to be used (column, row).
+	 */
+	void setSpriteSheetIndex(glm::ivec2 index);
+
 private:
 
 	SpriteRenderer(unsigned int columnCount, unsigned int rowCount);
 
-	float height;
+	// float height;
 
 	unsigned int textureID{ 0 };
 

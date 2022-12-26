@@ -2,6 +2,12 @@
 
 namespace Math
 {
+	template <>
+	inline glm::ivec2 cerp<glm::ivec2>(glm::ivec2 v1, glm::ivec2 v2, float t)
+	{
+		return glm::ivec2(cerp(v1.x, v2.x, t), cerp(v1.y, v2.y, t));
+	}
+
 	float move(float value, float target, float speed)
 	{
 		float diff = (target - value);

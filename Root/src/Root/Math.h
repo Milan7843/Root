@@ -49,6 +49,17 @@ namespace Math
 		return (1.0f - t2) * v1  + t2 * v2;
 	}
 
+	/*
+	template <>
+	int cerp<int>(int v1, int v2, float t)
+	{
+		return (int)cerp<float>((float)v1, (float)v2, t);
+	}
+	*/
+
+	template <>
+	inline glm::ivec2 cerp<glm::ivec2>(glm::ivec2 v1, glm::ivec2 v2, float t);
+
 	/**
 	 * Map a value from [a1, a2] to [b1, b2].
 	 * 

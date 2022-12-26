@@ -105,6 +105,29 @@ public:
 		return gradient;
 	}
 
+	/**
+	 * Create a gradient which can be used for 2D sprite indexing.
+	 *
+	 * \param startIndex: the 2D index to start on (inclusive).
+	 * \param endIndex: the 2D index to end on (inclusive).
+	 * \param duration: the total time this gradient has.
+	 * \return a gradient which can be used for 2D sprite indexing.
+	 */
+	static Gradient<glm::ivec2> sprite2DIndexGradient(glm::ivec2 startIndex, glm::ivec2 endIndex, float duration)
+	{
+		unsigned int frameCount = std::max(endIndex.x - startIndex.x, endIndex.y - startIndex.y) + 1;
+
+		std::vector<GradientPoint<glm::ivec2>> points = std::vector<GradientPoint<glm::ivec2>>{
+			{ 0.0f, startIndex },
+			{ duration * (1.0f - 1.0f / (float)frameCount), endIndex},
+			{ duration, endIndex }
+		};
+
+		Gradient<glm::ivec2> gradient(points);
+
+		return gradient;
+	}
+
 	~Gradient()
 	{
 		Logger::destructorMessage("Gradient");

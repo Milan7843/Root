@@ -71,10 +71,46 @@ void SpriteRenderer::setSprite(const std::string& spritePath, bool pixelPerfect)
 
 void SpriteRenderer::setSpriteSheetColumnIndex(unsigned int column)
 {
+	if (column >= columnCount)
+	{
+		Logger::logError("Sprite sheet column index out of range, cannot be larger than "
+			+ std::to_string(columnCount-1) + ", was " + std::to_string(column));
+
+		return;
+	}
+
 	columnIndex = column;
 }
 
 void SpriteRenderer::setSpriteSheetRowIndex(unsigned int row)
 {
+	if (row >= rowCount)
+	{
+		Logger::logError("Sprite sheet row index out of range, cannot be larger than "
+			+ std::to_string(rowCount - 1) + ", was " + std::to_string(row));
+
+		return;
+	}
+
 	rowIndex = row;
+}
+
+void SpriteRenderer::setSpriteSheetIndex(glm::ivec2 index)
+{
+	if (index.y < 0)
+	{
+		Logger::logError("Sprite sheet row index out of range, cannot be less than 0, was "
+			+ std::to_string(index.y));
+
+		return;
+	}
+	if (index.x < 0)
+	{
+		Logger::logError("Sprite sheet column index out of range, cannot be less than 0, was "
+			+ std::to_string(index.x));
+
+		return;
+	}
+	setSpriteSheetColumnIndex(index.x);
+	setSpriteSheetRowIndex(index.y);
 }
