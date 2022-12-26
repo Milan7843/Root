@@ -38,12 +38,34 @@ void AnimationWeb::update()
 		if (link.waitForEndOfAnimation && !animationDone)
 			continue;
 
-		// The condition was true
-		if (evaluateCondition(link.condition))
+		// Check each condition
+		bool allConditionsMet{ true };
+		for (BoolAnimationCondition& condition : link.conditions)
 		{
-			// Moving to the next animation
-			currentAnimation = &animations[link.tag2];
-			currentAnimationTag = link.tag2;
+			if (!evaluateCondition(condition))
+			{
+				allConditionsMet = false;
+				break;
+			}
+		}
+
+		// Not all conditions were met, check the next link
+		if (!allConditionsMet)
+			continue;
+
+		// All conditions were met, transition to the next animation
+
+		// Moving to the next animation
+		currentAnimation = &animations[link.tag2];
+		currentAnimationTag = link.tag2;
+
+		// Resetting all triggers
+		for (BoolAnimationCondition& condition : link.conditions)
+		{
+			if (condition.conditionType == ConditionType::TRIGGER)
+			{
+				boolParameters[condition.parameterTag] = false;
+			}
 		}
 	}
 }
@@ -71,11 +93,15 @@ void AnimationWeb::createLink(const std::string& tag1, const std::string& tag2, 
 	links.emplace_back(AnimationLink{ tag1, tag2, waitForEndOfAnimation });
 }
 
-void AnimationWeb::addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative)
+void AnimationWeb::addConditionToLink(const std::string& tag1,
+	const std::string& tag2,
+	const std::string& parameterTag,
+	ConditionType conditionType,
+	bool comparative)
 {
 	AnimationLink* link{ getLinkByTags(tag1, tag2) };
 
-	link->condition = BoolAnimationCondition{ parameterTag, comparative };
+	link->conditions.push_back(BoolAnimationCondition{ parameterTag, comparative, conditionType });
 }
 
 void AnimationWeb::setBool(const std::string& tag, bool value)
@@ -134,10 +160,30 @@ std::string AnimationWeb::toString()
 		{
 			sstream << "  - " << tag << " to " << link.tag2;
 
-			// Check if there is a condition set
-			if (link.condition.parameterTag != "nc")
+			for (BoolAnimationCondition& condition : link.conditions)
 			{
-				sstream << " if " << link.condition.parameterTag << " is " << (link.condition.comparative ? "true" : "false") << "\n";
+				unsigned int conditionIndex{ 0 };
+
+				// Check if there is a condition set
+				if (condition.parameterTag != "nc")
+				{
+					if (conditionIndex == 0)
+					{
+						sstream << " if ";
+					}
+					else
+					{
+						sstream << " and ";
+					}
+
+					sstream << condition.parameterTag
+						<< ((condition.conditionType == ConditionType::BOOLEAN) ? "(boolean)" : "trigger")
+						<< " is " << (condition.comparative ? "true" : "false");
+
+					conditionIndex++;
+				}
+
+				sstream << "\n";
 			}
 		}
 		sstream << "\n";

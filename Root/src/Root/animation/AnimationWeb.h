@@ -9,10 +9,30 @@
 #include <sstream>
 #include <map>
 
+/**
+ * The condition type of the animation condition.
+ * - BOOLEAN: the value of the condition will not change when the link is used.
+ * - TRIGGER: The value of the condition will be reset to the opposite of the comparative
+ * 			  after the link was used.
+ * 			  E.g. if the comparative is set to true, it will reset to false, and true otherwise.
+ */
+enum class ConditionType
+{
+	// The value of the condition will not change when the link is used.
+	BOOLEAN,
+
+	// The value of the condition will be reset to the opposite of the comparative
+	// after the link was used.
+	// E.g. if the comparative is set to true, it will reset to false, and true otherwise.
+	// Useful for events such as jumps.
+	TRIGGER
+};
+
 struct BoolAnimationCondition
 {
 	std::string parameterTag{ "nc" }; // Start out as no-condition
 	bool comparative;
+	ConditionType conditionType;
 };
 
 struct AnimationLink
@@ -20,7 +40,7 @@ struct AnimationLink
 	std::string tag1;
 	std::string tag2;
 	bool waitForEndOfAnimation;
-	BoolAnimationCondition condition;
+	std::vector<BoolAnimationCondition> conditions;
 };
 
 /**
@@ -61,13 +81,19 @@ public:
 
 	/**
 	 * Add a condition to an existing link.
+	 * The link will be considered if the parameter is equal to the comparative,
+	 * so both true or both false.
 	 * 
 	 * \param tag1: the tag of the "from" part of the link.
 	 * \param tag2: the tag of the "to" part of the link.
 	 * \param parameterTag: the tag of the parameter to check.
 	 * \param comparative: what to compare the parameter to.
 	 */
-	void addConditionToLink(const std::string& tag1, const std::string& tag2, const std::string& parameterTag, bool comparative);
+	void addConditionToLink(const std::string& tag1,
+		const std::string& tag2,
+		const std::string& parameterTag,
+		ConditionType conditionType = ConditionType::BOOLEAN,
+		bool comparative = true);
 
 	/**
 	 * Set a boolean parameter.
