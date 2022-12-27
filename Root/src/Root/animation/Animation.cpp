@@ -25,8 +25,6 @@ bool Animation::update()
 			animationFinished = false;
 	}
 
-	std::cout << "AT ANIMATION FUNCTION CHECK: " << animationFunctions.size() << std::endl;
-
 	for (AnimationFunctionAtTime& animationFunctionAtTime : animationFunctions)
 	{
 		// If it's already called no need to do it again
@@ -90,7 +88,6 @@ void Animation::setOnFinish(OnAnimationFinish onAnimationFinish)
 void Animation::addAnimationFunction(AnimationFunctionCall& animationFunction, float time)
 {
 	animationFunctions.push_back(AnimationFunctionAtTime{ animationFunction, time });
-	std::cout << "ADDING ANIMATION FUNCTION" << std::endl;
 }
 
 std::string Animation::functionsToString()

@@ -108,7 +108,6 @@ inline bool SetterValueAnimation<T, U>::update(float animationTime)
 		(instance->*functionPointer)(newValue);
 
 	// Return whether the animation is finished
-	std::cout << "ANIMATION TIME: " << usingAnimationTime << "   DURATION: " << duration << std::endl;
 	return (usingAnimationTime >= duration);
 }
 
