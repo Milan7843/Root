@@ -27,12 +27,14 @@ public:
 	 * Will automatically add this component to the given transform.
 	 * 
 	 * \param transform: the transform to add this component to.
+	 * \param offset: the offset of the image relative to the transform center (default = (0, 0)).
 	 * \param pixelPerfect: whether the sprite should be pixel perfect (default = false).
 	 * \param columnCount: the number of columns in this sprite (sheet).
 	 * \param rowCount: the number of rows in this sprite (sheet).
 	 */
 	static SpriteRendererPointer create(TransformPointer transform,
 		const std::string& spritePath,
+		glm::vec2 offset = glm::vec2(0.0f),
 		bool pixelPerfect = false,
 		unsigned int columnCount = 1, unsigned int rowCount = 1);
 
@@ -74,9 +76,17 @@ public:
 	 */
 	void setSpriteSheetIndex(glm::ivec2 index);
 
+	/**
+	 * Set the offset of the rendered sprite relative to the transform center.
+	 * 
+	 * \param offset: the new offset.
+	 */
+	void setOffset(glm::vec2 offset);
+
 private:
 
-	SpriteRenderer(unsigned int columnCount, unsigned int rowCount);
+	SpriteRenderer(unsigned int columnCount, unsigned int rowCount,
+		glm::vec2 offset);
 
 	// float height;
 
@@ -87,4 +97,6 @@ private:
 
 	unsigned int columnIndex{ 0 };
 	unsigned int rowIndex{ 0 };
+
+	glm::vec2 offset;
 };

@@ -2,9 +2,11 @@
 
 #include <Root/engine/TextureEngine.h>
 
-SpriteRenderer::SpriteRenderer(unsigned int columnCount, unsigned int rowCount)
+SpriteRenderer::SpriteRenderer(unsigned int columnCount, unsigned int rowCount,
+	glm::vec2 offset)
 	: columnCount(columnCount)
 	, rowCount(rowCount)
+	, offset(offset)
 {
 }
 
@@ -16,11 +18,12 @@ SpriteRenderer::~SpriteRenderer()
 SpriteRendererPointer SpriteRenderer::create(
 	TransformPointer transform,
 	const std::string& spritePath,
+	glm::vec2 offset,
 	bool pixelPerfect,
 	unsigned int columnCount,
 	unsigned int rowCount)
 {
-	SpriteRenderer* spriteRenderer = new SpriteRenderer(columnCount, rowCount);
+	SpriteRenderer* spriteRenderer = new SpriteRenderer(columnCount, rowCount, offset);
 	std::shared_ptr<SpriteRenderer> pointer{ spriteRenderer };
 	pointer->setSprite(spritePath, pixelPerfect);
 	transform->addComponent(pointer);
@@ -49,11 +52,15 @@ void SpriteRenderer::render(float renderDepth)
 
 	spriteRenderShader->setMat4("projection", Root::getActiveCamera()->getProjectionMatrix());
 	spriteRenderShader->setInt("sprite", 0);
-	spriteRenderShader->setFloat("renderDepth", renderDepth / 10000.0f);
+
 	spriteRenderShader->setInt("columnCount", columnCount);
 	spriteRenderShader->setInt("rowCount", rowCount);
 	spriteRenderShader->setInt("columnIndex", columnIndex);
 	spriteRenderShader->setInt("rowIndex", rowIndex);
+
+	spriteRenderShader->setVector2("offset", offset);
+
+	spriteRenderShader->setFloat("renderDepth", renderDepth / 10000.0f);
 
 	// Binding the sprite
 	glActiveTexture(GL_TEXTURE0);
@@ -113,4 +120,9 @@ void SpriteRenderer::setSpriteSheetIndex(glm::ivec2 index)
 	}
 	setSpriteSheetColumnIndex(index.x);
 	setSpriteSheetRowIndex(index.y);
+}
+
+void SpriteRenderer::setOffset(glm::vec2 offset)
+{
+	this->offset = offset;
 }

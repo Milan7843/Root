@@ -160,31 +160,28 @@ std::string AnimationWeb::toString()
 		{
 			sstream << "  - " << tag << " to " << link.tag2;
 
+			unsigned int conditionIndex{ 0 };
+
 			for (BoolAnimationCondition& condition : link.conditions)
 			{
-				unsigned int conditionIndex{ 0 };
 
-				// Check if there is a condition set
-				if (condition.parameterTag != "nc")
+				if (conditionIndex == 0)
 				{
-					if (conditionIndex == 0)
-					{
-						sstream << " if ";
-					}
-					else
-					{
-						sstream << " and ";
-					}
-
-					sstream << condition.parameterTag
-						<< ((condition.conditionType == ConditionType::BOOLEAN) ? "(boolean)" : "trigger")
-						<< " is " << (condition.comparative ? "true" : "false");
-
-					conditionIndex++;
+					sstream << " if ";
+				}
+				else
+				{
+					sstream << " and ";
 				}
 
-				sstream << "\n";
+				sstream << condition.parameterTag << " "
+					<< ((condition.conditionType == ConditionType::BOOLEAN) ? "(boolean)" : "(trigger)")
+					<< " is " << (condition.comparative ? "true" : "false");
+
+				conditionIndex++;
 			}
+
+			sstream << "\n";
 		}
 		sstream << "\n";
 	}
@@ -208,11 +205,6 @@ AnimationLink* AnimationWeb::getLinkByTags(const std::string& tag1, const std::s
 
 bool AnimationWeb::evaluateCondition(BoolAnimationCondition& condition)
 {
-	if (condition.parameterTag == "nc")
-	{
-		return true;
-	}
-
 	bool parameterValue{ boolParameters[condition.parameterTag] };
 
 	return condition.comparative == parameterValue;

@@ -58,7 +58,7 @@ namespace Math
 	*/
 
 	template <>
-	inline glm::ivec2 cerp<glm::ivec2>(glm::ivec2 v1, glm::ivec2 v2, float t);
+	glm::ivec2 cerp<glm::ivec2>(glm::ivec2 v1, glm::ivec2 v2, float t);
 
 	/**
 	 * Map a value from [a1, a2] to [b1, b2].

@@ -30,7 +30,7 @@ enum class ConditionType
 
 struct BoolAnimationCondition
 {
-	std::string parameterTag{ "nc" }; // Start out as no-condition
+	std::string parameterTag;
 	bool comparative;
 	ConditionType conditionType;
 };
