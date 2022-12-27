@@ -147,6 +147,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Root\animation\animation functions\AnimationFunctionCall.h" />
+    <ClInclude Include="src\Root\animation\animation functions\ClassAnimationFunction.h" />
+    <ClInclude Include="src\Root\animation\animation functions\ClassParameterizedAnimationFunction.h" />
+    <ClInclude Include="src\Root\animation\animation functions\AnimationFunction.h" />
     <ClInclude Include="src\Root\Audio.h" />
     <ClInclude Include="src\Root\AudioSource.h" />
     <ClInclude Include="src\Root\base\TransformBase.h" />
@@ -879,6 +883,8 @@
     <None Include="src\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Root\animation\animation functions\AnimationFunctionCall.cpp" />
+    <ClCompile Include="src\Root\animation\animation functions\AnimationFunction.cpp" />
     <ClCompile Include="src\Root\Audio.cpp" />
     <ClCompile Include="src\Root\AudioSource.cpp" />
     <ClCompile Include="src\Root\base\TransformBase.cpp" />

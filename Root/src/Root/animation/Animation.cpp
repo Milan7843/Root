@@ -25,6 +25,22 @@ bool Animation::update()
 			animationFinished = false;
 	}
 
+	std::cout << "AT ANIMATION FUNCTION CHECK: " << animationFunctions.size() << std::endl;
+
+	for (AnimationFunctionAtTime& animationFunctionAtTime : animationFunctions)
+	{
+		// If it's already called no need to do it again
+		if (animationFunctionAtTime.called)
+			continue;
+
+		// Check if it's time has passed, if it has call the function
+		if (animationTime > animationFunctionAtTime.time)
+		{
+			animationFunctionAtTime.animationFunction.call();
+			animationFunctionAtTime.called = true;
+		}
+	}
+
 
 	// Check whether the animation is finished
 	if (animationFinished)
@@ -32,11 +48,11 @@ bool Animation::update()
 		switch (onAnimationFinish)
 		{
 			case OnAnimationFinish::STOP:
-				playing = false;
+				stop();
 				break;
 
 			case OnAnimationFinish::REPEAT:
-				animationTime = 0.0f;
+				play();
 				break;
 		}
 	}
@@ -48,6 +64,12 @@ void Animation::play()
 {
 	playing = true;
 	animationTime = 0.0f;
+
+	// Resetting all animation function call flags
+	for (AnimationFunctionAtTime& animationFunctionAtTime : animationFunctions)
+	{
+		animationFunctionAtTime.called = false;
+	}
 }
 
 void Animation::stop()
@@ -63,4 +85,29 @@ void Animation::addValueAnimation(std::shared_ptr<ValueAnimationInterface> value
 void Animation::setOnFinish(OnAnimationFinish onAnimationFinish)
 {
 	this->onAnimationFinish = onAnimationFinish;
+}
+
+void Animation::addAnimationFunction(AnimationFunctionCall& animationFunction, float time)
+{
+	animationFunctions.push_back(AnimationFunctionAtTime{ animationFunction, time });
+	std::cout << "ADDING ANIMATION FUNCTION" << std::endl;
+}
+
+std::string Animation::functionsToString()
+{
+	std::stringstream sstream;
+
+	if (animationFunctions.size() == 0)
+		return sstream.str();
+
+	sstream << "Functions: " << "\n";
+
+	for (AnimationFunctionAtTime& animationFunctionAtTime : animationFunctions)
+	{
+		sstream << "           ";
+
+		sstream << "Animation function at t: " << animationFunctionAtTime.time << "\n";
+	}
+
+	return sstream.str();
 }

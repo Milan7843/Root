@@ -166,6 +166,7 @@ namespace RootEngine
             // makes sure objects get drawn on top of each other in the correct order
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
+
             // Calling all component render() functions
             ComponentEngine::renderComponents();
 

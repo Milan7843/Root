@@ -4,13 +4,23 @@
 #include <Root/Time.h>
 #include <Root/Logger.h>
 
+#include <Root/animation/animation functions/AnimationFunctionCall.h>
+
 #include <memory>
 #include <vector>
+#include <sstream>
 
 enum class OnAnimationFinish
 {
 	STOP,
 	REPEAT
+};
+
+struct AnimationFunctionAtTime
+{
+	AnimationFunctionCall animationFunction;
+	float time;
+	bool called{ false };
 };
 
 class Animation
@@ -50,10 +60,27 @@ public:
 	 */
 	void setOnFinish(OnAnimationFinish onAnimationFinish);
 
+	/**
+	 * Add an animation function.
+	 * This will cause the animation function's function to be called at time point time.
+	 * 
+	 * /param animationFunction: the function to call at time time.
+	 * /param time: the time at which to call the function.
+	 */
+	void addAnimationFunction(AnimationFunctionCall& animationFunction, float time);
+
+	/**
+	 * Create a human readable string from the animation functions in this animation.
+	 *
+	 * \return the animation functions in this animation in a human readable format.
+	 */
+	std::string functionsToString();
 
 private:
 
 	std::vector<std::shared_ptr<ValueAnimationInterface>> valueAnimations;
+
+	std::vector<AnimationFunctionAtTime> animationFunctions;
 
 	// Defines what should happen when the animation finishes
 	OnAnimationFinish onAnimationFinish { OnAnimationFinish::REPEAT };

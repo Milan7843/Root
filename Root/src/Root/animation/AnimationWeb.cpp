@@ -155,6 +155,10 @@ std::string AnimationWeb::toString()
 
 		sstream << "Animation: \n";
 		sstream << "Identifying tag: " << tag << "\n";
+
+		// Printing the animations
+		sstream << taggedAnimation.second.functionsToString() << std::endl;
+
 		sstream << "Links:\n";
 		for (AnimationLink& link : getLinksByAnimationTag(tag))
 		{

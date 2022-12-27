@@ -1767,6 +1767,18 @@
     <ClInclude Include="src\Root\colliders\TileGridCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Root\animation\animation functions\AnimationFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\animation functions\ClassAnimationFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\animation functions\ClassParameterizedAnimationFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Root\animation\animation functions\AnimationFunctionCall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\assimp\color4.inl">
@@ -2414,6 +2426,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Root\colliders\TileGridCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\animation functions\AnimationFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Root\animation\animation functions\AnimationFunctionCall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
