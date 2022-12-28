@@ -120,17 +120,28 @@ namespace RendererEngine
 
         void runScreenSpaceEffect(ScreenSpaceEffectPointer screenSpaceEffect)
         {
-            // Swapping source and destination, as all draw data is now in destination
+            // Swapping source and destination, as all draw data was in destination
             unsigned int temp = screenDestinationTexture;
             screenDestinationTexture = screenSourceTexture;
             screenSourceTexture = temp;
 
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screenDestinationTexture, 0);
+            // Now the drawn frame data is in source
+            // and destination is the destination for the drawing of the effect
+
+            glBindFramebuffer(GL_FRAMEBUFFER, mainFrameBuffer);
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER,
+                GL_COLOR_ATTACHMENT0,
+                GL_TEXTURE_2D,
+                screenDestinationTexture,
+                0);
 
 
             screenSpaceEffect->use();
             screenSpaceEffect->setInt("baseTexture", 0);
-            screenSpaceEffect->setVector2("windowSize", RootEngine::getScreenWidth(), RootEngine::getScreenHeight());
+            screenSpaceEffect->setVector2("windowSize",
+                RootEngine::getScreenWidth(),
+                RootEngine::getScreenHeight());
 
             glBindVertexArray(getScreenRectVAO());
 
@@ -222,8 +233,8 @@ namespace RendererEngine
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 
         // Then generating the destination texture, which the framebuffer renders to
@@ -234,8 +245,8 @@ namespace RendererEngine
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screenDestinationTexture, 0);
         
