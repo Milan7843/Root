@@ -5,6 +5,14 @@ AnimationFunction::AnimationFunction(void (*functionPointer)())
 {
 }
 
+AnimationFunctionCallPointer AnimationFunction::create(void(*functionPointer)())
+{
+	AnimationFunction* animationFunction
+		= new AnimationFunction(functionPointer);
+	AnimationFunctionCallPointer pointer{ animationFunction };
+	return pointer;
+}
+
 AnimationFunction::~AnimationFunction()
 {
 }

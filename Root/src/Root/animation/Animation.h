@@ -18,7 +18,7 @@ enum class OnAnimationFinish
 
 struct AnimationFunctionAtTime
 {
-	AnimationFunctionCall animationFunction;
+	std::shared_ptr<AnimationFunctionCall> animationFunction;
 	float time;
 	bool called{ false };
 };
@@ -67,7 +67,7 @@ public:
 	 * /param animationFunction: the function to call at time time.
 	 * /param time: the time at which to call the function.
 	 */
-	void addAnimationFunction(AnimationFunctionCall& animationFunction, float time);
+	void addAnimationFunction(AnimationFunctionCallPointer& animationFunctionPointer, float time);
 
 	/**
 	 * Create a human readable string from the animation functions in this animation.

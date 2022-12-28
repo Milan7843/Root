@@ -34,7 +34,7 @@ bool Animation::update()
 		// Check if it's time has passed, if it has call the function
 		if (animationTime > animationFunctionAtTime.time)
 		{
-			animationFunctionAtTime.animationFunction.call();
+			animationFunctionAtTime.animationFunction->call();
 			animationFunctionAtTime.called = true;
 		}
 	}
@@ -85,9 +85,13 @@ void Animation::setOnFinish(OnAnimationFinish onAnimationFinish)
 	this->onAnimationFinish = onAnimationFinish;
 }
 
-void Animation::addAnimationFunction(AnimationFunctionCall& animationFunction, float time)
+void Animation::addAnimationFunction(AnimationFunctionCallPointer& animationFunctionPointer, float time)
 {
-	animationFunctions.push_back(AnimationFunctionAtTime{ animationFunction, time });
+	// Putting a pointer to the copied animation function into the object
+	animationFunctions.push_back(AnimationFunctionAtTime {
+		animationFunctionPointer,
+		time
+	});
 }
 
 std::string Animation::functionsToString()
@@ -102,7 +106,6 @@ std::string Animation::functionsToString()
 	for (AnimationFunctionAtTime& animationFunctionAtTime : animationFunctions)
 	{
 		sstream << "           ";
-
 		sstream << "Animation function at t: " << animationFunctionAtTime.time << "\n";
 	}
 

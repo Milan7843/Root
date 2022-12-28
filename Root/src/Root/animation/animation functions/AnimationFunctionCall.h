@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#define AnimationFunctionCallPointer std::shared_ptr<AnimationFunctionCall> 
+
 class AnimationFunctionCall
 {
 public:
