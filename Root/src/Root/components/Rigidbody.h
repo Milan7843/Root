@@ -349,20 +349,15 @@ public:
 	bool isAwake() const;
 
 	/**
-	 * Allow a body to be disabled. A disabled body is not simulated and cannot
-	 * be collided with or woken up.
-	 * If you pass a flag of true, all fixtures will be added to the broad-phase.
-	 * If you pass a flag of false, all fixtures will be removed from the
-	 * broad-phase and all contacts will be destroyed.
-	 * Fixtures and joints are otherwise unaffected. You may continue
-	 * to create/destroy fixtures and joints on disabled bodies.
-	 * Fixtures on a disabled body are implicitly disabled and will
-	 * not participate in collisions, ray-casts, or queries.
-	 * Joints connected to a disabled body are implicitly disabled.
-	 * An diabled body is still owned by a b2World object and remains
-	 * in the body list.
+	 * Set a body to be enabled or disabled (depending on the flag).
+	 * Calling this function does not ensure that the body's enabled state is immediately changed,
+	 * since the physics world may be locked.
+	 * If this function returns true, the body's state was immediately changed.
+	 * If this function returns false, the body's state will be changed before the next physics step.
+	 * 
+	 * \param flag: true for enabling, false for disabling.
 	 */
-	void setEnabled(bool flag);
+	bool setEnabled(bool flag);
 
 	/**
 	 * Get whether this object is enabled.
@@ -458,4 +453,6 @@ private:
 	b2Fixture* fixture;
 	b2Body* body;
 	std::vector<std::shared_ptr<Collider>> colliders;
+
+	bool enabled{ true };
 };

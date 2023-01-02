@@ -17,6 +17,7 @@ namespace PhysicsEngine
 		b2World world{ b2World(b2Vec2(0.0f, -10.0f)) };
 
 		std::vector<b2Body*> bodiesToDestroy;
+		std::queue<BodyEnabledStateChange> bodyEnabledStateChanges;
 
 		CollisionCallbackHandler collisionCallbackHandler;
 	}
@@ -58,6 +59,15 @@ namespace PhysicsEngine
 		{
 			world.DestroyBody(body);
 		}
+
+		// Then we update all the enabled states
+		while (!bodyEnabledStateChanges.empty())
+		{
+			BodyEnabledStateChange enabledStateChangeInfo = bodyEnabledStateChanges.front();
+			enabledStateChangeInfo.body->SetEnabled(enabledStateChangeInfo.flag);
+			bodyEnabledStateChanges.pop();
+		}
+
 
 		bodiesToDestroy.clear();
 
@@ -125,6 +135,7 @@ namespace PhysicsEngine
 
 	bool destroyBody(b2Body* bodyToDestroy)
 	{
+		// If the world is not locked, we can destroy the body immediately
 		if (!world.IsLocked())
 		{
 			world.DestroyBody(bodyToDestroy);
@@ -134,6 +145,30 @@ namespace PhysicsEngine
 		{
 			// Add it to the queue to be destroyed later
 			bodiesToDestroy.push_back(bodyToDestroy);
+			return false;
+		}
+	}
+
+	bool setBodyEnabled(b2Body* body, bool flag)
+	{
+		// If the body is already in the correct state: dont change anything
+		if (body->IsEnabled() == flag)
+		{
+			return true;
+		}
+
+		// If the world is not locked, we can change the state immediately
+		if (!world.IsLocked())
+		{
+			body->SetEnabled(flag);
+			return true;
+		}
+		else
+		{
+			// Add it to the queue to be destroyed later
+			bodyEnabledStateChanges.emplace(body, flag);
+
+			// Body's state is changed later
 			return false;
 		}
 	}

@@ -3,10 +3,11 @@
 #include <Root/engine/TextureEngine.h>
 
 SpriteRenderer::SpriteRenderer(unsigned int columnCount, unsigned int rowCount,
-	glm::vec2 offset)
+	glm::vec2 offset, glm::vec2 size)
 	: columnCount(columnCount)
 	, rowCount(rowCount)
 	, offset(offset)
+	, size(size)
 {
 }
 
@@ -18,12 +19,13 @@ SpriteRenderer::~SpriteRenderer()
 SpriteRendererPointer SpriteRenderer::create(
 	TransformPointer transform,
 	const std::string& spritePath,
+	glm::vec2 size,
 	glm::vec2 offset,
 	bool pixelPerfect,
 	unsigned int columnCount,
 	unsigned int rowCount)
 {
-	SpriteRenderer* spriteRenderer = new SpriteRenderer(columnCount, rowCount, offset);
+	SpriteRenderer* spriteRenderer = new SpriteRenderer(columnCount, rowCount, offset, size);
 	std::shared_ptr<SpriteRenderer> pointer{ spriteRenderer };
 	pointer->setSprite(spritePath, pixelPerfect);
 	transform->addComponent(pointer);
@@ -59,6 +61,7 @@ void SpriteRenderer::render(float renderDepth)
 	spriteRenderShader->setInt("rowIndex", rowIndex);
 
 	spriteRenderShader->setVector2("offset", offset);
+	spriteRenderShader->setVector2("size", size);
 
 	spriteRenderShader->setFloat("renderDepth", renderDepth / 10000.0f);
 
@@ -125,4 +128,9 @@ void SpriteRenderer::setSpriteSheetIndex(glm::ivec2 index)
 void SpriteRenderer::setOffset(glm::vec2 offset)
 {
 	this->offset = offset;
+}
+
+void SpriteRenderer::setSize(glm::vec2 size)
+{
+	this->size = size;
 }

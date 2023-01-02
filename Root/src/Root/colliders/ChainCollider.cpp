@@ -2,12 +2,18 @@
 
 std::shared_ptr<Collider> ChainCollider::create(std::vector<glm::vec2>& points,
 	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask)
+	LayerMask interactionLayerMask,
+	bool sensor,
+	float density,
+	float friction)
 {
 	ChainCollider* collider = new ChainCollider(
 		points,
 		selfLayerMask,
-		interactionLayerMask);
+		interactionLayerMask,
+		sensor,
+		density,
+		friction);
 
 	std::shared_ptr<ChainCollider> pointer{ collider };
 	return pointer;
@@ -15,8 +21,11 @@ std::shared_ptr<Collider> ChainCollider::create(std::vector<glm::vec2>& points,
 
 ChainCollider::ChainCollider(std::vector<glm::vec2>& points,
 	LayerMask selfLayerMask,
-	LayerMask interactionLayerMask)
-	: Collider(selfLayerMask, interactionLayerMask)
+	LayerMask interactionLayerMask,
+	bool sensor,
+	float density,
+	float friction)
+	: Collider(selfLayerMask, interactionLayerMask, density, friction, sensor)
 {
 	setPoints(points);
 }

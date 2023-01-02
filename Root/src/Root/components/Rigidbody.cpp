@@ -18,6 +18,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	b2BodyType type,
 	bool enabled,
 	float gravityScale)
+	: enabled(enabled)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -66,6 +67,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	bool enabled,
 	float gravityScale)
 	: colliders(std::vector<std::shared_ptr<Collider>>{ collider })
+	, enabled(enabled)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -122,6 +124,7 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	bool enabled,
 	float gravityScale)
 	: colliders(colliders)
+	, enabled(enabled)
 {
 	glm::vec2 position{ transform->getPosition() };
 
@@ -156,8 +159,9 @@ Rigidbody::Rigidbody(TransformPointer transform,
 		{
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = shape;
-			fixtureDef.density = 1.0f;
-			fixtureDef.friction = 0.3f;
+			fixtureDef.density = collider->getDensity();
+			fixtureDef.friction = collider->getFriction();
+			fixtureDef.isSensor = collider->isSensor();
 
 			// Setting the layer masks
 			fixtureDef.filter.categoryBits = collider->getSelfLayerMask();
@@ -248,6 +252,9 @@ void Rigidbody::update()
 
 void Rigidbody::updateTransform()
 {
+	if (!enabled)
+		return;
+
 	b2Vec2 position{ body->GetPosition() };
 	this->transform->setPosition(glm::vec2(position.x, position.y));
 
@@ -416,14 +423,15 @@ bool Rigidbody::isAwake() const
 	return body->IsAwake();
 }
 
-void Rigidbody::setEnabled(bool flag)
+bool Rigidbody::setEnabled(bool flag)
 {
-	body->SetEnabled(flag);
+	enabled = flag;
+	return PhysicsEngine::setBodyEnabled(body, flag);
 }
 
 bool Rigidbody::isEnabled() const
 {
-	return body->IsEnabled();
+	return enabled;
 }
 
 void Rigidbody::setFixedRotation(bool flag)

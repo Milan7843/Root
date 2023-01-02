@@ -20,11 +20,18 @@ public:
 	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
 	 *								Must be in counter-clockwise order.
 	 * \param invertCollision:		whether to invert the collisions from outside to inside.
+	 * \param sensor:				whether the collider is a sensor. A sensor does not collide
+	 *								with other objects, but it reports overlaps anyways.
+	 * \param density:				the density of the collider. Default = 1.0.
+	 * \param friction:				the friction of the collider. Default = 0.3.
 	 */
 	static std::shared_ptr<Collider> create(std::vector<glm::vec2>& points,
 		LayerMask selfLayerMask = LAYER_0,
 		LayerMask interactionLayerMask = LAYER_ALL,
-		bool invertCollision = false);
+		bool invertCollision = false,
+		bool sensor = false,
+		float density = 1.0f,
+		float friction = 0.3f);
 
 	~PolygonCollider();
 
@@ -49,11 +56,18 @@ private:
 	 * \param interactionLayerMask:	a layer mask of all layers which this rigidbody can interact with. Default = LAYER_ALL.
 	 *								Must be in counter-clockwise order.
 	 * \param invertCollision:		whether to invert the collisions from outside to inside.
+	 * \param sensor:				whether the collider is a sensor. A sensor does not collide
+	 *								with other objects, but it reports overlaps anyways.
+	 * \param density:				the density of the collider. Default = 1.0.
+	 * \param friction:				the friction of the collider. Default = 0.3.
 	 */
 	PolygonCollider(std::vector<glm::vec2>& points,
 		LayerMask selfLayerMask,
 		LayerMask interactionLayerMask,
-		bool invertCollision);
+		bool invertCollision,
+		bool sensor,
+		float density,
+		float friction);
 
 	/**
 	 * Set the points of the polygon collider.

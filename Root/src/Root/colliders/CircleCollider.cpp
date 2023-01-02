@@ -3,12 +3,18 @@
 std::shared_ptr<Collider> CircleCollider::create(float radius,
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
+	bool sensor,
+	float density,
+	float friction,
 	glm::vec2 offset)
 {
 	CircleCollider* collider = new CircleCollider(
 		radius,
 		selfLayerMask,
 		interactionLayerMask,
+		sensor,
+		density,
+		friction,
 		offset);
 
 	std::shared_ptr<CircleCollider> pointer{ collider };
@@ -18,8 +24,11 @@ std::shared_ptr<Collider> CircleCollider::create(float radius,
 CircleCollider::CircleCollider(float radius,
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
+	bool sensor,
+	float density,
+	float friction,
 	glm::vec2 offset)
-	: Collider(selfLayerMask, interactionLayerMask)
+	: Collider(selfLayerMask, interactionLayerMask, density, friction, sensor)
 	, radius(radius)
 	, offset(offset)
 {

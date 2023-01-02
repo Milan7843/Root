@@ -72,15 +72,28 @@ public:
 		return interactionLayerMask;
 	}
 
+	float getDensity();
+
+	float getFriction();
+
+	bool isSensor();
+
 protected:
 
-	Collider(LayerMask selfLayerMask, LayerMask interactionLayerMask)
+	Collider(LayerMask selfLayerMask, LayerMask interactionLayerMask, float density, float friction, bool sensor)
 		: selfLayerMask(selfLayerMask)
-		, interactionLayerMask(interactionLayerMask) { }
+		, interactionLayerMask(interactionLayerMask)
+		, density(density)
+		, friction(friction)
+		, sensor(sensor) { }
 
 	LayerMask selfLayerMask;
 	LayerMask interactionLayerMask;
 
 	unsigned int debugVAO{ 0 };
+
+	float density;
+	float friction;
+	bool sensor;
 };
 

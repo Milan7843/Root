@@ -2,11 +2,17 @@
 
 std::shared_ptr<Collider> EdgeCollider::create(glm::vec2& point1, glm::vec2& point2,
     LayerMask selfLayerMask,
-    LayerMask interactionLayerMask)
+    LayerMask interactionLayerMask,
+    bool sensor,
+    float density,
+    float friction)
 {
 	EdgeCollider* collider = new EdgeCollider(
         point1, point2,
-        selfLayerMask, interactionLayerMask);
+        selfLayerMask, interactionLayerMask,
+        sensor,
+        density,
+        friction);
 
 	std::shared_ptr<EdgeCollider> pointer{ collider };
 	return pointer;
@@ -14,8 +20,11 @@ std::shared_ptr<Collider> EdgeCollider::create(glm::vec2& point1, glm::vec2& poi
 
 EdgeCollider::EdgeCollider(glm::vec2& point1, glm::vec2& point2,
     LayerMask selfLayerMask,
-    LayerMask interactionLayerMask)
-    : Collider(selfLayerMask, interactionLayerMask)
+    LayerMask interactionLayerMask,
+    bool sensor,
+    float density,
+    float friction)
+    : Collider(selfLayerMask, interactionLayerMask, density, friction, sensor)
 	, point1(point1)
 	, point2(point2)
 {

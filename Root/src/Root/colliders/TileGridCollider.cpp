@@ -5,14 +5,21 @@ std::shared_ptr<Collider> TileGridCollider::create(
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
 	CollisionType collisionType,
-	int layerIndex)
+	int layerIndex,
+	bool sensor,
+	float density,
+	float friction)
 {
 	TileGridCollider* collider = new TileGridCollider(
 		tileGrid,
 		selfLayerMask,
 		interactionLayerMask,
 		collisionType,
-		layerIndex);
+		layerIndex,
+		sensor,
+		density,
+		friction);
+
 	std::shared_ptr<TileGridCollider> pointer{ collider };
 	return pointer;
 }
@@ -22,8 +29,11 @@ TileGridCollider::TileGridCollider(
 	LayerMask selfLayerMask,
 	LayerMask interactionLayerMask,
 	CollisionType collisionType,
-	int layerIndex)
-	: Collider(selfLayerMask, interactionLayerMask)
+	int layerIndex,
+	bool sensor,
+	float density,
+	float friction)
+	: Collider(selfLayerMask, interactionLayerMask, density, friction, sensor)
 {
 	updateWithTileGrid(tileGrid, collisionType, layerIndex);
 }
@@ -268,7 +278,13 @@ void TileGridCollider::updateWithTileGrid(
 		// The collision should be inverted when using INSIDE collision mode
 		std::shared_ptr<LoopCollider> loopCollider
 			= std::static_pointer_cast<LoopCollider>(
-				LoopCollider::create(points, collisionType == CollisionType::INSIDE));
+				LoopCollider::create(points,
+					selfLayerMask,
+					interactionLayerMask,
+					collisionType == CollisionType::INSIDE,
+					this->isSensor(),
+					this->getDensity(),
+					this->getFriction()));
 
 		loopColliders.push_back(loopCollider);
 	}

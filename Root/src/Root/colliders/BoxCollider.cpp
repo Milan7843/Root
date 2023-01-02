@@ -3,6 +3,9 @@
 std::shared_ptr<Collider> BoxCollider::create(float width, float height,
     LayerMask selfLayerMask,
     LayerMask interactionLayerMask,
+    bool sensor,
+    float density,
+    float friction,
     glm::vec2 offset,
     float rotation)
 {
@@ -10,6 +13,9 @@ std::shared_ptr<Collider> BoxCollider::create(float width, float height,
         width, height,
         selfLayerMask,
         interactionLayerMask,
+        sensor,
+        density,
+        friction,
         offset,
         rotation);
 
@@ -20,9 +26,12 @@ std::shared_ptr<Collider> BoxCollider::create(float width, float height,
 BoxCollider::BoxCollider(float width, float height,
     LayerMask selfLayerMask,
     LayerMask interactionLayerMask,
+    bool sensor,
+    float density,
+    float friction,
     glm::vec2 offset,
     float rotation)
-    : Collider(selfLayerMask, interactionLayerMask)
+    : Collider(selfLayerMask, interactionLayerMask, density, friction, sensor)
 	, width(width)
 	, height(height)
     , offset(offset)
