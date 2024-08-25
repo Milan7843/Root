@@ -97,8 +97,9 @@ Rigidbody::Rigidbody(TransformPointer transform,
 	{
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
+		fixtureDef.density = collider->getDensity();
+		fixtureDef.friction = collider->getFriction();
+		fixtureDef.isSensor = collider->isSensor();
 
 		// Setting the layer masks
 		fixtureDef.filter.categoryBits = collider->getSelfLayerMask();
@@ -263,7 +264,8 @@ void Rigidbody::updateTransform()
 
 void Rigidbody::setPosition(glm::vec2 position, bool alsoSetTransformPosition)
 {
-	body->SetTransform(b2Vec2(position.x, position.y), body->GetAngle());
+	PhysicsEngine::setBodyPosition(body, position);
+	//body->SetTransform(b2Vec2(position.x, position.y), body->GetAngle());
 }
 
 

@@ -18,6 +18,7 @@ namespace PhysicsEngine
 
 		std::vector<b2Body*> bodiesToDestroy;
 		std::queue<BodyEnabledStateChange> bodyEnabledStateChanges;
+		std::queue<BodyPositionChange> bodyPositionChanges;
 
 		CollisionCallbackHandler collisionCallbackHandler;
 	}
@@ -66,6 +67,18 @@ namespace PhysicsEngine
 			BodyEnabledStateChange enabledStateChangeInfo = bodyEnabledStateChanges.front();
 			enabledStateChangeInfo.body->SetEnabled(enabledStateChangeInfo.flag);
 			bodyEnabledStateChanges.pop();
+		}
+
+		// Then we apply all the position changes
+		while (!bodyPositionChanges.empty())
+		{
+			BodyPositionChange bodyPositionChange = bodyPositionChanges.front();
+
+			bodyPositionChange.body->SetTransform(
+				b2Vec2(bodyPositionChange.position.x, bodyPositionChange.position.y),
+				bodyPositionChange.body->GetAngle());
+
+			bodyPositionChanges.pop();
 		}
 
 
@@ -165,10 +178,34 @@ namespace PhysicsEngine
 		}
 		else
 		{
-			// Add it to the queue to be destroyed later
+			// Add it to the queue to be changed later
 			bodyEnabledStateChanges.emplace(body, flag);
 
 			// Body's state is changed later
+			return false;
+		}
+	}
+
+	bool setBodyPosition(b2Body* body, glm::vec2 position)
+	{
+		// If the body is already in the correct position: dont change anything
+		if (body->GetPosition() == b2Vec2(position.x, position.y))
+		{
+			return true;
+		}
+
+		// If the world is not locked, we can change the position immediately
+		if (!world.IsLocked())
+		{
+			body->SetTransform(b2Vec2(position.x, position.y), body->GetAngle());
+			return true;
+		}
+		else
+		{
+			// Add it to the queue to be changed later
+			bodyPositionChanges.emplace(body, position);
+
+			// Body's position is changed later
 			return false;
 		}
 	}

@@ -21,6 +21,12 @@ namespace PhysicsEngine
 		bool flag;
 	};
 
+	struct BodyPositionChange
+	{
+		b2Body* body;
+		glm::vec2 position;
+	};
+
 	void initialise();
 
 	void simulate();
@@ -56,6 +62,16 @@ namespace PhysicsEngine
 	 * or false if the body was put into queue for enabling/disabling.
 	 */
 	bool setBodyEnabled(b2Body* body, bool flag);
+
+	/**
+	 * Set a particular body's position
+	 *
+	 * \param body: the body for which to change the enabled state.
+	 * \param position: the new position of the body
+	 * \returns true if the position of the body was immediately changed,
+	 * or false if the body was put into queue for position changing.
+	 */
+	bool setBodyPosition(b2Body* body, glm::vec2 position);
 };
 
 

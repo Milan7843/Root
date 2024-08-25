@@ -96,6 +96,8 @@ void Transform::setParent(Transform* parent, bool alsoAddChild)
 	// Setting new derived parent
 	this->derivedParent = parent;
 
+	this->setLocalPosition(parent->worldPointToLocalPoint(this->getPosition()));
+
 	// Possibly adding child to new parent
 	if (alsoAddChild && parent != NULL)
 		parent->addChild(this, false);
@@ -125,7 +127,7 @@ bool Transform::removeChild(Transform* childToRemove)
 		if (derivedChildren[i] == childToRemove)
 		{
 			// If it does, unset its parent reference,
-			derivedChildren[i]->parent = NULL;
+			derivedChildren[i]->setParent(NULL);
 
 			// remove it,
 			children.erase(children.begin() + i);
